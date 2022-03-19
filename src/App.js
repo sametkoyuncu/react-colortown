@@ -39,7 +39,12 @@ function App() {
         setIsOpen={setIsOpen}
         listItems={listItems}
       ></Sidebar>
-      <div className="p-7 text-2xl font-semibold flex-1 h-screen">
+      {/* blur işi çözmez ama şimdilik idare eder */}
+      <div
+        className={`p-7 text-2xl font-semibold flex-1 h-screen duration-500 ${
+          width < 640 && isOpen && 'blur-2xl'
+        }`}
+      >
         <h1>Home Page</h1>
       </div>
     </div>
