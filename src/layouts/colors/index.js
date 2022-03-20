@@ -33,23 +33,23 @@ function Colors() {
       <DashboardNavbar />
       <SuiBox py={3}>
         <SuiBox mb={3}>
-          <Grid container spacing={3}>
-            <Grid item xs={6} md={3}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6} md={3}>
               <ColorCard bgColor="#f857a6" />
             </Grid>
-            <Grid item xs={6} md={3}>
+            <Grid item xs={12} sm={6} md={3}>
               <ColorCard bgColor="#ff5858" />
             </Grid>
-            <Grid item xs={6} md={3}>
+            <Grid item xs={12} sm={6} md={3}>
               <ColorCard bgColor="#4b6cb7" />
             </Grid>
-            <Grid item xs={6} md={3}>
+            <Grid item xs={12} sm={6} md={3}>
               <ColorCard bgColor="#182848" />
             </Grid>
-            <Grid item xs={6} md={3}>
+            <Grid item xs={12} sm={6} md={3}>
               <ColorCard bgColor="#FC354C" />
             </Grid>
-            <Grid item xs={6} md={3}>
+            <Grid item xs={12} sm={6} md={3}>
               <ColorCard bgColor="#0ABFBC" />
             </Grid>
           </Grid>
