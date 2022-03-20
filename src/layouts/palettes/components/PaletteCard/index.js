@@ -30,7 +30,7 @@ function PaletteCard({ bgColors }) {
 
   return (
     <Card>
-      <SuiBox p={2} pb={1}>
+      <SuiBox p={1}>
         <Grid container spacing={0}>
           {bgColors.map((bgColor) => (
             <Grid item xs={3} sx={{ position: "relative", ml: "auto" }}>

@@ -30,7 +30,7 @@ function GradientCard({ bgColor }) {
 
   return (
     <Card>
-      <SuiBox p={2} pb={1}>
+      <SuiBox p={1}>
         <Grid item xs={12} sx={{ position: "relative", m: "auto" }}>
           <SuiBox
             height="160px"
@@ -38,6 +38,7 @@ function GradientCard({ bgColor }) {
             justifyContent="center"
             alignItems="center"
             bgColor={bgColor}
+            borderRadius="lg"
           />
           {/* ALT KISIM */}
           <SuiBox mr={2} mt={1}>

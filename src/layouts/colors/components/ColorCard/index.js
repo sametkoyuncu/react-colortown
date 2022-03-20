@@ -32,7 +32,7 @@ function ColorCard({ bgColor, likesCount = 0 }) {
   };
   return (
     <Card>
-      <SuiBox p={1} pb={1}>
+      <SuiBox p={1}>
         <Grid item xs={12} sx={{ position: "relative", m: "auto" }}>
           <SuiBox
             height="160px"
