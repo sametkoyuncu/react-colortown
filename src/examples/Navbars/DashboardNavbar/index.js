@@ -16,7 +16,7 @@ Coded by www.creative-tim.com
 import { useState, useEffect } from "react";
 
 // react-router components
-// import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 //  Link;
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
@@ -34,7 +34,7 @@ import SuiBox from "components/SuiBox";
 import SuiInput from "components/SuiInput";
 
 // Soft UI Dashboard React examples
-// import Breadcrumbs from "examples/Breadcrumbs";
+import Breadcrumbs from "examples/Breadcrumbs";
 // import NotificationItem from "examples/Items/NotificationItem";
 
 // Custom styles for DashboardNavbar
@@ -62,7 +62,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const { miniSidenav, transparentNavbar, fixedNavbar } = controller;
   // const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator } = controller;
   // const [openMenu, setOpenMenu] = useState(false);
-  // const route = useLocation().pathname.split("/").slice(1);
+  const route = useLocation().pathname.split("/").slice(1);
 
   useEffect(() => {
     // Setting the navbar type
@@ -141,9 +141,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
       sx={(theme) => navbar(theme, { transparentNavbar, absolute, light })}
     >
       <Toolbar sx={(theme) => navbarContainer(theme)}>
-        {/* <SuiBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
+        <SuiBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
           <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
-        </SuiBox> */}
+        </SuiBox>
         {isMini ? null : (
           <SuiBox sx={(theme) => navbarRow(theme, { isMini })}>
             <SuiBox pr={1}>

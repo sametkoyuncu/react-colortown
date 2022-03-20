@@ -37,6 +37,9 @@ Coded by www.creative-tim.com
 
 // Soft UI Dashboard React layouts
 import Dashboard from "layouts/dashboard";
+import Colors from "layouts/colors";
+import Gradients from "layouts/gradients";
+import Palettes from "layouts/palettes";
 // import Tables from "layouts/tables";
 // import Billing from "layouts/billing";
 // import VirtualReality from "layouts/virtual-reality";
@@ -63,7 +66,7 @@ const routes = [
     key: "colors",
     route: "/colors",
     icon: <CustomerSupport size="12px" />,
-    component: <Dashboard />,
+    component: <Colors />,
     noCollapse: true,
   },
   {
@@ -72,7 +75,7 @@ const routes = [
     key: "gradients",
     route: "/gradients",
     icon: <Document size="12px" />,
-    component: <Dashboard />,
+    component: <Gradients />,
     noCollapse: true,
   },
   {
@@ -81,7 +84,7 @@ const routes = [
     key: "palettes",
     route: "/palettes",
     icon: <SpaceShip size="12px" />,
-    component: <Dashboard />,
+    component: <Palettes />,
     noCollapse: true,
   },
   { type: "title", title: "Generate", key: "generate" },
