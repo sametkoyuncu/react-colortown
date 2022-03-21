@@ -7,12 +7,15 @@ import { createContext, useContext, useEffect, useState } from "react";
 const ColorTownContext = createContext();
 
 export const ColorTownProvider = ({ children }) => {
-  const [ctColors, setCtColors] = useState(JSON.parse(localStorage.getItem("ctColors")) || []);
+  const [ctColors, setCtColors] = useState(
+    // eslint-disable-next-line no-array-constructor
+    JSON.parse(localStorage.getItem("ctColors")) || new Array()
+  );
   const [ctGradients, setCtGradients] = useState(
-    JSON.parse(localStorage.getItem("ctGradients") || [])
+    JSON.parse(localStorage.getItem("ctGradients") || [null])
   );
   const [ctPalettes, setCtPalettes] = useState(
-    JSON.parse(localStorage.getItem("ctPalettes") || [])
+    JSON.parse(localStorage.getItem("ctPalettes") || [null])
   );
 
   useEffect(() => {
