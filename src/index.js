@@ -21,10 +21,15 @@ import App from "App";
 // Soft UI Dashboard React Context Provider
 import { SoftUIControllerProvider } from "context";
 
+// colortown context provider
+import { ColorTownProvider } from "./context/colortown";
+
 ReactDOM.render(
   <BrowserRouter>
     <SoftUIControllerProvider>
-      <App />
+      <ColorTownProvider>
+        <App />
+      </ColorTownProvider>
     </SoftUIControllerProvider>
   </BrowserRouter>,
   document.getElementById("root")

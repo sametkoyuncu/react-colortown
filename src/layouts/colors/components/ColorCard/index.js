@@ -19,16 +19,18 @@ import PropTypes from "prop-types";
 // borderRadius = "xs";
 // variant = "gradient"
 
-function ColorCard({ bgColor, likesCount = 0 }) {
-  const [isLiked, setIsLiked] = useState(false);
+function ColorCard({ colorId, bgColor, likesCount, isLiked, handleLikeBtnClick }) {
   const [count, setCount] = useState(likesCount);
 
   const handleClick = () => {
-    setIsLiked(!isLiked);
     // veritabanından çekerken buna gerek kalmaz
     // şimdi beğenince artıyor, beğenmeden çıkınca azalıyor
-    if (count > likesCount) setCount(count - 1);
+    if (isLiked) setCount(count - 1);
     else setCount(count + 1);
+
+    // context işlemleri
+    const reqType = isLiked ? "remove" : "add";
+    handleLikeBtnClick(colorId, reqType);
   };
   return (
     <Card>
@@ -45,6 +47,7 @@ function ColorCard({ bgColor, likesCount = 0 }) {
           {/* ALT KISIM */}
           <SuiBox mr={2} mt={1}>
             <Grid
+              item
               xs={12}
               container
               direction="row"
@@ -52,17 +55,24 @@ function ColorCard({ bgColor, likesCount = 0 }) {
               alignItems="center"
             >
               <Grid
+                item
                 xs={6}
                 container
                 direction="row"
                 justifyContent="flex-start"
                 alignItems="center"
               >
-                <SuiButton variant="transparent" size="medium" circular onClick={handleClick}>
-                  {/* , color: "#FC354C" */}
+                <SuiButton
+                  size="medium"
+                  circular
+                  onClick={() => handleClick(colorId)}
+                  sx={{ boxShadow: "none" }}
+                >
                   <Icon
-                    color={isLiked ? "error" : "secondary"}
-                    sx={{ fontSize: "24px !important" }}
+                    sx={{
+                      fontSize: "24px !important",
+                      color: `${isLiked ? "#FC354C" : "#808080"}`,
+                    }}
                   >
                     {isLiked ? "favorite" : "favorite_border"}
                   </Icon>
@@ -71,7 +81,14 @@ function ColorCard({ bgColor, likesCount = 0 }) {
                   </SuiTypography>
                 </SuiButton>
               </Grid>
-              <Grid xs={6} container direction="row" justifyContent="flex-end" alignItems="center">
+              <Grid
+                item
+                xs={6}
+                container
+                direction="row"
+                justifyContent="flex-end"
+                alignItems="center"
+              >
                 <SuiButton variant="outlined" color="secondary" size="small" circular>
                   <SuiTypography ml={1} variant="button" fontWeight="medium" color="secondary">
                     Details
@@ -87,14 +104,20 @@ function ColorCard({ bgColor, likesCount = 0 }) {
 }
 
 ColorCard.defaultProps = {
+  colorId: null,
   bgColor: "transparent",
   likesCount: 0,
+  isLiked: false,
+  handleLikeBtnClick: function handleLikeBtnClick() {},
 };
 
 // Typechecking props for the SuiBox
 ColorCard.propTypes = {
+  colorId: PropTypes.string,
   bgColor: PropTypes.string,
   likesCount: PropTypes.number,
+  isLiked: PropTypes.bool,
+  handleLikeBtnClick: PropTypes.func,
 };
 
 export default ColorCard;
