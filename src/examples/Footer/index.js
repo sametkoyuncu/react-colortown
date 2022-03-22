@@ -14,7 +14,7 @@ Coded by www.creative-tim.com
 */
 
 // prop-types is a library for typechecking of props
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 
 // @mui material components
 import Link from "@mui/material/Link";
@@ -26,21 +26,21 @@ import SuiTypography from "components/SuiTypography";
 
 // Soft UI Dashboard React base styles
 import typography from "assets/theme/base/typography";
-
-function Footer({ company, links }) {
-  const { href, name } = company;
+// { company, links }
+function Footer() {
+  // const { href, name } = company;
   const { size } = typography;
 
-  const renderLinks = () =>
-    links.map((link) => (
-      <SuiBox key={link.name} component="li" px={2} lineHeight={1}>
-        <Link href={link.href} target="_blank">
-          <SuiTypography variant="button" fontWeight="regular" color="text">
-            {link.name}
-          </SuiTypography>
-        </Link>
-      </SuiBox>
-    ));
+  // const renderLinks = () =>
+  //   links.map((link) => (
+  //     <SuiBox key={link.name} component="li" px={2} lineHeight={1}>
+  //       <Link href={link.href} target="_blank">
+  //         <SuiTypography variant="button" fontWeight="regular" color="text">
+  //           {link.name}
+  //         </SuiTypography>
+  //       </Link>
+  //     </SuiBox>
+  //   ));
 
   return (
     <SuiBox
@@ -67,14 +67,20 @@ function Footer({ company, links }) {
           </Icon>
         </SuiBox>
         by
-        <Link href={href} target="_blank">
+        <Link href="https://www.creative-tim.com/" target="_blank">
           <SuiTypography variant="button" fontWeight="medium">
-            &nbsp;{name}&nbsp;
+            &nbsp;Creative Tim&nbsp;
+          </SuiTypography>
+        </Link>
+        and edited by
+        <Link href="https://github.com/sametkoyuncu" target="_blank">
+          <SuiTypography variant="button" fontWeight="medium">
+            &nbsp;Samet Koyuncu&nbsp;
           </SuiTypography>
         </Link>
         for a better web.
       </SuiBox>
-      <SuiBox
+      {/* <SuiBox
         component="ul"
         sx={({ breakpoints }) => ({
           display: "flex",
@@ -92,26 +98,26 @@ function Footer({ company, links }) {
         })}
       >
         {renderLinks()}
-      </SuiBox>
+      </SuiBox> */}
     </SuiBox>
   );
 }
 
-// Setting default values for the props of Footer
-Footer.defaultProps = {
-  company: { href: "https://www.creative-tim.com/", name: "Creative Tim" },
-  links: [
-    { href: "https://www.creative-tim.com/", name: "Creative Tim" },
-    { href: "https://www.creative-tim.com/presentation", name: "About Us" },
-    { href: "https://www.creative-tim.com/blog", name: "Blog" },
-    { href: "https://www.creative-tim.com/license", name: "License" },
-  ],
-};
+// // Setting default values for the props of Footer
+// Footer.defaultProps = {
+//   company: { href: "https://www.creative-tim.com/", name: "Creative Tim" },
+//   links: [
+//     { href: "https://www.creative-tim.com/", name: "Creative Tim" },
+//     { href: "https://www.creative-tim.com/presentation", name: "About Us" },
+//     { href: "https://www.creative-tim.com/blog", name: "Blog" },
+//     { href: "https://www.creative-tim.com/license", name: "License" },
+//   ],
+// };
 
-// Typechecking props for the Footer
-Footer.propTypes = {
-  company: PropTypes.objectOf(PropTypes.string),
-  links: PropTypes.arrayOf(PropTypes.object),
-};
+// // Typechecking props for the Footer
+// Footer.propTypes = {
+//   company: PropTypes.objectOf(PropTypes.string),
+//   links: PropTypes.arrayOf(PropTypes.object),
+// };
 
 export default Footer;

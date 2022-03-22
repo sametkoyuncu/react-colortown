@@ -30,11 +30,11 @@ import Icon from "@mui/material/Icon";
 // Soft UI Dashboard React components
 import SuiBox from "components/SuiBox";
 import SuiTypography from "components/SuiTypography";
-// import SuiButton from "components/SuiButton";
+import SuiButton from "components/SuiButton";
 
 // Soft UI Dashboard React examples
 import SidenavCollapse from "examples/Sidenav/SidenavCollapse";
-// import SidenavCard from "examples/Sidenav/SidenavCard";
+import SidenavCard from "examples/Sidenav/SidenavCard";
 
 // Custom styles for the Sidenav
 import SidenavRoot from "examples/Sidenav/SidenavRoot";
@@ -157,22 +157,22 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
       </SuiBox>
       <Divider />
       <List>{renderRoutes}</List>
-      {/* <SuiBox pt={2} my={2} mx={2} mt="auto">
+      <SuiBox pt={2} my={2} mx={2} mt="auto">
         <SidenavCard />
         <SuiBox mt={2}>
           <SuiButton
             component="a"
-            href="https://creative-tim.com/product/soft-ui-dashboard-pro-react"
+            href="https://www.buymeacoffee.com/sametkoyuncu"
             target="_blank"
             rel="noreferrer"
             variant="gradient"
             color={color}
             fullWidth
           >
-            upgrade to pro
+            Buy Me A Coffee
           </SuiButton>
         </SuiBox>
-      </SuiBox> */}
+      </SuiBox>
     </SidenavRoot>
   );
 }

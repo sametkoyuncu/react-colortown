@@ -16,7 +16,7 @@ Coded by www.creative-tim.com
 import { useState, useEffect } from "react";
 
 // react-github-btn
-import GitHubButton from "react-github-btn";
+// import GitHubButton from "react-github-btn";
 
 // @mui material components
 import Divider from "@mui/material/Divider";
@@ -26,8 +26,8 @@ import Link from "@mui/material/Link";
 import Icon from "@mui/material/Icon";
 
 // @mui icons
-import TwitterIcon from "@mui/icons-material/Twitter";
-import FacebookIcon from "@mui/icons-material/Facebook";
+// import TwitterIcon from "@mui/icons-material/Twitter";
+// import FacebookIcon from "@mui/icons-material/Facebook";
 
 // Soft UI Dashboard React components
 import SuiBox from "components/SuiBox";
@@ -98,7 +98,7 @@ function Configurator() {
         px={3}
       >
         <SuiBox>
-          <SuiTypography variant="h5">Soft UI Configurator</SuiTypography>
+          <SuiTypography variant="h5">ColorTown Configurator</SuiTypography>
           <SuiTypography variant="body2" color="text">
             See our dashboard options.
           </SuiTypography>
@@ -200,7 +200,10 @@ function Configurator() {
         </SuiBox>
 
         <Divider />
-
+        <SuiBox mb={0.5}>
+          <SuiTypography variant="h6">Thank you for this template</SuiTypography>
+          <SuiTypography variant="h5">to Creative Tim! ❤️</SuiTypography>
+        </SuiBox>
         <SuiBox mt={3} mb={2}>
           <SuiBox mb={2}>
             <SuiButton
@@ -227,7 +230,7 @@ function Configurator() {
             view documentation
           </SuiButton>
         </SuiBox>
-        <SuiBox display="flex" justifyContent="center">
+        {/* <SuiBox display="flex" justifyContent="center">
           <GitHubButton
             href="https://github.com/creativetimofficial/soft-ui-dashboard-react"
             data-icon="octicon-star"
@@ -237,8 +240,8 @@ function Configurator() {
           >
             Star
           </GitHubButton>
-        </SuiBox>
-        <SuiBox mt={3} textAlign="center">
+        </SuiBox> */}
+        {/* <SuiBox mt={3} textAlign="center">
           <SuiBox mb={0.5}>
             <SuiTypography variant="h6">Thank you for sharing!</SuiTypography>
           </SuiBox>
@@ -267,7 +270,7 @@ function Configurator() {
               &nbsp; Share
             </SuiButton>
           </SuiBox>
-        </SuiBox>
+        </SuiBox> */}
       </SuiBox>
     </ConfiguratorRoot>
   );
