@@ -60,7 +60,7 @@ function GradientCard({ gradientId, bgColor, likesCount, isLiked, handleLikeBtnC
                 justifyContent="flex-start"
                 alignItems="center"
               >
-                <SuiButton size="medium" circular onClick={handleClick}>
+                <SuiButton size="medium" circular onClick={handleClick} sx={{ boxShadow: "none" }}>
                   {/* , color: "#FC354C" */}
                   <Icon
                     color={isLiked ? "error" : "secondary"}

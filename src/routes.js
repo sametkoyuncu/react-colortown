@@ -40,6 +40,7 @@ Coded by www.creative-tim.com
 import Colors from "layouts/colors";
 import Gradients from "layouts/gradients";
 import Palettes from "layouts/palettes";
+import ColorGenerate from "layouts/colorGenerate";
 // import Tables from "layouts/tables";
 // import Billing from "layouts/billing";
 // import VirtualReality from "layouts/virtual-reality";
@@ -94,7 +95,7 @@ const routes = [
     key: "color-generator",
     route: "/color-generator",
     icon: <Shop size="12px" />,
-    component: <Colors />,
+    component: <ColorGenerate />,
     noCollapse: true,
   },
   {

@@ -64,7 +64,7 @@ function PaletteCard({ paletteId, bgColors, likesCount, isLiked, handleLikeBtnCl
               justifyContent="flex-start"
               alignItems="center"
             >
-              <SuiButton size="medium" circular onClick={handleClick}>
+              <SuiButton size="medium" circular onClick={handleClick} sx={{ boxShadow: "none" }}>
                 {/* , color: "#FC354C" */}
                 <Icon color={isLiked ? "error" : "secondary"} sx={{ fontSize: "24px !important" }}>
                   {isLiked ? "favorite" : "favorite_border"}
