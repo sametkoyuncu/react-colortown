@@ -16,7 +16,7 @@ function ColorCodeSection({ borderWidth, borderColor, logo, code, handleCopy }) 
   return (
     <Grid item xs={12}>
       <SuiBox
-        border={`${borderWidth[1]} solid ${borderColor}`}
+        border={`${borderWidth} solid ${borderColor}`}
         borderRadius="lg"
         display="flex"
         justifyContent="space-between"
