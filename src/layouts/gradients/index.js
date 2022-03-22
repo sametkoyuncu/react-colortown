@@ -27,31 +27,40 @@ import Footer from "examples/Footer";
 // Dashboard layout components
 import GradientCard from "layouts/gradients/components/GradientCard";
 
+// data
+import gradients from "../../data/gradients";
+
+// colortown context
+import { useColorTown } from "../../context/colortown";
+
 function Gradients() {
+  const { ctGradients, setCtGradients } = useColorTown();
+
+  const handleLikeBtnClick = (gradientId, reqType) => {
+    if (reqType === "add") setCtGradients([...ctGradients, gradientId]);
+    else if (reqType === "remove") {
+      const newGradients = ctGradients.filter((id) => id !== gradientId);
+      setCtGradients([...newGradients]);
+    }
+  };
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
       <SuiBox py={3}>
         <SuiBox mb={3}>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6} md={3}>
-              <GradientCard bgColor="linear-gradient(to right, #de6262, #ffb88c)" />
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <GradientCard bgColor="linear-gradient(to right, #fc354c, #0abfbc)" />
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <GradientCard bgColor="linear-gradient(to right, #414d0b, #727a17)" />
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <GradientCard bgColor="linear-gradient(to right, #e43a15, #e65245)" />
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <GradientCard bgColor="linear-gradient(to right, #c04848, #480048)" />
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <GradientCard bgColor="linear-gradient(to right, #5f2c82, #49a09d)" />
-            </Grid>
+            {gradients.map((gradient) => (
+              <Grid key={gradient.id} item xs={12} sm={6} md={3}>
+                <GradientCard
+                  gradientId={gradient.id}
+                  bgColor={`linear-gradient(${gradient.direction}, ${gradient.colors[0]}, ${gradient.colors[1]})`}
+                  likesCount={gradient.likes}
+                  isLiked={ctGradients.indexOf(gradient.id) >= 0}
+                  handleLikeBtnClick={handleLikeBtnClick}
+                />
+              </Grid>
+            ))}
           </Grid>
         </SuiBox>
       </SuiBox>

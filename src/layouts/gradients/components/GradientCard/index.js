@@ -16,16 +16,18 @@ import PropTypes from "prop-types";
 // borderRadius = "xs";
 // variant = "gradient"
 
-function GradientCard({ bgColor }) {
-  const [isLiked, setIsLiked] = useState(false);
-  const [count, setCount] = useState(0);
+function GradientCard({ gradientId, bgColor, likesCount, isLiked, handleLikeBtnClick }) {
+  const [count, setCount] = useState(likesCount);
 
   const handleClick = () => {
-    setIsLiked(!isLiked);
     // veritabanından çekerken buna gerek kalmaz
     // şimdi beğenince artıyor, beğenmeden çıkınca azalıyor
-    if (count > 0) setCount(count - 1);
+    if (isLiked) setCount(count - 1);
     else setCount(count + 1);
+
+    // context işlemleri
+    const reqType = isLiked ? "remove" : "add";
+    handleLikeBtnClick(gradientId, reqType);
   };
 
   return (
@@ -43,6 +45,7 @@ function GradientCard({ bgColor }) {
           {/* ALT KISIM */}
           <SuiBox mr={2} mt={1}>
             <Grid
+              item
               xs={12}
               container
               direction="row"
@@ -50,13 +53,14 @@ function GradientCard({ bgColor }) {
               alignItems="center"
             >
               <Grid
+                item
                 xs={6}
                 container
                 direction="row"
                 justifyContent="flex-start"
                 alignItems="center"
               >
-                <SuiButton variant="transparent" size="medium" circular onClick={handleClick}>
+                <SuiButton size="medium" circular onClick={handleClick}>
                   {/* , color: "#FC354C" */}
                   <Icon
                     color={isLiked ? "error" : "secondary"}
@@ -69,7 +73,14 @@ function GradientCard({ bgColor }) {
                   </SuiTypography>
                 </SuiButton>
               </Grid>
-              <Grid xs={6} container direction="row" justifyContent="flex-end" alignItems="center">
+              <Grid
+                item
+                xs={6}
+                container
+                direction="row"
+                justifyContent="flex-end"
+                alignItems="center"
+              >
                 <SuiButton variant="outlined" color="secondary" size="small" circular>
                   <SuiTypography ml={1} variant="button" fontWeight="medium" color="secondary">
                     Details
@@ -85,12 +96,20 @@ function GradientCard({ bgColor }) {
 }
 
 GradientCard.defaultProps = {
+  gradientId: null,
   bgColor: "transparent",
+  likesCount: 0,
+  isLiked: false,
+  handleLikeBtnClick: function handleLikeBtnClick() {},
 };
 
 // Typechecking props for the SuiBox
 GradientCard.propTypes = {
+  gradientId: PropTypes.string,
   bgColor: PropTypes.string,
+  likesCount: PropTypes.number,
+  isLiked: PropTypes.bool,
+  handleLikeBtnClick: PropTypes.func,
 };
 
 export default GradientCard;

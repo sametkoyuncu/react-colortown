@@ -32,6 +32,7 @@ function ColorCard({ colorId, bgColor, likesCount, isLiked, handleLikeBtnClick }
     const reqType = isLiked ? "remove" : "add";
     handleLikeBtnClick(colorId, reqType);
   };
+
   return (
     <Card>
       <SuiBox p={1}>
@@ -62,12 +63,7 @@ function ColorCard({ colorId, bgColor, likesCount, isLiked, handleLikeBtnClick }
                 justifyContent="flex-start"
                 alignItems="center"
               >
-                <SuiButton
-                  size="medium"
-                  circular
-                  onClick={() => handleClick(colorId)}
-                  sx={{ boxShadow: "none" }}
-                >
+                <SuiButton size="medium" circular onClick={handleClick} sx={{ boxShadow: "none" }}>
                   <Icon
                     sx={{
                       fontSize: "24px !important",

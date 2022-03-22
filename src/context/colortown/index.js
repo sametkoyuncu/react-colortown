@@ -8,34 +8,34 @@ const ColorTownContext = createContext();
 
 export const ColorTownProvider = ({ children }) => {
   const [ctColors, setCtColors] = useState(JSON.parse(localStorage.getItem("ctColors")) || []);
-  // const [ctGradients, setCtGradients] = useState(
-  //   JSON.parse(localStorage.getItem("ctGradients") || [])
-  // );
-  // const [ctPalettes, setCtPalettes] = useState(
-  //   JSON.parse(localStorage.getItem("ctPalettes") || [])
-  // );
+  const [ctGradients, setCtGradients] = useState(
+    JSON.parse(localStorage.getItem("ctGradients") || [])
+  );
+  const [ctPalettes, setCtPalettes] = useState(
+    JSON.parse(localStorage.getItem("ctPalettes") || [])
+  );
 
   useEffect(() => {
     localStorage.setItem("ctColors", JSON.stringify(ctColors));
   }, [ctColors]);
 
-  // useEffect(() => {
-  //   localStorage.setItem("ctGradients", JSON.stringify(ctGradients));
-  // }, [ctGradients]);
+  useEffect(() => {
+    localStorage.setItem("ctGradients", JSON.stringify(ctGradients));
+  }, [ctGradients]);
 
-  // useEffect(() => {
-  //   localStorage.setItem("ctPalettes", JSON.stringify(ctPalettes));
-  // }, [ctPalettes]);
+  useEffect(() => {
+    localStorage.setItem("ctPalettes", JSON.stringify(ctPalettes));
+  }, [ctPalettes]);
 
   const values = {
     ctColors,
     setCtColors,
+    ctGradients,
+    setCtGradients,
+    ctPalettes,
+    setCtPalettes,
   };
 
-  // ctGradients,
-  // ctPalettes,
-  // setCtGradients,
-  // setCtPalettes,
   return <ColorTownContext.Provider value={values}>{children}</ColorTownContext.Provider>;
 };
 

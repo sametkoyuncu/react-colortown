@@ -43,6 +43,7 @@ function Colors() {
       setCtColors([...newColors]);
     }
   };
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
