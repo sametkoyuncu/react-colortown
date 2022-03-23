@@ -42,7 +42,7 @@ import hslLogo from "assets/images/logos/hsl.png";
 // prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
 
-function ColorDataCard({ hexCode, rgbCode, hslCode, getRandomRGBColor }) {
+function ColorDataCard({ colorCodes, getRandomRGBColor }) {
   const [isSnackBarOpen, setIsSnackBarOpen] = useState(false);
 
   const { borderWidth, borderColor } = borders;
@@ -50,15 +50,15 @@ function ColorDataCard({ hexCode, rgbCode, hslCode, getRandomRGBColor }) {
   const codeSectionData = [
     {
       logo: hexLogo,
-      code: hexCode,
+      code: colorCodes.hex,
     },
     {
       logo: rgbLogo,
-      code: rgbCode,
+      code: colorCodes.rgb,
     },
     {
       logo: hslLogo,
-      code: hslCode,
+      code: colorCodes.hsl,
     },
   ];
 
@@ -116,17 +116,18 @@ function ColorDataCard({ hexCode, rgbCode, hslCode, getRandomRGBColor }) {
 }
 
 ColorDataCard.defaultProps = {
-  hexCode: "",
-  rgbCode: "",
-  hslCode: "",
+  colorCodes: {
+    rgb: `rgb(0, 0, 0)`,
+    hex: "#000000",
+    hsl: "hsl(0,0%,0%)",
+  },
   getRandomRGBColor: function handleLikeBtnClick() {},
 };
 
 // Typechecking props for the SuiBox
 ColorDataCard.propTypes = {
-  hexCode: PropTypes.string,
-  rgbCode: PropTypes.string,
-  hslCode: PropTypes.string,
+  // eslint-disable-next-line react/forbid-prop-types
+  colorCodes: PropTypes.object,
   getRandomRGBColor: PropTypes.func,
 };
 

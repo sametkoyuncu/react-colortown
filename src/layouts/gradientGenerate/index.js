@@ -50,17 +50,17 @@ function GradientGenerate() {
   });
 
   const getRandomRGBColor = () => {
-    const newColors1 = [...randomRGBColor()];
-    const newColors2 = [...randomRGBColor()];
+    const newColor1 = [...randomRGBColor()];
+    const newColor2 = [...randomRGBColor()];
 
-    setRgbCode1([...newColors1]);
-    setRgbCode2([...newColors2]);
+    setRgbCode1([...newColor1]);
+    setRgbCode2([...newColor2]);
   };
 
   useEffect(() => {
-    // get hex code
+    // get hex code 1
     const convertedHex1 = rgbToHex(...rgbCode1);
-    // get hsl code
+    // get hsl code 1
     const convertedHsl1 = rgbToHsl(...rgbCode1);
     setColorCodes1({
       rgb: `rgb(${rgbCode1[0]}, ${rgbCode1[1]}, ${rgbCode1[2]})`,
@@ -68,9 +68,9 @@ function GradientGenerate() {
       hsl: convertedHsl1,
     });
 
-    // get hex code
+    // get hex code 2
     const convertedHex2 = rgbToHex(...rgbCode2);
-    // get hsl code
+    // get hsl code 2
     const convertedHsl2 = rgbToHsl(...rgbCode2);
     setColorCodes2({
       rgb: `rgb(${rgbCode2[0]}, ${rgbCode2[1]}, ${rgbCode2[2]})`,

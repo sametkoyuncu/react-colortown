@@ -34,22 +34,29 @@ import { rgbToHex, rgbToHsl, randomRGBColor } from "functions/color";
 
 function ColorGenerate() {
   const [rgbCode, setRgbCode] = useState([0, 0, 0]);
-  const [hexCode, setHexCode] = useState("#000000");
-  const [hslCode, setHslCode] = useState("hsl(0,0%,0%)");
+  const [colorCodes, setColorCodes] = useState({
+    rgb: `rgb(${rgbCode[0]}, ${rgbCode[1]}, ${rgbCode[2]})`,
+    hex: "#ffffff",
+    hsl: "hsl(360,100%,100%)",
+  });
 
   const getRandomRGBColor = () => {
-    const newColors = [...randomRGBColor()];
-    setRgbCode([...newColors]);
+    const newColor = [...randomRGBColor()];
+    setRgbCode([...newColor]);
   };
 
   useEffect(() => {
     // get hex code and update
     const convertedHex = rgbToHex(...rgbCode);
-    setHexCode(convertedHex);
 
     // het hsl code and update
     const convertedHsl = rgbToHsl(...rgbCode);
-    setHslCode(convertedHsl);
+
+    setColorCodes({
+      rgb: `rgb(${rgbCode[0]}, ${rgbCode[1]}, ${rgbCode[2]})`,
+      hex: convertedHex,
+      hsl: convertedHsl,
+    });
   }, [rgbCode]);
 
   return (
@@ -62,12 +69,7 @@ function ColorGenerate() {
               <CtColorPreviewCard bgColor={`rgb(${rgbCode[0]}, ${rgbCode[1]}, ${rgbCode[2]})`} />
             </Grid>
             <Grid item xs={12} sm={7}>
-              <ColorDataCard
-                hexCode={hexCode}
-                rgbCode={`rgb(${rgbCode[0]}, ${rgbCode[1]}, ${rgbCode[2]})`}
-                hslCode={hslCode}
-                getRandomRGBColor={getRandomRGBColor}
-              />
+              <ColorDataCard colorCodes={colorCodes} getRandomRGBColor={getRandomRGBColor} />
             </Grid>
           </Grid>
         </SuiBox>

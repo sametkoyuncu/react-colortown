@@ -47,8 +47,6 @@ function GradientDataCard({ colorCodes1, colorCodes2, getRandomRGBColor }) {
 
   const { borderWidth, borderColor } = borders;
 
-  console.log(colorCodes1);
-
   const codeSectionData1 = [
     {
       logo: hexLogo,
