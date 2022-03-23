@@ -41,6 +41,7 @@ import Colors from "layouts/colors";
 import Gradients from "layouts/gradients";
 import Palettes from "layouts/palettes";
 import ColorGenerate from "layouts/colorGenerate";
+import GradientGenerate from "layouts/gradientGenerate";
 // import Tables from "layouts/tables";
 // import Billing from "layouts/billing";
 // import VirtualReality from "layouts/virtual-reality";
@@ -104,7 +105,7 @@ const routes = [
     key: "gradient-generator",
     route: "/gradient-generator",
     icon: <Office size="12px" />,
-    component: <Gradients />,
+    component: <GradientGenerate />,
     noCollapse: true,
   },
   {

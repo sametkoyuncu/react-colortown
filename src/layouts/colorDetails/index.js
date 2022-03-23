@@ -28,7 +28,7 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 
 // Dashboard layout components
-import ColorPreviewCard from "layouts/colorDetails/components/ColorPreviewCard";
+import CtColorPreviewCard from "components/CtColorPreviewCard";
 import ColorDataCard from "layouts/colorDetails/components/ColorDataCard";
 
 // prop-types is a library for typechecking of props
@@ -93,7 +93,7 @@ function ColorDetails(rgbCode) {
         <SuiBox mb={3}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={5}>
-              <ColorPreviewCard bgColor={`rgb(${rgbCode[0]}, ${rgbCode[1]}, ${rgbCode[2]})`} />
+              <CtColorPreviewCard bgColor={`rgb(${rgbCode[0]}, ${rgbCode[1]}, ${rgbCode[2]})`} />
             </Grid>
             <Grid item xs={12} sm={7}>
               <ColorDataCard

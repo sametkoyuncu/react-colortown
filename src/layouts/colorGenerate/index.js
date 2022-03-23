@@ -26,8 +26,11 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 
 // Dashboard layout components
-import ColorPreviewCard from "layouts/colorGenerate/components/ColorPreviewCard";
+import CtColorPreviewCard from "components/CtColorPreviewCard";
 import ColorDataCard from "layouts/colorGenerate/components/ColorDataCard";
+
+// color convert functions
+import { rgbToHex, rgbToHsl, randomRGBColor } from "functions/color";
 
 function ColorGenerate() {
   const [rgbCode, setRgbCode] = useState([0, 0, 0]);
@@ -35,60 +38,8 @@ function ColorGenerate() {
   const [hslCode, setHslCode] = useState("hsl(0,0%,0%)");
 
   const getRandomRGBColor = () => {
-    const newColors = [
-      Math.round(Math.random() * 255),
-      Math.round(Math.random() * 255),
-      Math.round(Math.random() * 255),
-    ];
+    const newColors = [...randomRGBColor()];
     setRgbCode([...newColors]);
-  };
-
-  // rgb to hex functions
-  const componentToHex = (c) => {
-    const hex = c.toString(16);
-    return hex.length === 1 ? `0${hex}` : hex;
-  };
-
-  const rgbToHex = (r, g, b) => `#${componentToHex(r)}${componentToHex(g)}${componentToHex(b)}`;
-
-  // rgb to hsl function
-  const rgbToHsl = (r, g, b) => {
-    // eslint-disable-next-line no-param-reassign
-    r /= 255;
-    // eslint-disable-next-line no-param-reassign
-    g /= 255;
-    // eslint-disable-next-line no-param-reassign
-    b /= 255;
-
-    const max = Math.max(r, g, b);
-    const min = Math.min(r, g, b);
-    let h;
-    let s;
-    const l = (max + min) / 2;
-
-    if (max === min) {
-      // eslint-disable-next-line no-multi-assign
-      h = s = 0; // achromatic
-    } else {
-      const d = max - min;
-      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-      switch (max) {
-        case r:
-          h = (g - b) / d + (g < b ? 6 : 0);
-          break;
-        case g:
-          h = (b - r) / d + 2;
-          break;
-        case b:
-          h = (r - g) / d + 4;
-          break;
-        default:
-      }
-      h /= 6;
-    }
-
-    // return [Math.floor(h * 360), Math.floor(s * 100), Math.floor(l * 100)];
-    return `hsl(${Math.floor(h * 360)}, ${Math.floor(s * 100)}%, ${Math.floor(l * 100)}%)`;
   };
 
   useEffect(() => {
@@ -108,7 +59,7 @@ function ColorGenerate() {
         <SuiBox mb={3}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={5}>
-              <ColorPreviewCard bgColor={`rgb(${rgbCode[0]}, ${rgbCode[1]}, ${rgbCode[2]})`} />
+              <CtColorPreviewCard bgColor={`rgb(${rgbCode[0]}, ${rgbCode[1]}, ${rgbCode[2]})`} />
             </Grid>
             <Grid item xs={12} sm={7}>
               <ColorDataCard

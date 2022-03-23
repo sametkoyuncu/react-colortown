@@ -32,7 +32,7 @@ import SuiButton from "components/SuiButton";
 // Soft UI Dashboard React base styles
 import borders from "assets/theme/base/borders";
 
-import ColorCodeSection from "layouts/colorGenerate/components/ColorCodeSection";
+import CtColorCodeSection from "components/CtColorCodeSection";
 
 // Images
 import hexLogo from "assets/images/logos/hex.png";
@@ -85,7 +85,7 @@ function ColorDataCard({ hexCode, rgbCode, hslCode, getRandomRGBColor }) {
       <SuiBox p={2}>
         <Grid container spacing={3}>
           {codeSectionData.map((item) => (
-            <ColorCodeSection
+            <CtColorCodeSection
               key={item.code}
               borderWidth={borderWidth[1]}
               borderColor={borderColor}
@@ -108,7 +108,7 @@ function ColorDataCard({ hexCode, rgbCode, hslCode, getRandomRGBColor }) {
         }
       >
         <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
-          The color code is copied to clipboard! 👍
+          Copied to Clipboard! 👍
         </Alert>
       </Snackbar>
     </Card>

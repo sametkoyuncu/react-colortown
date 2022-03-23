@@ -12,7 +12,7 @@ import SuiTypography from "components/SuiTypography";
 // prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
 
-function ColorCodeSection({ borderWidth, borderColor, logo, code, handleCopy }) {
+function CtColorCodeSection({ borderWidth, borderColor, logo, code, handleCopy }) {
   return (
     <Grid item xs={12}>
       <SuiBox
@@ -39,7 +39,7 @@ function ColorCodeSection({ borderWidth, borderColor, logo, code, handleCopy }) 
   );
 }
 // borderWidth, borderColor, logo, code, handleCopy;
-ColorCodeSection.defaultProps = {
+CtColorCodeSection.defaultProps = {
   borderWidth: 0,
   borderColor: "",
   logo: "",
@@ -48,7 +48,7 @@ ColorCodeSection.defaultProps = {
 };
 
 // Typechecking props for the SuiBox
-ColorCodeSection.propTypes = {
+CtColorCodeSection.propTypes = {
   borderWidth: PropTypes.string,
   borderColor: PropTypes.string,
   logo: PropTypes.string,
@@ -56,4 +56,4 @@ ColorCodeSection.propTypes = {
   handleCopy: PropTypes.func,
 };
 
-export default ColorCodeSection;
+export default CtColorCodeSection;

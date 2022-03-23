@@ -22,7 +22,7 @@ import SuiBox from "components/SuiBox";
 // prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
 
-function ColorPreviewCard({ bgColor }) {
+function CtColorPreviewCard({ bgColor }) {
   return (
     <Card sx={{ height: "100%", padding: "0.75rem" }}>
       <SuiBox bgColor={bgColor} borderRadius="lg" sx={{ height: "100%", minHeight: "240px" }} />
@@ -30,13 +30,13 @@ function ColorPreviewCard({ bgColor }) {
   );
 }
 
-ColorPreviewCard.defaultProps = {
+CtColorPreviewCard.defaultProps = {
   bgColor: "transparent",
 };
 
 // Typechecking props for the SuiBox
-ColorPreviewCard.propTypes = {
+CtColorPreviewCard.propTypes = {
   bgColor: PropTypes.string,
 };
 
-export default ColorPreviewCard;
+export default CtColorPreviewCard;
