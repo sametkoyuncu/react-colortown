@@ -25,7 +25,7 @@ function SingleColorCard({ bgColor, handleCopy }) {
   const [show, setShow] = useState(false);
   return (
     <SuiBox
-      height="400px"
+      height="420px"
       display="grid"
       justifyContent="center"
       alignItems="center"
@@ -36,10 +36,10 @@ function SingleColorCard({ bgColor, handleCopy }) {
       {show && (
         <SuiBox
           borderRadius="lg"
-          bgColor="rgba(255,255,255,0.3)"
+          bgColor="rgb(255,255,255)"
           p={1}
           pb={0}
-          sx={{ boxShadow: 3 }}
+          sx={{ boxShadow: 1 }}
         >
           <Grid container direction="column" justifyContent="center" alignItems="center">
             <SuiBox onClick={() => handleCopy(bgColor)}>
