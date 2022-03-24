@@ -12,7 +12,7 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 // @mui material components
 import Grid from "@mui/material/Grid";
@@ -33,19 +33,15 @@ import ColorDataCard from "layouts/colorGenerate/components/ColorDataCard";
 import { rgbToHex, rgbToHsl, randomRGBColor } from "functions/color";
 
 function ColorGenerate() {
-  const [rgbCode, setRgbCode] = useState([0, 0, 0]);
   const [colorCodes, setColorCodes] = useState({
-    rgb: `rgb(${rgbCode[0]}, ${rgbCode[1]}, ${rgbCode[2]})`,
-    hex: "#ffffff",
-    hsl: "hsl(360,100%,100%)",
+    rgb: "rgb(93, 51, 188)",
+    hex: "#5d33bc",
+    hsl: "hsl(258, 57%, 46%)",
   });
 
   const getRandomRGBColor = () => {
-    const newColor = [...randomRGBColor()];
-    setRgbCode([...newColor]);
-  };
+    const rgbCode = [...randomRGBColor()];
 
-  useEffect(() => {
     // get hex code and update
     const convertedHex = rgbToHex(...rgbCode);
 
@@ -57,7 +53,7 @@ function ColorGenerate() {
       hex: convertedHex,
       hsl: convertedHsl,
     });
-  }, [rgbCode]);
+  };
 
   return (
     <DashboardLayout>
@@ -66,7 +62,7 @@ function ColorGenerate() {
         <SuiBox mb={3}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={5}>
-              <CtColorPreviewCard bgColor={`rgb(${rgbCode[0]}, ${rgbCode[1]}, ${rgbCode[2]})`} />
+              <CtColorPreviewCard bgColor={colorCodes.rgb} />
             </Grid>
             <Grid item xs={12} sm={7}>
               <ColorDataCard colorCodes={colorCodes} getRandomRGBColor={getRandomRGBColor} />

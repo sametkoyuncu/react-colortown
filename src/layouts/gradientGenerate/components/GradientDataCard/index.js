@@ -87,7 +87,7 @@ function GradientDataCard({ colorCodes1, colorCodes2, getRandomRGBColor }) {
   };
 
   return (
-    <Card id="delete-account">
+    <Card>
       <SuiBox pt={2} px={2} display="flex" justifyContent="space-between" alignItems="center">
         <SuiTypography variant="h6" fontWeight="medium">
           Color Codes

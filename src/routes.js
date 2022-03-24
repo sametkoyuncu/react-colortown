@@ -42,6 +42,7 @@ import Gradients from "layouts/gradients";
 import Palettes from "layouts/palettes";
 import ColorGenerate from "layouts/colorGenerate";
 import GradientGenerate from "layouts/gradientGenerate";
+import PaletteGenerate from "layouts/paletteGenerate";
 // import Tables from "layouts/tables";
 // import Billing from "layouts/billing";
 // import VirtualReality from "layouts/virtual-reality";
@@ -114,7 +115,7 @@ const routes = [
     key: "palette-generator",
     route: "/palette-generator",
     icon: <CreditCard size="12px" />,
-    component: <Palettes />,
+    component: <PaletteGenerate />,
     noCollapse: true,
   },
 ];

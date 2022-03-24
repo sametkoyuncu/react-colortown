@@ -12,7 +12,7 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 // @mui material components
 import Grid from "@mui/material/Grid";
@@ -33,31 +33,24 @@ import GradientDataCard from "layouts/gradientGenerate/components/GradientDataCa
 import { rgbToHex, rgbToHsl, randomRGBColor } from "functions/color";
 
 function GradientGenerate() {
-  const [rgbCode1, setRgbCode1] = useState([0, 0, 0]);
-  const [rgbCode2, setRgbCode2] = useState([255, 255, 255]);
   const [direction, setDirection] = useState("to right");
 
   const [colorCodes1, setColorCodes1] = useState({
-    rgb: `rgb(${rgbCode1[0]}, ${rgbCode1[1]}, ${rgbCode1[2]})`,
-    hex: "#ffffff",
-    hsl: "hsl(360,100%,100%)",
+    rgb: "rgb(111, 13, 167)",
+    hex: "#6f0da7",
+    hsl: "hsl(278, 85%, 35%)",
   });
 
   const [colorCodes2, setColorCodes2] = useState({
-    rgb: `rgb(${rgbCode2[0]}, ${rgbCode2[1]}, ${rgbCode2[2]})`,
-    hex: "#000000",
-    hsl: "hsl(0,0%,0%)",
+    rgb: "rgb(248, 89, 42)",
+    hex: "#f8592a",
+    hsl: "hsl(13, 93%, 56%)",
   });
 
   const getRandomRGBColor = () => {
-    const newColor1 = [...randomRGBColor()];
-    const newColor2 = [...randomRGBColor()];
+    const rgbCode1 = [...randomRGBColor()];
+    const rgbCode2 = [...randomRGBColor()];
 
-    setRgbCode1([...newColor1]);
-    setRgbCode2([...newColor2]);
-  };
-
-  useEffect(() => {
     // get hex code 1
     const convertedHex1 = rgbToHex(...rgbCode1);
     // get hsl code 1
@@ -77,7 +70,7 @@ function GradientGenerate() {
       hex: convertedHex2,
       hsl: convertedHsl2,
     });
-  }, [rgbCode2]);
+  };
 
   return (
     <DashboardLayout>
