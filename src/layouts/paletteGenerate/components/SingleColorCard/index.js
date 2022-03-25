@@ -2,7 +2,6 @@ import { useState } from "react";
 // @mui material components
 // import IconButton from "@mui/material/IconButton";
 // import Stack from "@mui/material/Stack";
-import Grid from "@mui/material/Grid";
 import Icon from "@mui/material/Icon";
 import Tooltip from "@mui/material/Tooltip";
 
@@ -25,8 +24,10 @@ function SingleColorCard({ bgColor, handleCopy }) {
   const [show, setShow] = useState(false);
   return (
     <SuiBox
+      key={`${bgColor}${Math.round(Math.random() * 360)}`}
       height="400px"
-      display="grid"
+      width="20%"
+      display="flex"
       justifyContent="center"
       alignItems="center"
       bgColor={bgColor}
@@ -36,27 +37,27 @@ function SingleColorCard({ bgColor, handleCopy }) {
       {show && (
         <SuiBox
           borderRadius="lg"
-          bgColor="rgba(255,255,255,0.3)"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          bgColor="rgb(255,255,255)"
           p={1}
-          pb={0}
-          sx={{ boxShadow: 3 }}
+          sx={{ flexDirection: "column", boxShadow: 1 }}
         >
-          <Grid container direction="column" justifyContent="center" alignItems="center">
-            <SuiBox onClick={() => handleCopy(bgColor)}>
-              <Tooltip title="Copy RGB Code to Clipboard" placement="top">
-                <Icon sx={{ cursor: "pointer" }} fontSize="medium">
-                  content_copy
-                </Icon>
-              </Tooltip>
-            </SuiBox>
-            <SuiBox>
-              <Tooltip title="Generete Random (soon)" placement="bottom">
-                <Icon sx={{ cursor: "pointer" }} fontSize="medium">
-                  autorenew
-                </Icon>
-              </Tooltip>
-            </SuiBox>
-          </Grid>
+          <SuiBox display="flex" onClick={() => handleCopy(bgColor)}>
+            <Tooltip title="Copy RGB Code to Clipboard" placement="top">
+              <Icon sx={{ cursor: "pointer" }} fontSize="small">
+                content_copy
+              </Icon>
+            </Tooltip>
+          </SuiBox>
+          <SuiBox display="flex">
+            <Tooltip title="Generete Random (soon)" placement="bottom">
+              <Icon sx={{ cursor: "pointer" }} fontSize="small">
+                autorenew
+              </Icon>
+            </Tooltip>
+          </SuiBox>
         </SuiBox>
       )}
     </SuiBox>

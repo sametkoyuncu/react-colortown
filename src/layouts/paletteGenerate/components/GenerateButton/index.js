@@ -12,13 +12,13 @@ import SuiButton from "components/SuiButton";
 // prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
 
-function GenerateButton({ getRandomRGBColors }) {
+function GenerateButton({ getRandomHSLColors }) {
   return (
     <SuiBox pt={2} px={2} display="flex" justifyContent="center" alignItems="center">
       {/* <SuiTypography variant="h6" fontWeight="medium">
         Color Codes
       </SuiTypography> */}
-      <SuiButton variant="gradient" color="dark" onClick={getRandomRGBColors}>
+      <SuiButton variant="gradient" color="dark" onClick={getRandomHSLColors}>
         <Icon sx={{ fontWeight: "bold" }}>cached</Icon>
         &nbsp;generate random
       </SuiButton>
@@ -27,12 +27,12 @@ function GenerateButton({ getRandomRGBColors }) {
 }
 
 GenerateButton.defaultProps = {
-  getRandomRGBColors: function getRandomRGBColors() {},
+  getRandomHSLColors: function getRandomHSLColors() {},
 };
 
 // Typechecking props for the SuiBox
 GenerateButton.propTypes = {
-  getRandomRGBColors: PropTypes.func,
+  getRandomHSLColors: PropTypes.func,
 };
 
 export default GenerateButton;
