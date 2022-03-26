@@ -32,21 +32,38 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 
 // color convert functions + rgbToHex, rgbToHsl,
-import { randomHSLColor } from "functions/color";
+import { getRandomPalette } from "functions/color";
 
 // Dashboard layout components
 import SingleColorCard from "layouts/paletteGenerate/components/SingleColorCard";
 import GenerateButton from "./components/GenerateButton";
 
+const INITIAL_STATE = [
+  {
+    color: "#f5ffbe",
+    name: "Australian Mint",
+  },
+  {
+    color: "#414257",
+    name: "Gun Powder",
+  },
+  {
+    color: "#f0fcea",
+    name: "Feta",
+  },
+  {
+    color: "#ffd700",
+    name: "Golden",
+  },
+  {
+    color: "#fef0ec",
+    name: "Bridesmaid",
+  },
+];
+
 function PaletteGenerate() {
   const [isSnackBarOpen, setIsSnackBarOpen] = useState(false);
-  const [colorCodes, setColorCodes] = useState([
-    { hsl: [10, 90, 50] },
-    { hsl: [20, 90, 50] },
-    { hsl: [30, 90, 50] },
-    { hsl: [180, 90, 50] },
-    { hsl: [200, 90, 50] },
-  ]);
+  const [colorCodes, setColorCodes] = useState([...INITIAL_STATE]);
 
   const handleCopy = (copyText) => {
     setIsSnackBarOpen(true);
@@ -58,30 +75,8 @@ function PaletteGenerate() {
   };
 
   const getRandomHSLColors = () => {
-    const randomHSLColorTemp = [...randomHSLColor()];
-    // we use for generate and store palette codes
-    const paletteColors = [];
-
-    for (let i = 0; i < 3; i += 1) {
-      paletteColors.push([
-        randomHSLColorTemp[0] + i * 10,
-        randomHSLColorTemp[1],
-        randomHSLColorTemp[2],
-      ]);
-    }
-    for (let i = 0; i < 2; i += 1) {
-      paletteColors.push([
-        randomHSLColorTemp[0] + i * 20 + 170,
-        randomHSLColorTemp[1],
-        randomHSLColorTemp[2],
-      ]);
-    }
-    // if first number is bigger than 360, we need subtrac 360 from it, because max value is 360 degree.
-    const paletteColorsMap = paletteColors.map((item) =>
-      item[0] <= 360 ? { hsl: [...item] } : { hsl: [item[0] - 360, item[1], item[2]] }
-    );
-
-    setColorCodes([...paletteColorsMap]);
+    const arr = getRandomPalette() || [];
+    setColorCodes([...arr]);
   };
 
   return (
@@ -95,16 +90,18 @@ function PaletteGenerate() {
                 <SuiBox
                   display="flex"
                   sx={{
-                    flexDirection: "row",
+                    flexDirection: { xs: "column", sm: "row" },
                     flexWrap: "nowrap",
                     alignItems: "stretch",
                   }}
                 >
                   {colorCodes.map(
-                    (color, index) =>
-                      index < 5 && (
+                    (item, index) =>
+                      index < 4 && (
                         <SingleColorCard
-                          bgColor={`hsl(${color.hsl[0]},${color.hsl[1]}%,${color.hsl[2]}%)`}
+                          key={item.color}
+                          bgColor={item.color}
+                          bgName={item.name}
                           handleCopy={handleCopy}
                         />
                       )
