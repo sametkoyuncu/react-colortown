@@ -85,6 +85,7 @@ function SingleColorCard({ bgColor, bgName, handleCopy }) {
                 </Icon>
               </Tooltip>
             </SuiBox>
+{/*
             <SuiBox display="flex">
               <Tooltip title="Generete Random (soon)" placement="bottom">
                 <Icon sx={{ cursor: "pointer" }} fontSize="small">
@@ -92,6 +93,7 @@ function SingleColorCard({ bgColor, bgName, handleCopy }) {
                 </Icon>
               </Tooltip>
             </SuiBox>
+*/}
           </SuiBox>
         </>
       )}
