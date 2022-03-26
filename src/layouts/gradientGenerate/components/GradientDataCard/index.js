@@ -100,6 +100,9 @@ function GradientDataCard({ colorCodes1, colorCodes2, getRandomRGBColor }) {
       <SuiBox p={2}>
         <Grid container spacing={3}>
           <Grid item xs={12} md={6} container spacing={3}>
+            <SuiTypography variant="body1" ml={4} mt={2}>
+              Color 1
+            </SuiTypography>
             {codeSectionData1.map((item) => (
               <CtColorCodeSection
                 key={item.code}
@@ -112,6 +115,9 @@ function GradientDataCard({ colorCodes1, colorCodes2, getRandomRGBColor }) {
             ))}
           </Grid>
           <Grid item xs={12} md={6} container spacing={3}>
+            <SuiTypography variant="body1" ml={4} mt={2}>
+              Color 2
+            </SuiTypography>
             {codeSectionData2.map((item) => (
               <CtColorCodeSection
                 key={item.code}
