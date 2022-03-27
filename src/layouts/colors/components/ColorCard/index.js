@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 // @mui material components
 import Card from "@mui/material/Card";
@@ -85,11 +86,13 @@ function ColorCard({ colorId, bgColor, likesCount, isLiked, handleLikeBtnClick }
                 justifyContent="flex-end"
                 alignItems="center"
               >
-                <SuiButton variant="outlined" color="secondary" size="small" circular>
-                  <SuiTypography ml={1} variant="button" fontWeight="medium" color="secondary">
-                    Details
-                  </SuiTypography>
-                </SuiButton>
+                <Link to={`/colors/details/${colorId}`}>
+                  <SuiButton variant="outlined" color="secondary" size="small" circular>
+                    <SuiTypography ml={1} variant="button" fontWeight="medium" color="secondary">
+                      Details
+                    </SuiTypography>
+                  </SuiButton>
+                </Link>
               </Grid>
             </Grid>
           </SuiBox>
