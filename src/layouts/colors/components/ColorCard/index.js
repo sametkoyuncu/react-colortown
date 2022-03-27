@@ -86,7 +86,7 @@ function ColorCard({ colorId, bgColor, likesCount, isLiked, handleLikeBtnClick }
                 justifyContent="flex-end"
                 alignItems="center"
               >
-                <Link to={`/colors/details/${colorId}`}>
+                <Link to={`/colors/${colorId}`}>
                   <SuiButton variant="outlined" color="secondary" size="small" circular>
                     <SuiTypography ml={1} variant="button" fontWeight="medium" color="secondary">
                       Details

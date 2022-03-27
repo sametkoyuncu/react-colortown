@@ -54,7 +54,7 @@ function Colors() {
               <Grid key={color.id} item xs={12} sm={6} md={3}>
                 <ColorCard
                   colorId={color.id}
-                  bgColor={color.hexCode}
+                  bgColor={color.rgb}
                   likesCount={color.likes}
                   isLiked={ctColors.indexOf(color.id) >= 0}
                   handleLikeBtnClick={handleLikeBtnClick}

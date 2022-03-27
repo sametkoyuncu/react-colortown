@@ -40,14 +40,12 @@ function ColorDetails() {
         <SuiBox mb={3}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={5}>
-              <CtColorPreviewCard bgColor={color.hexCode} />
+              <CtColorPreviewCard bgColor={color.rgb} />
             </Grid>
             <Grid item xs={12} sm={7}>
-              <ColorDetailCard
-                hexCode={color.hexCode}
-                rgbCode={color.hexCode}
-                hslCode={color.hexCode}
-              />
+              {/* rgbToHex(color.rgbCode)
+              rgbToHsl(color.rgbCode) */}
+              <ColorDetailCard hexCode={color.hex} rgbCode={color.rgb} hslCode={color.hsl} />
             </Grid>
           </Grid>
         </SuiBox>

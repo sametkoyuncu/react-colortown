@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 // @mui material components
 import Card from "@mui/material/Card";
@@ -61,7 +62,6 @@ function GradientCard({ gradientId, bgColor, likesCount, isLiked, handleLikeBtnC
                 alignItems="center"
               >
                 <SuiButton size="medium" circular onClick={handleClick} sx={{ boxShadow: "none" }}>
-                  {/* , color: "#FC354C" */}
                   <Icon
                     color={isLiked ? "error" : "secondary"}
                     sx={{ fontSize: "24px !important" }}
@@ -81,11 +81,13 @@ function GradientCard({ gradientId, bgColor, likesCount, isLiked, handleLikeBtnC
                 justifyContent="flex-end"
                 alignItems="center"
               >
-                <SuiButton variant="outlined" color="secondary" size="small" circular>
-                  <SuiTypography ml={1} variant="button" fontWeight="medium" color="secondary">
-                    Details
-                  </SuiTypography>
-                </SuiButton>
+                <Link to={`/gradients/${gradientId}`}>
+                  <SuiButton variant="outlined" color="secondary" size="small" circular>
+                    <SuiTypography ml={1} variant="button" fontWeight="medium" color="secondary">
+                      Details
+                    </SuiTypography>
+                  </SuiButton>
+                </Link>
               </Grid>
             </Grid>
           </SuiBox>

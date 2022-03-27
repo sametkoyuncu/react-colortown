@@ -40,23 +40,38 @@ import hslLogo from "assets/images/logos/hsl.png";
 // prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
 
-function ColorDataCard({ hexCode, rgbCode, hslCode }) {
+function GradientDetailCard({ colorCodes1, colorCodes2 }) {
   const [isSnackBarOpen, setIsSnackBarOpen] = useState(false);
 
   const { borderWidth, borderColor } = borders;
 
-  const codeSectionData = [
+  const codeSectionData1 = [
     {
       logo: hexLogo,
-      code: hexCode,
+      code: colorCodes1.hex,
     },
     {
       logo: rgbLogo,
-      code: rgbCode,
+      code: colorCodes1.rgb,
     },
     {
       logo: hslLogo,
-      code: hslCode,
+      code: colorCodes1.hsl,
+    },
+  ];
+
+  const codeSectionData2 = [
+    {
+      logo: hexLogo,
+      code: colorCodes2.hex,
+    },
+    {
+      logo: rgbLogo,
+      code: colorCodes2.rgb,
+    },
+    {
+      logo: hslLogo,
+      code: colorCodes2.hsl,
     },
   ];
 
@@ -70,24 +85,39 @@ function ColorDataCard({ hexCode, rgbCode, hslCode }) {
   };
 
   return (
-    <Card id="delete-account">
-      <SuiBox pt={2} px={2} display="flex" justifyContent="space-between" alignItems="center">
-        <SuiTypography variant="h6" fontWeight="medium">
-          Color Codes
-        </SuiTypography>
-      </SuiBox>
+    <Card>
       <SuiBox p={2}>
         <Grid container spacing={3}>
-          {codeSectionData.map((item) => (
-            <CtColorCodeSection
-              key={item.code}
-              borderWidth={borderWidth[1]}
-              borderColor={borderColor}
-              logo={item.logo}
-              code={item.code}
-              handleCopy={handleCopy}
-            />
-          ))}
+          <Grid item xs={12} md={6} container spacing={3}>
+            <SuiTypography variant="body1" ml={4} mt={2}>
+              Color 1
+            </SuiTypography>
+            {codeSectionData1.map((item) => (
+              <CtColorCodeSection
+                key={item.code}
+                borderWidth={borderWidth[1]}
+                borderColor={borderColor}
+                logo={item.logo}
+                code={item.code}
+                handleCopy={handleCopy}
+              />
+            ))}
+          </Grid>
+          <Grid item xs={12} md={6} container spacing={3}>
+            <SuiTypography variant="body1" ml={4} mt={2}>
+              Color 2
+            </SuiTypography>
+            {codeSectionData2.map((item) => (
+              <CtColorCodeSection
+                key={item.code}
+                borderWidth={borderWidth[1]}
+                borderColor={borderColor}
+                logo={item.logo}
+                code={item.code}
+                handleCopy={handleCopy}
+              />
+            ))}
+          </Grid>
         </Grid>
       </SuiBox>
       <Snackbar
@@ -102,24 +132,32 @@ function ColorDataCard({ hexCode, rgbCode, hslCode }) {
         }
       >
         <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
-          The color code is copied to clipboard! 👍
+          Copied to Clipboard! 👍
         </Alert>
       </Snackbar>
     </Card>
   );
 }
 
-ColorDataCard.defaultProps = {
-  hexCode: "",
-  rgbCode: "",
-  hslCode: "",
+GradientDetailCard.defaultProps = {
+  colorCodes1: {
+    rgb: `rgb(0, 0, 0)`,
+    hex: "#000000",
+    hsl: "hsl(0,0%,0%)",
+  },
+  colorCodes2: {
+    rgb: `rgb(0, 0, 0)`,
+    hex: "#000000",
+    hsl: "hsl(0,0%,0%)",
+  },
 };
 
 // Typechecking props for the SuiBox
-ColorDataCard.propTypes = {
-  hexCode: PropTypes.string,
-  rgbCode: PropTypes.string,
-  hslCode: PropTypes.string,
+GradientDetailCard.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  colorCodes1: PropTypes.object,
+  // eslint-disable-next-line react/forbid-prop-types
+  colorCodes2: PropTypes.object,
 };
 
-export default ColorDataCard;
+export default GradientDetailCard;
