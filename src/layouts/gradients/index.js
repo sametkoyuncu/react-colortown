@@ -54,7 +54,7 @@ function Gradients() {
               <Grid key={gradient.id} item xs={12} sm={6} md={3}>
                 <GradientCard
                   gradientId={gradient.id}
-                  bgColor={`linear-gradient(${gradient.direction}, ${gradient.colors[0]}, ${gradient.colors[1]})`}
+                  bgColor={`linear-gradient(${gradient.direction}, ${gradient.colors[0].hex}, ${gradient.colors[1].hex})`}
                   likesCount={gradient.likes}
                   isLiked={ctGradients.indexOf(gradient.id) >= 0}
                   handleLikeBtnClick={handleLikeBtnClick}

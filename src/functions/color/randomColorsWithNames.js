@@ -2,7 +2,7 @@
 /* eslint-disable func-names */
 let data = [];
 (function () {
-  fetch("./assets/data/colorNames.json", {
+  fetch("/assets/data/colorNames.json", {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",

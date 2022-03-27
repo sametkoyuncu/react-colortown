@@ -25,7 +25,6 @@ import CloseIcon from "@mui/icons-material/Close";
 
 // Soft UI Dashboard React components
 import SuiBox from "components/SuiBox";
-import SuiTypography from "components/SuiTypography";
 
 // Soft UI Dashboard React base styles
 import borders from "assets/theme/base/borders";
@@ -40,7 +39,7 @@ import hslLogo from "assets/images/logos/hsl.png";
 // prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
 
-function ColorDataCard({ hexCode, rgbCode, hslCode }) {
+function ColorDetailCard({ hexCode, rgbCode, hslCode }) {
   const [isSnackBarOpen, setIsSnackBarOpen] = useState(false);
 
   const { borderWidth, borderColor } = borders;
@@ -70,17 +69,12 @@ function ColorDataCard({ hexCode, rgbCode, hslCode }) {
   };
 
   return (
-    <Card id="delete-account">
-      <SuiBox pt={2} px={2} display="flex" justifyContent="space-between" alignItems="center">
-        <SuiTypography variant="h6" fontWeight="medium">
-          Color Codes
-        </SuiTypography>
-      </SuiBox>
+    <Card>
       <SuiBox p={2}>
         <Grid container spacing={3}>
           {codeSectionData.map((item) => (
             <CtColorCodeSection
-              key={item.code}
+              key={Math.random() * 1000}
               borderWidth={borderWidth[1]}
               borderColor={borderColor}
               logo={item.logo}
@@ -102,24 +96,24 @@ function ColorDataCard({ hexCode, rgbCode, hslCode }) {
         }
       >
         <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
-          The color code is copied to clipboard! 👍
+          Copied to Clipboard! 👍
         </Alert>
       </Snackbar>
     </Card>
   );
 }
 
-ColorDataCard.defaultProps = {
-  hexCode: "",
-  rgbCode: "",
-  hslCode: "",
+ColorDetailCard.defaultProps = {
+  hexCode: "#fffff",
+  rgbCode: "rgb(255,255,255)",
+  hslCode: "hsl(0, 100%,100%)",
 };
 
 // Typechecking props for the SuiBox
-ColorDataCard.propTypes = {
+ColorDetailCard.propTypes = {
   hexCode: PropTypes.string,
   rgbCode: PropTypes.string,
   hslCode: PropTypes.string,
 };
 
-export default ColorDataCard;
+export default ColorDetailCard;

@@ -30,6 +30,10 @@ import SuiBox from "components/SuiBox";
 import Sidenav from "examples/Sidenav";
 import Configurator from "examples/Configurator";
 
+// ColorTown layouts
+import ColorDetails from "layouts/colors/details";
+import GradientDetails from "layouts/gradients/details";
+
 // Soft UI Dashboard React themes
 import theme from "assets/theme";
 
@@ -135,6 +139,14 @@ export default function App() {
       {/* {layout === "vr" && <Configurator />} */}
       <Routes>
         {getRoutes(routes)}
+        <Route exact path="/colors/:id" element={<ColorDetails />} />
+        <Route exact path="/gradients/:id" element={<GradientDetails />} />
+        {/* render=
+        {({ match }) => (
+          <ColorDetails
+            color={colors.find((item) => String(item.id) === String(match.params.id))}
+          />
+        )} */}
         <Route path="*" element={<Navigate to="/colors" />} />
       </Routes>
     </ThemeProvider>
