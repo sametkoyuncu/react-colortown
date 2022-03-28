@@ -14,7 +14,6 @@ ColorTown is the best way to create and explore beauties. Create color, gradient
 
 #### Palette Generator Page
 
-<<<<<<< HEAD
 ![https://github.com/sametkoyuncu/react-colortown/blob/master/public/screenshots/palette_generator.png?raw=true](palette_generator_page)
 
 > Thank you for this template to Creative Tim! ❤️
@@ -229,6 +228,3 @@ Dribbble: <https://dribbble.com/creativetim>
 Google+: <https://plus.google.com/+CreativetimPage>
 
 Instagram: <https://instagram.com/creativetimofficial>
-=======
-![palette_generator_page](https://github.com/sametkoyuncu/react-colortown/blob/master/public/screenshots/palette_generator.png?raw=true)
->>>>>>> 6d73c36167f68bf0ab3d686ea4507932f3800a19
