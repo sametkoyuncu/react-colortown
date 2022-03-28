@@ -1,3 +1,5 @@
+import tags from "./tags";
+
 const gradients = [
   {
     id: "gradient_1",
@@ -7,7 +9,7 @@ const gradients = [
     ],
     direction: "to bottom",
     likes: 102,
-    tags: [],
+    tags: [tags[5], tags[7], tags[11]],
   },
   {
     id: "gradient_2",
@@ -17,7 +19,7 @@ const gradients = [
     ],
     direction: "to right",
     likes: 11,
-    tags: [],
+    tags: [tags[2], tags[0]],
   },
   {
     id: "gradient_3",
@@ -27,17 +29,17 @@ const gradients = [
     ],
     direction: "to right",
     likes: 39,
-    tags: [],
+    tags: [tags[2]],
   },
   {
     id: "gradient_4",
     colors: [
       { hex: "#e43a15", rgb: "rgb(228, 58, 21)", hsl: "hsl(11, 83%, 49%)" },
-      { hex: "#e65245", rgb: "rgb(230, 82, 69)", hsl: "hsl(5, 76%, 59%)" },
+      { hex: "#cc13e8", rgb: "rgb(204, 19, 232)", hsl: "hsl(292, 85%, 49%)" },
     ],
     direction: "to top",
     likes: 9,
-    tags: [],
+    tags: [tags[7], tags[10]],
   },
   {
     id: "gradient_5",
@@ -47,7 +49,7 @@ const gradients = [
     ],
     direction: "to right",
     likes: 3,
-    tags: [],
+    tags: [tags[7], tags[10], tags[9]],
   },
   {
     id: "gradient_6",
@@ -57,7 +59,7 @@ const gradients = [
     ],
     direction: "to left",
     likes: 3,
-    tags: [],
+    tags: [tags[0], tags[10]],
   },
   {
     id: "gradient_7",
@@ -67,7 +69,7 @@ const gradients = [
     ],
     direction: "to right",
     likes: 21,
-    tags: [],
+    tags: [tags[1], tags[5], tags[11]],
   },
 ];
 

@@ -14,6 +14,7 @@ import Footer from "examples/Footer";
 
 // ColorTown layout components
 import CtColorPreviewCard from "components/CtColorPreviewCard";
+import CtColorTagsCard from "components/CtColorTagsCard";
 import GradientDetailCard from "layouts/gradients/details/components/GradientDetailCard";
 
 // data
@@ -44,10 +45,17 @@ function GradientDetails() {
       <SuiBox py={3}>
         <SuiBox mb={3}>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={5}>
-              <CtColorPreviewCard
-                bgColor={`linear-gradient(${gradient.direction}, ${gradient.colors[0].hex}, ${gradient.colors[1].hex})`}
-              />
+            <Grid item container xs={12} sm={5}>
+              <Grid item xs={12}>
+                <CtColorPreviewCard
+                  bgColor={`linear-gradient(${gradient.direction}, ${gradient.colors[0].hex}, ${gradient.colors[1].hex})`}
+                />
+              </Grid>
+              {!!gradient.tags.length && (
+                <Grid item xs={12} mt={1}>
+                  <CtColorTagsCard tags={gradient.tags} />
+                </Grid>
+              )}
             </Grid>
             <Grid item xs={12} sm={7}>
               <GradientDetailCard
