@@ -14,19 +14,23 @@ import Footer from "examples/Footer";
 
 // ColorTown layout components
 import CtColorPreviewCard from "components/CtColorPreviewCard";
+import CtColorTagsCard from "components/CtColorTagsCard";
 import ColorDetailCard from "layouts/colors/details/components/ColorDetailCard";
 
 // data
 import colors from "data/colors";
 
-// prop-types is a library for typechecking of props
-// import PropTypes from "prop-types";
-
 function ColorDetails() {
   const { id } = useParams();
-  // really I don't know we need useState and useEffect.
-  // may be just get color by id with 'find (line 32)'
-  const [color, setColor] = useState({});
+
+  const [color, setColor] = useState({
+    id: "",
+    hex: "",
+    rgb: "",
+    hsl: "",
+    likes: 0,
+    tags: [],
+  });
 
   useEffect(() => {
     const colorById = colors.find((item) => item.id === id);
@@ -39,12 +43,17 @@ function ColorDetails() {
       <SuiBox py={3}>
         <SuiBox mb={3}>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={5}>
-              <CtColorPreviewCard bgColor={color.rgb} />
+            <Grid item container xs={12} sm={5}>
+              <Grid item xs={12}>
+                <CtColorPreviewCard bgColor={color.rgb} />
+              </Grid>
+              {!!color.tags.length && (
+                <Grid item xs={12} mt={1}>
+                  <CtColorTagsCard tags={color.tags} />
+                </Grid>
+              )}
             </Grid>
             <Grid item xs={12} sm={7}>
-              {/* rgbToHex(color.rgbCode)
-              rgbToHsl(color.rgbCode) */}
               <ColorDetailCard hexCode={color.hex} rgbCode={color.rgb} hslCode={color.hsl} />
             </Grid>
           </Grid>
@@ -54,20 +63,5 @@ function ColorDetails() {
     </DashboardLayout>
   );
 }
-
-// ColorDetails.defaultProps = {
-//   color: {
-//     id: "color_1",
-//     hexCode: "#ff5858",
-//     likes: 0,
-//     tags: [],
-//   },
-// };
-
-// // Typechecking props for the SuiBox
-// ColorDetails.propTypes = {
-//   // eslint-disable-next-line react/forbid-prop-types
-//   color: PropTypes.object,
-// };
 
 export default ColorDetails;
