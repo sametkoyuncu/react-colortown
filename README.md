@@ -4,14 +4,14 @@ ColorTown is the best way to create and explore beauties. Create color, gradient
 
 ## Screenshots
 
-#### Color Page
+#### Colors Page
 
-![https://github.com/sametkoyuncu/react-colortown/blob/master/public/screenshots/colors.png?raw=true](colors_page)
+![colors_page](https://github.com/sametkoyuncu/react-colortown/blob/master/public/screenshots/colors.png?raw=true)
 
 #### Gradient Details Page
 
-![https://github.com/sametkoyuncu/react-colortown/blob/master/public/screenshots/gradient_details.png?raw=true](gradient_details_page)
+![gradient_details_page](https://github.com/sametkoyuncu/react-colortown/blob/master/public/screenshots/gradient_details.png?raw=true)
 
 #### Palette Generator Page
 
-![https://github.com/sametkoyuncu/react-colortown/blob/master/public/screenshots/palette_generator.png?raw=true](palette_generator_page)
+![palette_generator_page](https://github.com/sametkoyuncu/react-colortown/blob/master/public/screenshots/palette_generator.png?raw=true)
