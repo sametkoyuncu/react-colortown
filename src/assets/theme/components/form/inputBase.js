@@ -16,14 +16,20 @@ Coded by www.creative-tim.com
 // Soft UI Dashboard React Base Styles
 import colors from "assets/theme/base/colors";
 import typography from "assets/theme/base/typography";
-import borders from "assets/theme/base/borders";
+// import borders from "assets/theme/base/borders";
 
 // Soft UI Dashboard PRO helper functions
 import pxToRem from "assets/theme/functions/pxToRem";
-
-const { dark, white, grey, inputColors } = colors;
+// white, inputColors;
+const { dark, grey } = colors;
 const { size, fontWeightRegular } = typography;
-const { borderWidth, borderRadius } = borders;
+// const { borderWidth, borderRadius } = borders;
+
+// input base root içinde
+
+//   backgroundColor: `${white.main}`,
+//   border: `${borderWidth[1]} solid ${inputColors.borderColor.main}`,
+//             borderRadius: borderRadius.md,
 
 const inputBase = {
   styleOverrides: {
@@ -32,16 +38,13 @@ const inputBase = {
       placeItems: "center !important",
       width: "100% !important",
       height: "auto !important",
+      fontSize: `${size.sm}`,
+      fontWeight: `${fontWeightRegular}`,
+      lineHeight: "1.4",
       padding: `${pxToRem(8)} ${pxToRem(12)}`,
-      fontSize: `${size.sm} !important`,
-      fontWeight: `${fontWeightRegular} !important`,
-      lineHeight: "1.4 !important",
-      color: `${grey[700]} !important`,
-      backgroundColor: `${white.main} !important`,
+      color: `${grey[700]}`,
       backgroundClip: "padding-box !important",
-      border: `${borderWidth[1]} solid ${inputColors.borderColor.main}`,
       appearance: "none !important",
-      borderRadius: borderRadius.md,
       transition: "box-shadow 150ms ease, border-color 150ms ease, padding 150ms ease !important",
     },
 

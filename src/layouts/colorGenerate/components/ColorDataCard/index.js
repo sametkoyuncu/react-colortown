@@ -26,13 +26,14 @@ import CloseIcon from "@mui/icons-material/Close";
 
 // Soft UI Dashboard React components
 import SuiBox from "components/SuiBox";
-import SuiTypography from "components/SuiTypography";
 import SuiButton from "components/SuiButton";
 
 // Soft UI Dashboard React base styles
 import borders from "assets/theme/base/borders";
 
+// ct components
 import CtColorCodeSection from "components/CtColorCodeSection";
+import CtSaveModal from "components/CtSaveModal";
 
 // Images
 import hexLogo from "assets/images/logos/hex.png";
@@ -73,15 +74,6 @@ function ColorDataCard({ colorCodes, getRandomRGBColor }) {
 
   return (
     <Card id="delete-account">
-      <SuiBox pt={2} px={2} display="flex" justifyContent="space-between" alignItems="center">
-        <SuiTypography variant="h6" fontWeight="medium">
-          Color Codes
-        </SuiTypography>
-        <SuiButton variant="gradient" color="dark" onClick={getRandomRGBColor}>
-          <Icon sx={{ fontWeight: "bold" }}>cached</Icon>
-          &nbsp;generate random
-        </SuiButton>
-      </SuiBox>
       <SuiBox p={2}>
         <Grid container spacing={3}>
           {codeSectionData.map((item) => (
@@ -95,6 +87,20 @@ function ColorDataCard({ colorCodes, getRandomRGBColor }) {
             />
           ))}
         </Grid>
+      </SuiBox>
+      <SuiBox
+        p={2}
+        pt={0}
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        flexWrap="wrap"
+      >
+        <SuiButton variant="gradient" color="dark" onClick={getRandomRGBColor}>
+          <Icon sx={{ fontWeight: "bold" }}>cached</Icon>
+          &nbsp;generate random
+        </SuiButton>
+        <CtSaveModal colorCodes={colorCodes} />
       </SuiBox>
       <Snackbar
         anchorOrigin={{ vertical: "top", horizontal: "center" }}

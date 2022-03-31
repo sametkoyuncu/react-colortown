@@ -29,7 +29,7 @@ const gradients = [
     ],
     direction: "to right",
     likes: 39,
-    tags: [tags[2]],
+    tags: [tags[1]],
   },
   {
     id: "gradient_4",
