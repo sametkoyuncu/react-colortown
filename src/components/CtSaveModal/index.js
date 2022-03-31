@@ -32,6 +32,9 @@ function CtSaveModal({ colorCodes }) {
 
   const handleClose = () => {
     setOpen(false);
+    // clear states
+    setName("");
+    setSelectedTags([]);
   };
 
   // checkbox functions
@@ -113,6 +116,7 @@ function CtSaveModal({ colorCodes }) {
                         backgroundColor: tag.color,
                         color: tag.color,
                         borderColor: tag.color,
+                        boxShadow: 3,
                       },
                     }}
                   />
@@ -140,7 +144,12 @@ function CtSaveModal({ colorCodes }) {
           >
             Cancel
           </SuiButton>
-          <SuiButton variant="gradient" color="info" onClick={handleSave}>
+          <SuiButton
+            disabled={name === "" || !selectedTags.length}
+            variant="gradient"
+            color="info"
+            onClick={handleSave}
+          >
             <Icon>save</Icon>
             &nbsp;save
           </SuiButton>
