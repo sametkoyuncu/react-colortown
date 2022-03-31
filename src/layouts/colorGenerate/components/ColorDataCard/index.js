@@ -100,7 +100,7 @@ function ColorDataCard({ colorCodes, getRandomRGBColor }) {
           <Icon sx={{ fontWeight: "bold" }}>cached</Icon>
           &nbsp;generate random
         </SuiButton>
-        <CtSaveModal />
+        <CtSaveModal colorCodes={colorCodes} />
       </SuiBox>
       <Snackbar
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
