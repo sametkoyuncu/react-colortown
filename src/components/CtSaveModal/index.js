@@ -47,7 +47,7 @@ function CtSaveModal({ colorCodes, type }) {
     setSelectedTags([...newTags]);
   };
 
-  // save color functions
+  // save functions
   const saveColor = (randomNumber) => {
     const id = `color_${randomNumber}`;
     const color = {
@@ -78,6 +78,19 @@ function CtSaveModal({ colorCodes, type }) {
     return gradient;
   };
 
+  const savePalette = (randomNumber) => {
+    const id = `palette_${randomNumber}`;
+    const palette = {
+      id,
+      name,
+      colors: [...colorCodes],
+      likes: 0,
+      tags: [...selectedTags],
+    };
+
+    return palette;
+  };
+
   const handleSave = () => {
     const randomNumber = Math.floor(1000 + Math.random() * 90000);
     // istek nereden geliyorsa ona göre kaydeliyor
@@ -90,7 +103,7 @@ function CtSaveModal({ colorCodes, type }) {
         console.log(saveGradient(randomNumber));
         break;
       case "palette":
-        console.log("palette");
+        console.log(savePalette(randomNumber));
         break;
       default:
         break;
@@ -103,7 +116,7 @@ function CtSaveModal({ colorCodes, type }) {
   };
 
   return (
-    <div>
+    <>
       <SuiButton variant="gradient" color="info" onClick={handleClickOpen}>
         <Icon>save</Icon>
         &nbsp;save
@@ -189,7 +202,7 @@ function CtSaveModal({ colorCodes, type }) {
           </SuiButton>
         </DialogActions>
       </Dialog>
-    </div>
+    </>
   );
 }
 
