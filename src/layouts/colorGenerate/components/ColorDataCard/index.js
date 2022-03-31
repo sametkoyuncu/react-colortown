@@ -73,7 +73,7 @@ function ColorDataCard({ colorCodes, getRandomRGBColor }) {
   };
 
   return (
-    <Card id="delete-account">
+    <Card id="color-generate">
       <SuiBox p={2}>
         <Grid container spacing={3}>
           {codeSectionData.map((item) => (
@@ -88,6 +88,7 @@ function ColorDataCard({ colorCodes, getRandomRGBColor }) {
           ))}
         </Grid>
       </SuiBox>
+      {/* buttons */}
       <SuiBox
         p={2}
         pt={0}
@@ -100,7 +101,7 @@ function ColorDataCard({ colorCodes, getRandomRGBColor }) {
           <Icon sx={{ fontWeight: "bold" }}>cached</Icon>
           &nbsp;generate random
         </SuiButton>
-        <CtSaveModal colorCodes={colorCodes} />
+        <CtSaveModal colorCodes={colorCodes} type="color" />
       </SuiBox>
       <Snackbar
         anchorOrigin={{ vertical: "top", horizontal: "center" }}

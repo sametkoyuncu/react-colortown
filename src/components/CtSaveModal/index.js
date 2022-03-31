@@ -19,7 +19,7 @@ import PropTypes from "prop-types";
 // data
 import tags from "../../data/tags";
 
-function CtSaveModal({ colorCodes }) {
+function CtSaveModal({ colorCodes, type }) {
   const [open, setOpen] = useState(false);
 
   const [name, setName] = useState("");
@@ -47,10 +47,9 @@ function CtSaveModal({ colorCodes }) {
     setSelectedTags([...newTags]);
   };
 
-  // save color
-  const handleSave = () => {
-    const random = Math.floor(1000 + Math.random() * 90000);
-    const id = `color_${random}`;
+  // save color functions
+  const saveColor = (randomNumber) => {
+    const id = `color_${randomNumber}`;
     const color = {
       id,
       name,
@@ -60,12 +59,45 @@ function CtSaveModal({ colorCodes }) {
       likes: 0,
       tags: [...selectedTags],
     };
+    return color;
+  };
+
+  const saveGradient = (randomNumber) => {
+    const id = `gradient_${randomNumber}`;
+    const gradient = {
+      id,
+      name,
+      colors: [
+        { hex: colorCodes[0].hex, rgb: colorCodes[0].rgb, hsl: colorCodes[0].hsl },
+        { hex: colorCodes[1].hex, rgb: colorCodes[1].rgb, hsl: colorCodes[1].hsl },
+      ],
+      likes: 0,
+      tags: [...selectedTags],
+    };
+
+    return gradient;
+  };
+
+  const handleSave = () => {
+    const randomNumber = Math.floor(1000 + Math.random() * 90000);
+    switch (type) {
+      case "color":
+        console.log(saveColor(randomNumber));
+        break;
+      case "gradient":
+        console.log(saveGradient(randomNumber));
+        break;
+      case "palette":
+        console.log("palette");
+        break;
+      default:
+        break;
+    }
 
     setOpen(false);
     // clear states
     setName("");
     setSelectedTags([]);
-    console.log(color);
   };
 
   return (
@@ -159,18 +191,11 @@ function CtSaveModal({ colorCodes }) {
   );
 }
 
-CtSaveModal.defaultProps = {
-  colorCodes: {
-    rgb: `rgb(0, 0, 0)`,
-    hex: "#000000",
-    hsl: "hsl(0,0%,0%)",
-  },
-};
-
 // Typechecking props for the SuiBox
 CtSaveModal.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
-  colorCodes: PropTypes.object,
+  colorCodes: PropTypes.any.isRequired,
+  type: PropTypes.oneOf(["color", "gradient", "palette"]).isRequired,
 };
 
 export default CtSaveModal;

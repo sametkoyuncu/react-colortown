@@ -32,7 +32,9 @@ import SuiButton from "components/SuiButton";
 // Soft UI Dashboard React base styles
 import borders from "assets/theme/base/borders";
 
+// ct components
 import CtColorCodeSection from "components/CtColorCodeSection";
+import CtSaveModal from "components/CtSaveModal";
 
 // Images
 import hexLogo from "assets/images/logos/hex.png";
@@ -88,15 +90,6 @@ function GradientDataCard({ colorCodes1, colorCodes2, getRandomRGBColor }) {
 
   return (
     <Card>
-      <SuiBox pt={2} px={2} display="flex" justifyContent="space-between" alignItems="center">
-        <SuiTypography variant="h6" fontWeight="medium">
-          Color Codes
-        </SuiTypography>
-        <SuiButton variant="gradient" color="dark" onClick={getRandomRGBColor}>
-          <Icon sx={{ fontWeight: "bold" }}>cached</Icon>
-          &nbsp;generate random
-        </SuiButton>
-      </SuiBox>
       <SuiBox p={2}>
         <Grid container spacing={3}>
           <Grid item xs={12} md={6} container spacing={3}>
@@ -130,6 +123,21 @@ function GradientDataCard({ colorCodes1, colorCodes2, getRandomRGBColor }) {
             ))}
           </Grid>
         </Grid>
+      </SuiBox>
+      {/* buttons */}
+      <SuiBox
+        p={2}
+        pt={0}
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        flexWrap="wrap"
+      >
+        <SuiButton variant="gradient" color="dark" onClick={getRandomRGBColor}>
+          <Icon sx={{ fontWeight: "bold" }}>cached</Icon>
+          &nbsp;generate random
+        </SuiButton>
+        <CtSaveModal colorCodes={[colorCodes1, colorCodes2]} type="gradient" />
       </SuiBox>
       <Snackbar
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
