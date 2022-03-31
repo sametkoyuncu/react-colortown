@@ -4,7 +4,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
+// import DialogTitle from "@mui/material/DialogTitle";
 import Icon from "@mui/material/Icon";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -80,6 +80,8 @@ function CtSaveModal({ colorCodes, type }) {
 
   const handleSave = () => {
     const randomNumber = Math.floor(1000 + Math.random() * 90000);
+    // istek nereden geliyorsa ona göre kaydeliyor
+    // color, gradient veya palatte generator sayfalarıdan birisi olmalı
     switch (type) {
       case "color":
         console.log(saveColor(randomNumber));
@@ -93,7 +95,7 @@ function CtSaveModal({ colorCodes, type }) {
       default:
         break;
     }
-
+    // close modal
     setOpen(false);
     // clear states
     setName("");
@@ -107,7 +109,7 @@ function CtSaveModal({ colorCodes, type }) {
         &nbsp;save
       </SuiButton>
       <Dialog fullWidth maxWidth="xs" open={open} onClose={handleClose}>
-        <DialogTitle>Save this color</DialogTitle>
+        {/* <DialogTitle>Save this</DialogTitle> */}
         <DialogContent>
           {/* name input */}
           <TextField
