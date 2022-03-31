@@ -24,8 +24,20 @@ import PropTypes from "prop-types";
 
 function CtColorPreviewCard({ bgColor }) {
   return (
-    <Card sx={{ height: "100%", padding: "0.75rem" }}>
-      <SuiBox bgColor={bgColor} borderRadius="lg" sx={{ height: "100%", minHeight: "240px" }} />
+    <Card
+      sx={{
+        height: "100%",
+        padding: "0.75rem",
+      }}
+    >
+      <SuiBox
+        bgColor={bgColor}
+        borderRadius="lg"
+        sx={{
+          height: "100%",
+          minHeight: "240px",
+        }}
+      />
     </Card>
   );
 }

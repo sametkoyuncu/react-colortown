@@ -48,6 +48,8 @@ function CtSaveModal({ colorCodes, type }) {
   };
 
   // save functions
+  // TODO: oluşturulan verileri bir yere kaydedilmeli
+  // TODO: gradient için direction gelmiyor, onu al
   const saveColor = (randomNumber) => {
     const id = `color_${randomNumber}`;
     const color = {

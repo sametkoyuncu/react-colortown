@@ -23,6 +23,7 @@ import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import Slider from "@mui/material/Slider";
 
 // Soft UI Dashboard React components
 import SuiBox from "components/SuiBox";
@@ -44,8 +45,15 @@ import hslLogo from "assets/images/logos/hsl.png";
 // prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
 
-function GradientDataCard({ colorCodes1, colorCodes2, getRandomRGBColor }) {
+function GradientDataCard({
+  colorCodes1,
+  colorCodes2,
+  getRandomRGBColor,
+  direction,
+  setDirection,
+}) {
   const [isSnackBarOpen, setIsSnackBarOpen] = useState(false);
+  // const [direction, setDirection] = useState(180);
 
   const { borderWidth, borderColor } = borders;
 
@@ -79,6 +87,7 @@ function GradientDataCard({ colorCodes1, colorCodes2, getRandomRGBColor }) {
     },
   ];
 
+  // snackbar functions
   const handleCopy = (copyText) => {
     setIsSnackBarOpen(true);
     navigator.clipboard.writeText(copyText);
@@ -86,6 +95,11 @@ function GradientDataCard({ colorCodes1, colorCodes2, getRandomRGBColor }) {
 
   const handleClose = () => {
     setIsSnackBarOpen(false);
+  };
+
+  // slider functions
+  const handleChangeDirection = (event, newValue) => {
+    setDirection(newValue);
   };
 
   return (
@@ -122,6 +136,17 @@ function GradientDataCard({ colorCodes1, colorCodes2, getRandomRGBColor }) {
               />
             ))}
           </Grid>
+          <Grid item xs={12}>
+            <Slider
+              display="flex"
+              value={direction}
+              aria-label="Direction"
+              min={0}
+              max={360}
+              onChange={handleChangeDirection}
+              valueLabelDisplay="auto"
+            />
+          </Grid>
         </Grid>
       </SuiBox>
       {/* buttons */}
@@ -137,6 +162,7 @@ function GradientDataCard({ colorCodes1, colorCodes2, getRandomRGBColor }) {
           <Icon sx={{ fontWeight: "bold" }}>cached</Icon>
           &nbsp;generate random
         </SuiButton>
+
         <CtSaveModal colorCodes={[colorCodes1, colorCodes2]} type="gradient" />
       </SuiBox>
       <Snackbar
@@ -179,6 +205,8 @@ GradientDataCard.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   colorCodes2: PropTypes.object,
   getRandomRGBColor: PropTypes.func,
+  direction: PropTypes.number.isRequired,
+  setDirection: PropTypes.func.isRequired,
 };
 
 export default GradientDataCard;
