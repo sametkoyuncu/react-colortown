@@ -33,6 +33,7 @@ import Configurator from "examples/Configurator";
 // ColorTown layouts
 import ColorDetails from "layouts/colors/details";
 import GradientDetails from "layouts/gradients/details";
+import PaletteDetails from "layouts/palettes/details";
 
 // Soft UI Dashboard React themes
 import theme from "assets/theme";
@@ -141,6 +142,7 @@ export default function App() {
         {getRoutes(routes)}
         <Route exact path="/colors/:id" element={<ColorDetails />} />
         <Route exact path="/gradients/:id" element={<GradientDetails />} />
+        <Route exact path="/palettes/:id" element={<PaletteDetails />} />
         {/* render=
         {({ match }) => (
           <ColorDetails

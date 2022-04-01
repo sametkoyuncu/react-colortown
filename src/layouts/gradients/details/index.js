@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 // @mui material components
@@ -23,21 +22,18 @@ import gradients from "data/gradients";
 function GradientDetails() {
   const { id } = useParams();
 
-  const [gradient, setGradient] = useState({
-    id: "gradient_2",
+  const INITIAL_STATE = {
+    id: "gradient_0",
     colors: [
-      { hex: "#fc354c", rgb: "rgb(252, 53, 76)", hsl: "hsl(353, 97%, 60%)" },
-      { hex: "#0abfbc", rgb: "rgb(10, 191, 188)", hsl: "hsl(179, 90%, 39%)" },
+      { hex: "#ffffff", rgb: "rgb(0, 0, 0)", hsl: "hsl(0, 0%, 0%)" },
+      { hex: "#fffffe", rgb: "rgb(0, 0, 0)", hsl: "hsl(0, 0%, 0%)" },
     ],
     direction: "to right",
-    likes: 11,
+    likes: 0,
     tags: [],
-  });
-
-  useEffect(() => {
-    const gradientById = gradients.find((item) => item.id === id);
-    setGradient(gradientById);
-  }, [id]);
+  };
+  // TODO: INITIAL_STATE yerine 404 olmalı
+  const gradient = gradients.find((item) => item.id === id) || INITIAL_STATE;
 
   return (
     <DashboardLayout>

@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 // @mui material components
@@ -23,19 +22,17 @@ import colors from "data/colors";
 function ColorDetails() {
   const { id } = useParams();
 
-  const [color, setColor] = useState({
-    id: "",
-    hex: "",
-    rgb: "",
-    hsl: "",
+  const INITIAL_STATE = {
+    id: "color_0",
+    hex: "#ffffff",
+    rgb: "rgb(0,0,0)",
+    hsl: "hsl(0,0%,0%)",
     likes: 0,
     tags: [],
-  });
+  };
 
-  useEffect(() => {
-    const colorById = colors.find((item) => item.id === id);
-    setColor(colorById);
-  }, [id]);
+  // TODO: INITIAL_STATE yerine 404 olmalı
+  const color = colors.find((item) => item.id === id) || INITIAL_STATE;
 
   return (
     <DashboardLayout>
