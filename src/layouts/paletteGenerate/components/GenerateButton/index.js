@@ -14,7 +14,7 @@ import PropTypes from "prop-types";
 
 function GenerateButton({ getRandomHSLColors }) {
   return (
-    <SuiBox px={2} display="flex" justifyContent="center" alignItems="center">
+    <SuiBox display="flex" justifyContent="center" alignItems="center">
       <SuiButton variant="gradient" color="dark" onClick={getRandomHSLColors}>
         <Icon sx={{ fontWeight: "bold" }}>cached</Icon>
         &nbsp;generate random

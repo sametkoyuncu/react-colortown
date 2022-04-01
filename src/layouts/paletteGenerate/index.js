@@ -109,7 +109,6 @@ function PaletteGenerate() {
               </Grid>
               <Grid item xs={12}>
                 <SuiBox
-                  p={2}
                   pt={0}
                   display="flex"
                   justifyContent="space-between"
