@@ -24,6 +24,7 @@ import Alert from "@mui/material/Alert";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Slider from "@mui/material/Slider";
+import Divider from "@mui/material/Divider";
 
 // Soft UI Dashboard React components
 import SuiBox from "components/SuiBox";
@@ -104,10 +105,47 @@ function GradientDataCard({
 
   return (
     <Card>
+      {/* buttons */}
+      <SuiBox
+        p={2}
+        pb={0}
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        flexWrap="wrap"
+      >
+        <SuiButton variant="gradient" color="dark" onClick={getRandomRGBColor}>
+          <Icon sx={{ fontWeight: "bold" }}>cached</Icon>
+          &nbsp;generate random
+        </SuiButton>
+        <CtSaveModal colorCodes={[colorCodes1, colorCodes2]} type="gradient" />
+      </SuiBox>
+      {/* buttons end */}
       <SuiBox p={2}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6} container spacing={3}>
-            <SuiTypography variant="body1" ml={4} mt={2}>
+        <Grid container spacing={0}>
+          <Grid
+            item
+            xs={12}
+            sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}
+          >
+            <SuiTypography variant="caption1" ml={1} mr={3}>
+              Direction:
+            </SuiTypography>
+            <Slider
+              display="flex"
+              value={direction}
+              aria-label="Direction"
+              min={0}
+              max={360}
+              onChange={handleChangeDirection}
+              valueLabelDisplay="auto"
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Divider />
+          </Grid>
+          <Grid item xs={12} md={6} container spacing={2}>
+            <SuiTypography variant="body1" ml={4} mt={2} sx={{ color: colorCodes1.hex }}>
               Color 1
             </SuiTypography>
             {codeSectionData1.map((item) => (
@@ -121,8 +159,8 @@ function GradientDataCard({
               />
             ))}
           </Grid>
-          <Grid item xs={12} md={6} container spacing={3}>
-            <SuiTypography variant="body1" ml={4} mt={2}>
+          <Grid item xs={12} md={6} container spacing={2}>
+            <SuiTypography variant="body1" ml={4} mt={2} sx={{ color: colorCodes2.hex }}>
               Color 2
             </SuiTypography>
             {codeSectionData2.map((item) => (
@@ -136,35 +174,9 @@ function GradientDataCard({
               />
             ))}
           </Grid>
-          <Grid item xs={12}>
-            <Slider
-              display="flex"
-              value={direction}
-              aria-label="Direction"
-              min={0}
-              max={360}
-              onChange={handleChangeDirection}
-              valueLabelDisplay="auto"
-            />
-          </Grid>
         </Grid>
       </SuiBox>
-      {/* buttons */}
-      <SuiBox
-        p={2}
-        pt={0}
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        flexWrap="wrap"
-      >
-        <SuiButton variant="gradient" color="dark" onClick={getRandomRGBColor}>
-          <Icon sx={{ fontWeight: "bold" }}>cached</Icon>
-          &nbsp;generate random
-        </SuiButton>
 
-        <CtSaveModal colorCodes={[colorCodes1, colorCodes2]} type="gradient" />
-      </SuiBox>
       <Snackbar
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
         open={isSnackBarOpen}

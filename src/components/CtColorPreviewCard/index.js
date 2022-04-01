@@ -28,6 +28,9 @@ function CtColorPreviewCard({ bgColor }) {
       sx={{
         height: "100%",
         padding: "0.75rem",
+        position: "sticky",
+        zIndex: 50,
+        top: 100,
       }}
     >
       <SuiBox

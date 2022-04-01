@@ -74,8 +74,24 @@ function ColorDataCard({ colorCodes, getRandomRGBColor }) {
 
   return (
     <Card id="color-generate">
+      {/* buttons */}
+      <SuiBox
+        p={2}
+        pb={0}
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        flexWrap="wrap"
+      >
+        <SuiButton variant="gradient" color="dark" onClick={getRandomRGBColor}>
+          <Icon sx={{ fontWeight: "bold" }}>cached</Icon>
+          &nbsp;generate random
+        </SuiButton>
+        <CtSaveModal colorCodes={colorCodes} type="color" />
+      </SuiBox>
+      {/* buttons end */}
       <SuiBox p={2}>
-        <Grid container spacing={3}>
+        <Grid container spacing={2}>
           {codeSectionData.map((item) => (
             <CtColorCodeSection
               key={item.code}
@@ -87,21 +103,6 @@ function ColorDataCard({ colorCodes, getRandomRGBColor }) {
             />
           ))}
         </Grid>
-      </SuiBox>
-      {/* buttons */}
-      <SuiBox
-        p={2}
-        pt={0}
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        flexWrap="wrap"
-      >
-        <SuiButton variant="gradient" color="dark" onClick={getRandomRGBColor}>
-          <Icon sx={{ fontWeight: "bold" }}>cached</Icon>
-          &nbsp;generate random
-        </SuiButton>
-        <CtSaveModal colorCodes={colorCodes} type="color" />
       </SuiBox>
       <Snackbar
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
