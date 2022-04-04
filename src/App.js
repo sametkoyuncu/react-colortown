@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 
 // react-router components
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
@@ -46,6 +46,7 @@ import { useSoftUIController, setMiniSidenav, setOpenConfigurator } from "contex
 
 // Images
 import brand from "assets/images/c-logo.png";
+import { AuthContext } from "context/colortown/AuthContext";
 
 export default function App() {
   const [controller, dispatch] = useSoftUIController();
@@ -53,8 +54,10 @@ export default function App() {
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const { pathname } = useLocation();
 
-  // user
-  // const currentUser = false;
+  // TODO: giriş yapmış kullanıcı yoksa profile sayfasına gitme ve gösterme
+  // TODO: giriş yapmış kullanıcı varsa login ve sign in e gitme ve gösterme
+  // eslint-disable-next-line no-unused-vars
+  const { currentUser } = useContext(AuthContext);
 
   // Open sidenav when mouse enter on mini sidenav
   const handleOnMouseEnter = () => {
@@ -140,18 +143,12 @@ export default function App() {
           {configsButton}
         </>
       )}
-      {/* {layout === "vr" && <Configurator />} */}
       <Routes>
         {getRoutes(routes)}
         <Route exact path="/colors/:id" element={<ColorDetails />} />
         <Route exact path="/gradients/:id" element={<GradientDetails />} />
         <Route exact path="/palettes/:id" element={<PaletteDetails />} />
-        {/* render=
-        {({ match }) => (
-          <ColorDetails
-            color={colors.find((item) => String(item.id) === String(match.params.id))}
-          />
-        )} */}
+
         <Route path="*" element={<Navigate to="/colors" />} />
       </Routes>
     </ThemeProvider>

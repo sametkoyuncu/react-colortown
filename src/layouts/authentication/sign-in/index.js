@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 // react-router-dom components
 import { Link, useNavigate } from "react-router-dom";
@@ -33,6 +33,9 @@ import CoverLayout from "layouts/authentication/components/CoverLayout";
 // Images
 import curved9 from "assets/images/curved-images/curved-6.jpg";
 
+// context
+import { AuthContext } from "context/colortown/AuthContext";
+
 // firebase.js
 import { auth } from "../../../firebase";
 
@@ -46,6 +49,8 @@ function SignIn() {
 
   const navigate = useNavigate();
 
+  const { dispatch } = useContext(AuthContext);
+
   const handleLogin = (e) => {
     e.preventDefault();
     setError(false);
@@ -54,8 +59,7 @@ function SignIn() {
         // sign in
         // eslint-disable-next-line prefer-destructuring, no-unused-vars
         const user = userCredential.user;
-        // TODO: remove this line
-        console.log(user);
+        dispatch({ type: "LOGIN", payload: user });
         navigate("/");
       })
       .catch((err) => {

@@ -23,12 +23,15 @@ import { SoftUIControllerProvider } from "context";
 
 // colortown context provider
 import { ColorTownProvider } from "./context/colortown";
+import { AuthContextProvider } from "./context/colortown/AuthContext";
 
 ReactDOM.render(
   <BrowserRouter>
     <SoftUIControllerProvider>
       <ColorTownProvider>
-        <App />
+        <AuthContextProvider>
+          <App />
+        </AuthContextProvider>
       </ColorTownProvider>
     </SoftUIControllerProvider>
   </BrowserRouter>,
