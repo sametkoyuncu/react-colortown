@@ -13,13 +13,13 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 // react-router-dom components
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-// @mui material components
-import Switch from "@mui/material/Switch";
+// firebase
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 // Soft UI Dashboard React components
 import SuiBox from "components/SuiBox";
@@ -33,10 +33,43 @@ import CoverLayout from "layouts/authentication/components/CoverLayout";
 // Images
 import curved9 from "assets/images/curved-images/curved-6.jpg";
 
-function SignIn() {
-  const [rememberMe, setRememberMe] = useState(true);
+// context
+import { AuthContext } from "context/colortown/AuthContext";
 
-  const handleSetRememberMe = () => setRememberMe(!rememberMe);
+// firebase.js
+import { auth } from "../../../firebase";
+
+const inputStyles = { border: "1px solid #e5e5e5", borderRadius: "8px" };
+
+function SignIn() {
+  // eslint-disable-next-line no-unused-vars
+  const [error, setError] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
+
+  const { dispatch } = useContext(AuthContext);
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    setError(false);
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // sign in
+        // eslint-disable-next-line prefer-destructuring, no-unused-vars
+        const user = userCredential.user;
+        dispatch({ type: "LOGIN", payload: user });
+        navigate("/");
+      })
+      .catch((err) => {
+        // eslint-disable-next-line no-unused-vars
+        const errorCode = err.code;
+        // eslint-disable-next-line no-unused-vars
+        const errorMessage = err.message;
+        setError(true);
+      });
+  };
 
   return (
     <CoverLayout
@@ -44,14 +77,20 @@ function SignIn() {
       description="Enter your email and password to sign in"
       image={curved9}
     >
-      <SuiBox component="form" role="form">
+      <SuiBox component="form" role="form" onSubmit={handleLogin} mb={5}>
         <SuiBox mb={2}>
           <SuiBox mb={1} ml={0.5}>
             <SuiTypography component="label" variant="caption" fontWeight="bold">
               Email
             </SuiTypography>
           </SuiBox>
-          <SuiInput type="email" placeholder="Email" />
+          <SuiInput
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email"
+            sx={inputStyles}
+          />
         </SuiBox>
         <SuiBox mb={2}>
           <SuiBox mb={1} ml={0.5}>
@@ -59,21 +98,23 @@ function SignIn() {
               Password
             </SuiTypography>
           </SuiBox>
-          <SuiInput type="password" placeholder="Password" />
+          <SuiInput
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+            sx={inputStyles}
+          />
         </SuiBox>
-        <SuiBox display="flex" alignItems="center">
-          <Switch checked={rememberMe} onChange={handleSetRememberMe} />
-          <SuiTypography
-            variant="button"
-            fontWeight="regular"
-            onClick={handleSetRememberMe}
-            sx={{ cursor: "pointer", userSelect: "none" }}
-          >
-            &nbsp;&nbsp;Remember me
-          </SuiTypography>
-        </SuiBox>
+        {error && (
+          <SuiBox>
+            <SuiTypography variant="button" color="error" fontWeight="regular">
+              Wrong email or password!{" "}
+            </SuiTypography>
+          </SuiBox>
+        )}
         <SuiBox mt={4} mb={1}>
-          <SuiButton variant="gradient" color="info" fullWidth>
+          <SuiButton type="submit" variant="gradient" color="info" fullWidth>
             sign in
           </SuiButton>
         </SuiBox>

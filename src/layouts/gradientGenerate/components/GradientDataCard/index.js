@@ -23,6 +23,8 @@ import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import Slider from "@mui/material/Slider";
+import Divider from "@mui/material/Divider";
 
 // Soft UI Dashboard React components
 import SuiBox from "components/SuiBox";
@@ -32,7 +34,9 @@ import SuiButton from "components/SuiButton";
 // Soft UI Dashboard React base styles
 import borders from "assets/theme/base/borders";
 
+// ct components
 import CtColorCodeSection from "components/CtColorCodeSection";
+import CtSaveModal from "components/CtSaveModal";
 
 // Images
 import hexLogo from "assets/images/logos/hex.png";
@@ -42,7 +46,13 @@ import hslLogo from "assets/images/logos/hsl.png";
 // prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
 
-function GradientDataCard({ colorCodes1, colorCodes2, getRandomRGBColor }) {
+function GradientDataCard({
+  colorCodes1,
+  colorCodes2,
+  getRandomRGBColor,
+  direction,
+  setDirection,
+}) {
   const [isSnackBarOpen, setIsSnackBarOpen] = useState(false);
 
   const { borderWidth, borderColor } = borders;
@@ -77,6 +87,7 @@ function GradientDataCard({ colorCodes1, colorCodes2, getRandomRGBColor }) {
     },
   ];
 
+  // snackbar functions
   const handleCopy = (copyText) => {
     setIsSnackBarOpen(true);
     navigator.clipboard.writeText(copyText);
@@ -86,21 +97,54 @@ function GradientDataCard({ colorCodes1, colorCodes2, getRandomRGBColor }) {
     setIsSnackBarOpen(false);
   };
 
+  // slider functions
+  const handleChangeDirection = (event, newValue) => {
+    setDirection(newValue);
+  };
+
   return (
     <Card>
-      <SuiBox pt={2} px={2} display="flex" justifyContent="space-between" alignItems="center">
-        <SuiTypography variant="h6" fontWeight="medium">
-          Color Codes
-        </SuiTypography>
+      {/* buttons */}
+      <SuiBox
+        p={2}
+        pb={0}
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        flexWrap="wrap"
+      >
         <SuiButton variant="gradient" color="dark" onClick={getRandomRGBColor}>
           <Icon sx={{ fontWeight: "bold" }}>cached</Icon>
           &nbsp;generate random
         </SuiButton>
+        <CtSaveModal colorCodes={[colorCodes1, colorCodes2, direction]} type="gradient" />
       </SuiBox>
+      {/* buttons end */}
       <SuiBox p={2}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6} container spacing={3}>
-            <SuiTypography variant="body1" ml={4} mt={2}>
+        <Grid container spacing={0}>
+          <Grid
+            item
+            xs={12}
+            sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}
+          >
+            <SuiTypography variant="caption1" ml={1} mr={3}>
+              Direction:
+            </SuiTypography>
+            <Slider
+              display="flex"
+              value={direction}
+              aria-label="Direction"
+              min={0}
+              max={360}
+              onChange={handleChangeDirection}
+              valueLabelDisplay="auto"
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Divider />
+          </Grid>
+          <Grid item xs={12} md={6} container spacing={2}>
+            <SuiTypography variant="body1" ml={4} mt={2} sx={{ color: colorCodes1.hex }}>
               Color 1
             </SuiTypography>
             {codeSectionData1.map((item) => (
@@ -114,8 +158,8 @@ function GradientDataCard({ colorCodes1, colorCodes2, getRandomRGBColor }) {
               />
             ))}
           </Grid>
-          <Grid item xs={12} md={6} container spacing={3}>
-            <SuiTypography variant="body1" ml={4} mt={2}>
+          <Grid item xs={12} md={6} container spacing={2}>
+            <SuiTypography variant="body1" ml={4} mt={2} sx={{ color: colorCodes2.hex }}>
               Color 2
             </SuiTypography>
             {codeSectionData2.map((item) => (
@@ -131,6 +175,7 @@ function GradientDataCard({ colorCodes1, colorCodes2, getRandomRGBColor }) {
           </Grid>
         </Grid>
       </SuiBox>
+
       <Snackbar
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
         open={isSnackBarOpen}
@@ -171,6 +216,8 @@ GradientDataCard.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   colorCodes2: PropTypes.object,
   getRandomRGBColor: PropTypes.func,
+  direction: PropTypes.number.isRequired,
+  setDirection: PropTypes.func.isRequired,
 };
 
 export default GradientDataCard;

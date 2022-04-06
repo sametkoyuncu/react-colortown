@@ -1,50 +1,211 @@
+import tags from "./tags";
+
 const palettes = [
   {
+    id: "palette_0",
+    colors: [
+      {
+        color: "#f5ffbe",
+        name: "Australian Mint",
+      },
+      {
+        color: "#414257",
+        name: "Gun Powder",
+      },
+      {
+        color: "#f0fcea",
+        name: "Feta",
+      },
+      {
+        color: "#ffd700",
+        name: "Golden",
+      },
+    ],
+    likes: 13,
+    tags: [tags[5], tags[7], tags[11]],
+  },
+  {
     id: "palette_1",
-    colors: ["#FFC300", "#FF5733", "#C70039", "#900C3F"],
+    colors: [
+      {
+        color: "#ffc3c0",
+        name: "Your Pink",
+      },
+      {
+        color: "#ff55a3",
+        name: "Brilliant Rose",
+      },
+      {
+        color: "#ff5470",
+        name: "Fiery Rose",
+      },
+      {
+        color: "#c7031e",
+        name: "Monza",
+      },
+    ],
     likes: 102,
     tags: [],
   },
   {
     id: "palette_2",
-    colors: ["#9ADCFF", "#FFF89A", "#FFB2A6", "#FF8AAE"],
+    colors: [
+      {
+        color: "#9ab973",
+        name: "Olivine",
+      },
+      {
+        color: "#fff8d1",
+        name: "Baja White",
+      },
+      {
+        color: "#ffb7c5",
+        name: "Cherry Blossom Pink",
+      },
+      {
+        color: "#ff8c00",
+        name: "Dark Orange",
+      },
+    ],
     likes: 11,
     tags: [],
   },
   {
     id: "palette_3",
-    colors: ["#46244C", "#712B75", "#C74B50", "#D49B54"],
+    colors: [
+      {
+        color: "#462425",
+        name: "Crater Brown",
+      },
+      {
+        color: "#71291d",
+        name: "Metallic Copper",
+      },
+      {
+        color: "#c74375",
+        name: "Fuchsia Rose",
+      },
+      {
+        color: "#d4dfe2",
+        name: "Geyser",
+      },
+    ],
     likes: 39,
     tags: [],
   },
   {
     id: "palette_4",
-    colors: ["#F4FCD9", "#C5D8A4", "#BB9981", "#534340"],
+    colors: [
+      {
+        color: "#f4f0ec",
+        name: "Isabelline",
+      },
+      {
+        color: "#c5dbca",
+        name: "Sea Mist",
+      },
+      {
+        color: "#bbd7c1",
+        name: "Surf",
+      },
+      {
+        color: "#534491",
+        name: "Victoria",
+      },
+    ],
     likes: 9,
     tags: [],
   },
   {
     id: "palette_5",
-    colors: ["#F7E2E2", "#61A4BC", "#5B7DB1", "#1A132F"],
+    colors: [
+      {
+        color: "#f7e7ce",
+        name: "Champagne",
+      },
+      {
+        color: "#615d30",
+        name: "Costa Del Sol",
+      },
+      {
+        color: "#5b3013",
+        name: "Jambalaya",
+      },
+      {
+        color: "#1a1110",
+        name: "Licorice",
+      },
+    ],
     direction: "to right",
     likes: 3,
     tags: [],
   },
   {
     id: "palette_6",
-    colors: ["#180A0A", "#711A75", "#F10086", "#F582A7"],
+    colors: [
+      {
+        color: "#18453b",
+        name: "MSU Green",
+      },
+      {
+        color: "#711a00",
+        name: "Cedar Wood Finish",
+      },
+      {
+        color: "#f1ffc8",
+        name: "Chiffon",
+      },
+      {
+        color: "#f58025",
+        name: "Princeton Orange",
+      },
+    ],
     likes: 3,
     tags: [],
   },
   {
     id: "palette_7",
-    colors: ["#557B83", "#39AEA9", "#C70039", "#900C3F"],
+    colors: [
+      {
+        color: "#555b10",
+        name: "Saratoga",
+      },
+      {
+        color: "#39a78e",
+        name: "Zomp",
+      },
+      {
+        color: "#c7031e",
+        name: "Monza",
+      },
+      {
+        color: "#901e1e",
+        name: "Old Brick",
+      },
+    ],
     likes: 3,
     tags: [],
   },
   {
     id: "palette_8",
-    colors: ["#D0EFB1", "#B3D89C", "#9DC3C2", "#77A6B6"],
+    colors: [
+      {
+        color: "#d0417e",
+        name: "Pantone Magenta",
+      },
+      {
+        color: "#b39eb5",
+        name: "Pastel Purple",
+      },
+      {
+        color: "#9dc209",
+        name: "Limerick",
+      },
+      {
+        color: "#779e86",
+        name: "Oxley",
+      },
+    ],
     likes: 13,
     tags: [],
   },

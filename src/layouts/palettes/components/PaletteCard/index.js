@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 // @mui material components
 import Card from "@mui/material/Card";
@@ -35,13 +36,13 @@ function PaletteCard({ paletteId, bgColors, likesCount, isLiked, handleLikeBtnCl
       <SuiBox p={1}>
         <Grid container spacing={0}>
           {bgColors.map((bgColor) => (
-            <Grid key={bgColor} item xs={3} sx={{ position: "relative", ml: "auto" }}>
+            <Grid key={bgColor.color} item xs={3} sx={{ position: "relative", ml: "auto" }}>
               <SuiBox
                 height="160px"
                 display="grid"
                 justifyContent="center"
                 alignItems="center"
-                bgColor={bgColor}
+                bgColor={bgColor.color}
               />
             </Grid>
           ))}
@@ -65,7 +66,6 @@ function PaletteCard({ paletteId, bgColors, likesCount, isLiked, handleLikeBtnCl
               alignItems="center"
             >
               <SuiButton size="medium" circular onClick={handleClick} sx={{ boxShadow: "none" }}>
-                {/* , color: "#FC354C" */}
                 <Icon color={isLiked ? "error" : "secondary"} sx={{ fontSize: "24px !important" }}>
                   {isLiked ? "favorite" : "favorite_border"}
                 </Icon>
@@ -82,11 +82,13 @@ function PaletteCard({ paletteId, bgColors, likesCount, isLiked, handleLikeBtnCl
               justifyContent="flex-end"
               alignItems="center"
             >
-              <SuiButton variant="outlined" color="secondary" size="small" circular>
-                <SuiTypography ml={1} variant="button" fontWeight="medium" color="secondary">
-                  Details
-                </SuiTypography>
-              </SuiButton>
+              <Link to={`/palettes/${paletteId}`}>
+                <SuiButton variant="outlined" color="secondary" size="small" circular>
+                  <SuiTypography ml={1} variant="button" fontWeight="medium" color="secondary">
+                    Details
+                  </SuiTypography>
+                </SuiButton>
+              </Link>
             </Grid>
           </Grid>
         </SuiBox>
@@ -97,7 +99,6 @@ function PaletteCard({ paletteId, bgColors, likesCount, isLiked, handleLikeBtnCl
 
 PaletteCard.defaultProps = {
   paletteId: null,
-  bgColors: ["transparent"],
   likesCount: 0,
   isLiked: false,
   handleLikeBtnClick: function handleLikeBtnClick() {},
@@ -106,7 +107,7 @@ PaletteCard.defaultProps = {
 // Typechecking props for the SuiBox
 PaletteCard.propTypes = {
   paletteId: PropTypes.string,
-  bgColors: PropTypes.arrayOf(PropTypes.string),
+  bgColors: PropTypes.arrayOf(PropTypes.object).isRequired,
   likesCount: PropTypes.number,
   isLiked: PropTypes.bool,
   handleLikeBtnClick: PropTypes.func,

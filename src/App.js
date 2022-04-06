@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 
 // react-router components
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
@@ -30,9 +30,15 @@ import SuiBox from "components/SuiBox";
 import Sidenav from "examples/Sidenav";
 import Configurator from "examples/Configurator";
 
+// Soft UI Dashboard React layouts
+import Profile from "layouts/profile";
+import SignIn from "layouts/authentication/sign-in";
+import SignUp from "layouts/authentication/sign-up";
+
 // ColorTown layouts
 import ColorDetails from "layouts/colors/details";
 import GradientDetails from "layouts/gradients/details";
+import PaletteDetails from "layouts/palettes/details";
 
 // Soft UI Dashboard React themes
 import theme from "assets/theme";
@@ -45,12 +51,18 @@ import { useSoftUIController, setMiniSidenav, setOpenConfigurator } from "contex
 
 // Images
 import brand from "assets/images/c-logo.png";
+import { AuthContext } from "context/colortown/AuthContext";
 
 export default function App() {
   const [controller, dispatch] = useSoftUIController();
   const { miniSidenav, direction, layout, openConfigurator, sidenavColor } = controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const { pathname } = useLocation();
+
+  // TODO: giriş yapmış kullanıcı yoksa profile sayfasına gitme ve gösterme
+  // TODO: giriş yapmış kullanıcı varsa login ve sign in e gitme ve gösterme
+  // eslint-disable-next-line no-unused-vars
+  const { currentUser } = useContext(AuthContext);
 
   // Open sidenav when mouse enter on mini sidenav
   const handleOnMouseEnter = () => {
@@ -136,17 +148,15 @@ export default function App() {
           {configsButton}
         </>
       )}
-      {/* {layout === "vr" && <Configurator />} */}
       <Routes>
         {getRoutes(routes)}
+        <Route exact path="/profile" element={<Profile />} />
+        <Route exact path="/authentication/sign-in" element={<SignIn />} />
+        <Route exact path="/authentication/sign-up" element={<SignUp />} />
         <Route exact path="/colors/:id" element={<ColorDetails />} />
         <Route exact path="/gradients/:id" element={<GradientDetails />} />
-        {/* render=
-        {({ match }) => (
-          <ColorDetails
-            color={colors.find((item) => String(item.id) === String(match.params.id))}
-          />
-        )} */}
+        <Route exact path="/palettes/:id" element={<PaletteDetails />} />
+
         <Route path="*" element={<Navigate to="/colors" />} />
       </Routes>
     </ThemeProvider>

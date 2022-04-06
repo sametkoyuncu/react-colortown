@@ -4,7 +4,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
+// import DialogTitle from "@mui/material/DialogTitle";
 import Icon from "@mui/material/Icon";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -16,10 +16,14 @@ import SuiButton from "components/SuiButton";
 // prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
 
+// firestore
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "../../firebase";
+
 // data
 import tags from "../../data/tags";
 
-function CtSaveModal({ colorCodes }) {
+function CtSaveModal({ colorCodes, type }) {
   const [open, setOpen] = useState(false);
 
   const [name, setName] = useState("");
@@ -47,35 +51,82 @@ function CtSaveModal({ colorCodes }) {
     setSelectedTags([...newTags]);
   };
 
-  // save color
-  const handleSave = () => {
-    const random = Math.floor(1000 + Math.random() * 90000);
-    const id = `color_${random}`;
-    const color = {
-      id,
+  // save functions
+  // TODO: oluşturulan verileri bir yere kaydedilmeli
+  // TODO: gradient için direction gelmiyor, onu al
+  const saveColor = async () => {
+    await addDoc(collection(db, "colors"), {
       name,
       hex: colorCodes.hex,
       rgb: colorCodes.rgb,
       hsl: colorCodes.hsl,
       likes: 0,
       tags: [...selectedTags],
+    });
+  };
+
+  const saveGradient = (randomNumber) => {
+    const id = `gradient_${randomNumber}`;
+    const gradient = {
+      id,
+      name,
+      colors: [
+        { hex: colorCodes[0].hex, rgb: colorCodes[0].rgb, hsl: colorCodes[0].hsl },
+        { hex: colorCodes[1].hex, rgb: colorCodes[1].rgb, hsl: colorCodes[1].hsl },
+      ],
+      direction: `${colorCodes[2]}deg`,
+      likes: 0,
+      tags: [...selectedTags],
     };
 
+    return gradient;
+  };
+
+  const savePalette = (randomNumber) => {
+    const id = `palette_${randomNumber}`;
+    const palette = {
+      id,
+      name,
+      colors: [...colorCodes],
+      likes: 0,
+      tags: [...selectedTags],
+    };
+
+    return palette;
+  };
+
+  const handleSave = () => {
+    const randomNumber = Math.floor(1000 + Math.random() * 90000);
+    // istek nereden geliyorsa ona göre kaydeliyor
+    // color, gradient veya palatte generator sayfalarıdan birisi olmalı
+    switch (type) {
+      case "color":
+        saveColor();
+        break;
+      case "gradient":
+        console.log(saveGradient(randomNumber));
+        break;
+      case "palette":
+        console.log(savePalette(randomNumber));
+        break;
+      default:
+        break;
+    }
+    // close modal
     setOpen(false);
     // clear states
     setName("");
     setSelectedTags([]);
-    console.log(color);
   };
 
   return (
-    <div>
+    <>
       <SuiButton variant="gradient" color="info" onClick={handleClickOpen}>
         <Icon>save</Icon>
         &nbsp;save
       </SuiButton>
       <Dialog fullWidth maxWidth="xs" open={open} onClose={handleClose}>
-        <DialogTitle>Save this color</DialogTitle>
+        {/* <DialogTitle>Save this</DialogTitle> */}
         <DialogContent>
           {/* name input */}
           <TextField
@@ -155,22 +206,15 @@ function CtSaveModal({ colorCodes }) {
           </SuiButton>
         </DialogActions>
       </Dialog>
-    </div>
+    </>
   );
 }
-
-CtSaveModal.defaultProps = {
-  colorCodes: {
-    rgb: `rgb(0, 0, 0)`,
-    hex: "#000000",
-    hsl: "hsl(0,0%,0%)",
-  },
-};
 
 // Typechecking props for the SuiBox
 CtSaveModal.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
-  colorCodes: PropTypes.object,
+  colorCodes: PropTypes.any.isRequired,
+  type: PropTypes.oneOf(["color", "gradient", "palette"]).isRequired,
 };
 
 export default CtSaveModal;

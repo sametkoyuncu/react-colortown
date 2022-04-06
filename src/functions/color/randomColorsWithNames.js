@@ -19,7 +19,7 @@ let data = [];
 
 const getRandomPalette = () => {
   const colors = [];
-  for (let i = 0; i < 5; i += 1) {
+  for (let i = 0; i < 4; i += 1) {
     const randomNumber = Math.round(Math.random() * 2331);
     colors.push({ color: data[randomNumber][0], name: data[randomNumber][1] });
   }

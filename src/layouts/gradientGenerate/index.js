@@ -33,7 +33,7 @@ import GradientDataCard from "layouts/gradientGenerate/components/GradientDataCa
 import { rgbToHex, rgbToHsl, randomRGBColor } from "functions/color";
 
 function GradientGenerate() {
-  const [direction, setDirection] = useState("to right");
+  const [direction, setDirection] = useState(180);
 
   const [colorCodes1, setColorCodes1] = useState({
     rgb: "rgb(111, 13, 167)",
@@ -80,8 +80,7 @@ function GradientGenerate() {
           <Grid container spacing={2}>
             <Grid item xs={12} md={5}>
               <CtColorPreviewCard
-                bgColor={`linear-gradient(${direction}, ${colorCodes1.hex}, ${colorCodes2.hex})`}
-                setDirection={setDirection}
+                bgColor={`linear-gradient(${direction}deg, ${colorCodes1.hex}, ${colorCodes2.hex})`}
               />
             </Grid>
             <Grid item xs={12} md={7}>
@@ -89,6 +88,8 @@ function GradientGenerate() {
                 colorCodes1={colorCodes1}
                 colorCodes2={colorCodes2}
                 getRandomRGBColor={getRandomRGBColor}
+                direction={direction}
+                setDirection={setDirection}
               />
             </Grid>
           </Grid>

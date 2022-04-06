@@ -13,6 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 // @mui material components
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
@@ -31,22 +32,46 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 
-// color convert functions + rgbToHex, rgbToHsl,
-import { randomHSLColor } from "functions/color";
-
 // Dashboard layout components
-import SingleColorCard from "layouts/paletteGenerate/components/SingleColorCard";
-import GenerateButton from "./components/GenerateButton";
+import SingleColorCard from "layouts/palettes/details/components/SingleColorCard";
 
-function PaletteGenerate() {
+// colortown components
+import CtColorTagsCard from "components/CtColorTagsCard";
+
+// data
+import palettes from "../../../data/palettes";
+
+function PaletteDetails() {
+  const { id } = useParams();
   const [isSnackBarOpen, setIsSnackBarOpen] = useState(false);
-  const [colorCodes, setColorCodes] = useState([
-    { hsl: [10, 90, 50] },
-    { hsl: [20, 90, 50] },
-    { hsl: [30, 90, 50] },
-    { hsl: [180, 90, 50] },
-    { hsl: [200, 90, 50] },
-  ]);
+
+  const INITIAL_STATE = {
+    id: "palette_0",
+    colors: [
+      {
+        color: "#ffffff",
+        name: "White",
+      },
+      {
+        color: "#fffffe",
+        name: "White",
+      },
+      {
+        color: "#fffffd",
+        name: "White",
+      },
+      {
+        color: "#fffffc",
+        name: "White",
+      },
+    ],
+    likes: 0,
+    tags: [],
+  };
+  // TODO: tags card eklenecek
+
+  // TODO: INITIAL_STATE yerine 404 olmalı
+  const palette = palettes.find((item) => item.id === id) || INITIAL_STATE;
 
   const handleCopy = (copyText) => {
     setIsSnackBarOpen(true);
@@ -57,37 +82,10 @@ function PaletteGenerate() {
     setIsSnackBarOpen(false);
   };
 
-  const getRandomHSLColors = () => {
-    const randomHSLColorTemp = [...randomHSLColor()];
-    // we use for generate and store palette codes
-    const paletteColors = [];
-
-    for (let i = 0; i < 3; i += 1) {
-      paletteColors.push([
-        randomHSLColorTemp[0] + i * 10,
-        randomHSLColorTemp[1],
-        randomHSLColorTemp[2],
-      ]);
-    }
-    for (let i = 0; i < 2; i += 1) {
-      paletteColors.push([
-        randomHSLColorTemp[0] + i * 20 + 170,
-        randomHSLColorTemp[1],
-        randomHSLColorTemp[2],
-      ]);
-    }
-    // if first number is bigger than 360, we need subtrac 360 from it, because max value is 360 degree.
-    const paletteColorsMap = paletteColors.map((item) =>
-      item[0] <= 360 ? { hsl: [...item] } : { hsl: [item[0] - 360, item[1], item[2]] }
-    );
-
-    setColorCodes([...paletteColorsMap]);
-  };
-
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <SuiBox mb={3}>
+      <SuiBox mb={2}>
         <Card>
           <SuiBox p={2}>
             <Grid container spacing={0}>
@@ -95,24 +93,23 @@ function PaletteGenerate() {
                 <SuiBox
                   display="flex"
                   sx={{
-                    flexDirection: "row",
+                    flexDirection: { xs: "column", sm: "row" },
                     flexWrap: "nowrap",
                     alignItems: "stretch",
                   }}
                 >
-                  {colorCodes.map(
-                    (color, index) =>
-                      index < 5 && (
+                  {palette.colors.map(
+                    (item, index) =>
+                      index < 4 && (
                         <SingleColorCard
-                          bgColor={`hsl(${color.hsl[0]},${color.hsl[1]}%,${color.hsl[2]}%)`}
+                          key={item.color}
+                          bgColor={item.color}
+                          bgName={item.name}
                           handleCopy={handleCopy}
                         />
                       )
                   )}
                 </SuiBox>
-              </Grid>
-              <Grid item xs={12}>
-                <GenerateButton getRandomHSLColors={getRandomHSLColors} />
               </Grid>
             </Grid>
           </SuiBox>
@@ -133,9 +130,14 @@ function PaletteGenerate() {
           </Snackbar>
         </Card>
       </SuiBox>
+      {!!palette.tags.length && (
+        <Grid item xs={12} mb={2}>
+          <CtColorTagsCard tags={palette.tags} />
+        </Grid>
+      )}
       <Footer />
     </DashboardLayout>
   );
 }
 
-export default PaletteGenerate;
+export default PaletteDetails;

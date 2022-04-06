@@ -30,6 +30,7 @@ import Icon from "@mui/material/Icon";
 
 // Soft UI Dashboard React components
 import SuiBox from "components/SuiBox";
+import CtAccountNavbarMenu from "components/CtAccountNavbarMenu";
 // import SuiTypography from "components/SuiTypography";
 import SuiInput from "components/SuiInput";
 
@@ -203,6 +204,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
               </IconButton> */}
               {/* {renderMenu()} */}
             </SuiBox>
+            <CtAccountNavbarMenu />
           </SuiBox>
         )}
       </Toolbar>

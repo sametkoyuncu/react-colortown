@@ -31,6 +31,9 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 
+// ct components
+import CtSaveModal from "components/CtSaveModal";
+
 // color convert functions + rgbToHex, rgbToHsl,
 import { getRandomPalette } from "functions/color";
 
@@ -55,10 +58,6 @@ const INITIAL_STATE = [
     color: "#ffd700",
     name: "Golden",
   },
-  {
-    color: "#fef0ec",
-    name: "Bridesmaid",
-  },
 ];
 
 function PaletteGenerate() {
@@ -73,7 +72,7 @@ function PaletteGenerate() {
   const handleClose = () => {
     setIsSnackBarOpen(false);
   };
-
+  // TODO: this function name must be change
   const getRandomHSLColors = () => {
     const arr = getRandomPalette() || [];
     setColorCodes([...arr]);
@@ -86,7 +85,7 @@ function PaletteGenerate() {
         <Card>
           <SuiBox p={2}>
             <Grid container spacing={0}>
-              <Grid item xs={12}>
+              <Grid item xs={12} mb={2}>
                 <SuiBox
                   display="flex"
                   sx={{
@@ -109,7 +108,16 @@ function PaletteGenerate() {
                 </SuiBox>
               </Grid>
               <Grid item xs={12}>
-                <GenerateButton getRandomHSLColors={getRandomHSLColors} />
+                <SuiBox
+                  pt={0}
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  flexWrap="wrap"
+                >
+                  <GenerateButton getRandomHSLColors={getRandomHSLColors} />
+                  <CtSaveModal colorCodes={colorCodes} type="palette" />
+                </SuiBox>
               </Grid>
             </Grid>
           </SuiBox>
