@@ -30,6 +30,11 @@ import SuiBox from "components/SuiBox";
 import Sidenav from "examples/Sidenav";
 import Configurator from "examples/Configurator";
 
+// Soft UI Dashboard React layouts
+import Profile from "layouts/profile";
+import SignIn from "layouts/authentication/sign-in";
+import SignUp from "layouts/authentication/sign-up";
+
 // ColorTown layouts
 import ColorDetails from "layouts/colors/details";
 import GradientDetails from "layouts/gradients/details";
@@ -145,6 +150,9 @@ export default function App() {
       )}
       <Routes>
         {getRoutes(routes)}
+        <Route exact path="/profile" element={<Profile />} />
+        <Route exact path="/authentication/sign-in" element={<SignIn />} />
+        <Route exact path="/authentication/sign-up" element={<SignUp />} />
         <Route exact path="/colors/:id" element={<ColorDetails />} />
         <Route exact path="/gradients/:id" element={<GradientDetails />} />
         <Route exact path="/palettes/:id" element={<PaletteDetails />} />
