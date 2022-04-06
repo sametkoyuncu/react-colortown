@@ -54,7 +54,6 @@ function GradientDataCard({
   setDirection,
 }) {
   const [isSnackBarOpen, setIsSnackBarOpen] = useState(false);
-  // const [direction, setDirection] = useState(180);
 
   const { borderWidth, borderColor } = borders;
 
@@ -118,7 +117,7 @@ function GradientDataCard({
           <Icon sx={{ fontWeight: "bold" }}>cached</Icon>
           &nbsp;generate random
         </SuiButton>
-        <CtSaveModal colorCodes={[colorCodes1, colorCodes2]} type="gradient" />
+        <CtSaveModal colorCodes={[colorCodes1, colorCodes2, direction]} type="gradient" />
       </SuiBox>
       {/* buttons end */}
       <SuiBox p={2}>
