@@ -1,3 +1,5 @@
+import tags from "./tags";
+
 const palettes = [
   {
     id: "palette_0",
@@ -20,7 +22,7 @@ const palettes = [
       },
     ],
     likes: 13,
-    tags: [],
+    tags: [tags[5], tags[7], tags[11]],
   },
   {
     id: "palette_1",

@@ -16,6 +16,10 @@ import SuiButton from "components/SuiButton";
 // prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
 
+// firestore
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "../../firebase";
+
 // data
 import tags from "../../data/tags";
 
@@ -50,18 +54,15 @@ function CtSaveModal({ colorCodes, type }) {
   // save functions
   // TODO: oluşturulan verileri bir yere kaydedilmeli
   // TODO: gradient için direction gelmiyor, onu al
-  const saveColor = (randomNumber) => {
-    const id = `color_${randomNumber}`;
-    const color = {
-      id,
+  const saveColor = async () => {
+    await addDoc(collection(db, "colors"), {
       name,
       hex: colorCodes.hex,
       rgb: colorCodes.rgb,
       hsl: colorCodes.hsl,
       likes: 0,
       tags: [...selectedTags],
-    };
-    return color;
+    });
   };
 
   const saveGradient = (randomNumber) => {
@@ -73,6 +74,7 @@ function CtSaveModal({ colorCodes, type }) {
         { hex: colorCodes[0].hex, rgb: colorCodes[0].rgb, hsl: colorCodes[0].hsl },
         { hex: colorCodes[1].hex, rgb: colorCodes[1].rgb, hsl: colorCodes[1].hsl },
       ],
+      direction: `${colorCodes[2]}deg`,
       likes: 0,
       tags: [...selectedTags],
     };
@@ -99,7 +101,7 @@ function CtSaveModal({ colorCodes, type }) {
     // color, gradient veya palatte generator sayfalarıdan birisi olmalı
     switch (type) {
       case "color":
-        console.log(saveColor(randomNumber));
+        saveColor();
         break;
       case "gradient":
         console.log(saveGradient(randomNumber));

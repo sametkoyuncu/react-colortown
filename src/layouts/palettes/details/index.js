@@ -35,6 +35,9 @@ import Footer from "examples/Footer";
 // Dashboard layout components
 import SingleColorCard from "layouts/palettes/details/components/SingleColorCard";
 
+// colortown components
+import CtColorTagsCard from "components/CtColorTagsCard";
+
 // data
 import palettes from "../../../data/palettes";
 
@@ -82,11 +85,11 @@ function PaletteDetails() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <SuiBox mb={3}>
+      <SuiBox mb={2}>
         <Card>
           <SuiBox p={2}>
             <Grid container spacing={0}>
-              <Grid item xs={12} mb={2}>
+              <Grid item xs={12}>
                 <SuiBox
                   display="flex"
                   sx={{
@@ -127,6 +130,11 @@ function PaletteDetails() {
           </Snackbar>
         </Card>
       </SuiBox>
+      {!!palette.tags.length && (
+        <Grid item xs={12} mb={2}>
+          <CtColorTagsCard tags={palette.tags} />
+        </Grid>
+      )}
       <Footer />
     </DashboardLayout>
   );
