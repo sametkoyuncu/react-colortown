@@ -30,8 +30,8 @@ import SuiButton from "components/SuiButton";
 
 // Authentication layout components
 import BasicLayout from "layouts/authentication/components/BasicLayout";
-import Socials from "layouts/authentication/components/Socials";
-import Separator from "layouts/authentication/components/Separator";
+// import Socials from "layouts/authentication/components/Socials";
+// import Separator from "layouts/authentication/components/Separator";
 
 // Images
 import curved6 from "assets/images/curved-images/curved14.jpg";
@@ -41,35 +41,24 @@ function SignUp() {
 
   const handleSetAgremment = () => setAgremment(!agreement);
 
+  const inputStyles = { border: "1px solid #e5e5e5", borderRadius: "8px" };
+
   return (
-    <BasicLayout
-      title="Welcome!"
-      description="Use these awesome forms to login or create new account in your project for free."
-      image={curved6}
-    >
+    <BasicLayout title="Welcome!" image={curved6}>
       <Card>
-        <SuiBox p={3} mb={1} textAlign="center">
-          <SuiTypography variant="h5" fontWeight="medium">
-            Register with
-          </SuiTypography>
-        </SuiBox>
-        <SuiBox mb={2}>
-          <Socials />
-        </SuiBox>
-        <Separator />
         <SuiBox pt={2} pb={3} px={3}>
           <SuiBox component="form" role="form">
             <SuiBox mb={2}>
-              <SuiInput placeholder="Name" />
+              <SuiInput placeholder="Username" sx={inputStyles} />
             </SuiBox>
             <SuiBox mb={2}>
-              <SuiInput type="email" placeholder="Email" />
+              <SuiInput type="email" placeholder="Email" sx={inputStyles} />
             </SuiBox>
             <SuiBox mb={2}>
-              <SuiInput type="password" placeholder="Password" />
+              <SuiInput type="password" placeholder="Password" sx={inputStyles} />
             </SuiBox>
             <SuiBox display="flex" alignItems="center">
-              <Checkbox checked={agreement} onChange={handleSetAgremment} />
+              <Checkbox checked={agreement} onChange={handleSetAgremment} disabled />
               <SuiTypography
                 variant="button"
                 fontWeight="regular"
