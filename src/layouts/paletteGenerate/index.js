@@ -12,7 +12,7 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
-import { useState } from "react";
+import { useState, useContext } from "react";
 // @mui material components
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
@@ -33,6 +33,10 @@ import Footer from "examples/Footer";
 
 // ct components
 import CtSaveModal from "components/CtSaveModal";
+import CtDisabledSaveButton from "components/CtDisabledSaveButton";
+
+// context
+import { AuthContext } from "context/colortown/AuthContext";
 
 // color convert functions + rgbToHex, rgbToHsl,
 import { getRandomPalette } from "functions/color";
@@ -61,6 +65,8 @@ const INITIAL_STATE = [
 ];
 
 function PaletteGenerate() {
+  const { currentUser } = useContext(AuthContext);
+
   const [isSnackBarOpen, setIsSnackBarOpen] = useState(false);
   const [colorCodes, setColorCodes] = useState([...INITIAL_STATE]);
 
@@ -116,7 +122,13 @@ function PaletteGenerate() {
                   flexWrap="wrap"
                 >
                   <GenerateButton getRandomHSLColors={getRandomHSLColors} />
-                  <CtSaveModal colorCodes={colorCodes} type="palette" />
+                  {/* kullanıcı oturum açmışsa kayıt modal'ını göster  */}
+                  {/* oturum açmamışsa uyarı veren butonu göster */}
+                  {currentUser !== null ? (
+                    <CtSaveModal colorCodes={colorCodes} type="palette" />
+                  ) : (
+                    <CtDisabledSaveButton />
+                  )}
                 </SuiBox>
               </Grid>
             </Grid>

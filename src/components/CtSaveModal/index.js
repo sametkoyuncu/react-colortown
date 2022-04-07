@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -13,22 +13,25 @@ import Checkbox from "@mui/material/Checkbox";
 // Soft UI Dashboard React components
 import SuiButton from "components/SuiButton";
 
+// context
+import { AuthContext } from "context/colortown/AuthContext";
+
 // prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
 
 // firestore
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../../firebase";
 
 // data
 import tags from "../../data/tags";
 
 function CtSaveModal({ colorCodes, type }) {
+  const { currentUser } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
 
   const [name, setName] = useState("");
   const [selectedTags, setSelectedTags] = useState([]);
-
   // modal functions
   const handleClickOpen = () => {
     setOpen(true);
@@ -50,10 +53,8 @@ function CtSaveModal({ colorCodes, type }) {
     else newTags = [...selectedTags, tags[tagIndex]];
     setSelectedTags([...newTags]);
   };
-
+  // TODO: işlem sonucuna göre snackbar göster
   // save functions
-  // TODO: oluşturulan verileri bir yere kaydedilmeli
-  // TODO: gradient için direction gelmiyor, onu al
   const saveColor = async () => {
     await addDoc(collection(db, "colors"), {
       name,
@@ -62,13 +63,13 @@ function CtSaveModal({ colorCodes, type }) {
       hsl: colorCodes.hsl,
       likes: 0,
       tags: [...selectedTags],
+      timeStamp: serverTimestamp(),
+      userId: currentUser.uid,
     });
   };
 
-  const saveGradient = (randomNumber) => {
-    const id = `gradient_${randomNumber}`;
-    const gradient = {
-      id,
+  const saveGradient = async () => {
+    await addDoc(collection(db, "gradients"), {
       name,
       colors: [
         { hex: colorCodes[0].hex, rgb: colorCodes[0].rgb, hsl: colorCodes[0].hsl },
@@ -77,37 +78,34 @@ function CtSaveModal({ colorCodes, type }) {
       direction: `${colorCodes[2]}deg`,
       likes: 0,
       tags: [...selectedTags],
-    };
-
-    return gradient;
+      timeStamp: serverTimestamp(),
+      userId: currentUser.uid,
+    });
   };
 
-  const savePalette = (randomNumber) => {
-    const id = `palette_${randomNumber}`;
-    const palette = {
-      id,
+  const savePalette = async () => {
+    await addDoc(collection(db, "palettes"), {
       name,
       colors: [...colorCodes],
       likes: 0,
       tags: [...selectedTags],
-    };
-
-    return palette;
+      timeStamp: serverTimestamp(),
+      userId: currentUser.uid,
+    });
   };
 
   const handleSave = () => {
-    const randomNumber = Math.floor(1000 + Math.random() * 90000);
     // istek nereden geliyorsa ona göre kaydeliyor
-    // color, gradient veya palatte generator sayfalarıdan birisi olmalı
+    // istek color, gradient veya palatte generator sayfalarıdan birisinden gelmeli
     switch (type) {
       case "color":
         saveColor();
         break;
       case "gradient":
-        console.log(saveGradient(randomNumber));
+        saveGradient();
         break;
       case "palette":
-        console.log(savePalette(randomNumber));
+        savePalette();
         break;
       default:
         break;
@@ -121,12 +119,12 @@ function CtSaveModal({ colorCodes, type }) {
 
   return (
     <>
+      {/* open modal button */}
       <SuiButton variant="gradient" color="info" onClick={handleClickOpen}>
         <Icon>save</Icon>
         &nbsp;save
       </SuiButton>
       <Dialog fullWidth maxWidth="xs" open={open} onClose={handleClose}>
-        {/* <DialogTitle>Save this</DialogTitle> */}
         <DialogContent>
           {/* name input */}
           <TextField
@@ -141,7 +139,7 @@ function CtSaveModal({ colorCodes, type }) {
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
-          {/* chechboxes */}
+          {/* chechboxes start */}
           <DialogContentText sx={{ marginTop: "20px", marginBottom: "5px" }}>
             Tags:
           </DialogContentText>

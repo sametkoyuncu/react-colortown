@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState } from "react";
+import { useState, useContext } from "react";
 
 // @mui material components
 import Card from "@mui/material/Card";
@@ -37,6 +37,10 @@ import borders from "assets/theme/base/borders";
 // ct components
 import CtColorCodeSection from "components/CtColorCodeSection";
 import CtSaveModal from "components/CtSaveModal";
+import CtDisabledSaveButton from "components/CtDisabledSaveButton";
+
+// context
+import { AuthContext } from "context/colortown/AuthContext";
 
 // Images
 import hexLogo from "assets/images/logos/hex.png";
@@ -53,6 +57,7 @@ function GradientDataCard({
   direction,
   setDirection,
 }) {
+  const { currentUser } = useContext(AuthContext);
   const [isSnackBarOpen, setIsSnackBarOpen] = useState(false);
 
   const { borderWidth, borderColor } = borders;
@@ -117,7 +122,13 @@ function GradientDataCard({
           <Icon sx={{ fontWeight: "bold" }}>cached</Icon>
           &nbsp;generate random
         </SuiButton>
-        <CtSaveModal colorCodes={[colorCodes1, colorCodes2, direction]} type="gradient" />
+        {/* kullanıcı oturum açmışsa kayıt modal'ını göster  */}
+        {/* oturum açmamışsa uyarı veren butonu göster */}
+        {currentUser !== null ? (
+          <CtSaveModal colorCodes={[colorCodes1, colorCodes2, direction]} type="gradient" />
+        ) : (
+          <CtDisabledSaveButton />
+        )}
       </SuiBox>
       {/* buttons end */}
       <SuiBox p={2}>
