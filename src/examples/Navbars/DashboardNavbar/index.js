@@ -154,8 +154,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 disabled
               />
             </SuiBox>
-            <SuiBox color={light ? "white" : "inherit"}>
-              {/* <Link to="/authentication/sign-in">
+            <SuiBox sx={{ display: "flex", justifyContent: "flex-end" }}>
+              <SuiBox color={light ? "white" : "inherit"}>
+                {/* <Link to="/authentication/sign-in">
                 <IconButton sx={navbarIconButton} size="small">
                   <Icon
                     sx={({ palette: { dark, white } }) => ({
@@ -173,17 +174,17 @@ function DashboardNavbar({ absolute, light, isMini }) {
                   </SuiTypography>
                 </IconButton>
               </Link> */}
-              <IconButton
-                size="small"
-                color="inherit"
-                sx={navbarMobileMenu}
-                onClick={handleMiniSidenav}
-              >
-                <Icon className={light ? "text-white" : "text-dark"}>
-                  {miniSidenav ? "menu_open" : "menu"}
-                </Icon>
-              </IconButton>
-              {/* <IconButton
+                <IconButton
+                  size="small"
+                  color="inherit"
+                  sx={navbarMobileMenu}
+                  onClick={handleMiniSidenav}
+                >
+                  <Icon className={light ? "text-white" : "text-dark"}>
+                    {miniSidenav ? "menu_open" : "menu"}
+                  </Icon>
+                </IconButton>
+                {/* <IconButton
                 size="small"
                 color="inherit"
                 sx={navbarIconButton}
@@ -191,7 +192,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
               >
                 <Icon>settings</Icon>
               </IconButton> */}
-              {/* <IconButton
+                {/* <IconButton
                 size="small"
                 color="inherit"
                 sx={navbarIconButton}
@@ -202,9 +203,10 @@ function DashboardNavbar({ absolute, light, isMini }) {
               >
                 <Icon className={light ? "text-white" : "text-dark"}>notifications</Icon>
               </IconButton> */}
-              {/* {renderMenu()} */}
+                {/* {renderMenu()} */}
+              </SuiBox>
+              <CtAccountNavbarMenu />
             </SuiBox>
-            <CtAccountNavbarMenu />
           </SuiBox>
         )}
       </Toolbar>
