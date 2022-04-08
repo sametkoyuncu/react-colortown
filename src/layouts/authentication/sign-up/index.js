@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // react-router-dom components
 import { Link, useNavigate } from "react-router-dom";
@@ -23,7 +23,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 
 // @mui material components
 import Card from "@mui/material/Card";
-import Checkbox from "@mui/material/Checkbox";
+// import Checkbox from "@mui/material/Checkbox";
 
 // Soft UI Dashboard React components
 import SuiBox from "components/SuiBox";
@@ -38,38 +38,89 @@ import BasicLayout from "layouts/authentication/components/BasicLayout";
 import curved6 from "assets/images/curved-images/curved14.jpg";
 
 // firebase.js
-import { auth } from "../../../firebase";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { auth, db, storage } from "../../../firebase";
 
 function SignUp() {
-  const [agreement, setAgremment] = useState(true);
+  // const [agreement, setAgremment] = useState(true);
 
-  const [error, setError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [file, setFile] = useState("");
+  const [error, setError] = useState({ status: false, message: "" });
+  const [data, setData] = useState({});
+  const [perc, setPerc] = useState(null);
 
   const navigate = useNavigate();
+  // TODO: butona basmadan db'ye otomatik yükleniyor, bu bir sorun, useEffectten çıkartmak gerek
+  useEffect(() => {
+    const uploadFile = () => {
+      const name = new Date().getTime() + file.name;
 
-  const handleSetAgremment = () => setAgremment(!agreement);
+      const storageRef = ref(storage, name);
 
-  const handleSignUp = (e) => {
+      const uploadTask = uploadBytesResumable(storageRef, file);
+
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log(`Upload is " ${progress}% done`);
+          setPerc(progress);
+          switch (snapshot.state) {
+            case "paused":
+              console.log("Upload is paused");
+              break;
+            case "running":
+              console.log("Upload is running");
+              break;
+            default:
+              break;
+          }
+        },
+        (err) => {
+          console.log(err);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            setData((prev) => ({ ...prev, img: downloadURL }));
+          });
+        }
+      );
+    };
+    // eslint-disable-next-line no-unused-expressions
+    file && uploadFile();
+  }, [file]);
+
+  // const handleSetAgremment = () => setAgremment(!agreement);
+
+  const handleSignUp = async (e) => {
     e.preventDefault();
-    setError(false);
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // sign up
-        // eslint-disable-next-line prefer-destructuring, no-unused-vars
-        const user = userCredential.user;
-        navigate("/authentication/sign-in");
-      })
-      .catch((err) => {
-        // eslint-disable-next-line no-unused-vars
-        const errorCode = err.code;
-        // eslint-disable-next-line no-unused-vars
-        const errorMsg = err.message;
-        setErrorMessage(err.message);
-        setError(true);
+    setError({ status: false, message: "" });
+
+    try {
+      const res = await createUserWithEmailAndPassword(auth, data.email, data.password);
+      await setDoc(doc(db, "users", res.user.uid), {
+        username: data.username,
+        displayName: data.displayName,
+        email: data.email,
+        img: data.img,
+        timeStamp: serverTimestamp(),
       });
+
+      navigate("/authentication/sign-in");
+    } catch (err) {
+      // eslint-disable-next-line no-unused-vars
+      const errorCode = err.code;
+      // eslint-disable-next-line no-unused-vars
+      const errorMsg = err.message;
+      setError({ status: true, message: err.message });
+    }
+  };
+
+  const handleInput = (e) => {
+    const { id, value } = e.target;
+
+    setData({ ...data, [id]: value });
   };
 
   const inputStyles = { border: "1px solid #e5e5e5", borderRadius: "8px" };
@@ -79,27 +130,53 @@ function SignUp() {
       <Card>
         <SuiBox pt={2} pb={3} px={3}>
           <SuiBox component="form" role="form" onSubmit={handleSignUp}>
-            {/* <SuiBox mb={2}>
-              <SuiInput placeholder="Username" sx={inputStyles} />
-            </SuiBox> */}
             <SuiBox mb={2}>
               <SuiInput
+                id="username"
+                onChange={handleInput}
+                placeholder="Username"
+                sx={inputStyles}
+              />
+            </SuiBox>
+            <SuiBox mb={2}>
+              <SuiInput
+                id="displayName"
+                onChange={handleInput}
+                placeholder="Name"
+                sx={inputStyles}
+              />
+            </SuiBox>
+            <SuiBox mb={2}>
+              <SuiInput
+                id="email"
                 type="email"
-                minLength="6"
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={handleInput}
                 placeholder="Email"
                 sx={inputStyles}
               />
             </SuiBox>
             <SuiBox mb={2}>
               <SuiInput
+                id="password"
                 type="password"
-                onChange={(e) => setPassword(e.target.value)}
+                minLength="6"
+                onChange={handleInput}
                 placeholder="Password"
                 sx={inputStyles}
               />
             </SuiBox>
-            {error && (
+            <SuiBox mb={2}>
+              <SuiTypography variant="button" color="text" fontWeight="regular">
+                Profile Picture{" "}
+              </SuiTypography>
+              <SuiInput
+                id="file"
+                type="file"
+                onChange={(e) => setFile(e.target.files[0])}
+                sx={inputStyles}
+              />
+            </SuiBox>
+            {error.status && (
               <SuiBox mb={3}>
                 <SuiTypography variant="button" color="error" fontWeight="regular">
                   Upps! Something look likes wrong. Please, try again.{" "}
@@ -107,11 +184,11 @@ function SignUp() {
                 <br />
                 <SuiTypography variant="button" color="error" fontWeight="regular">
                   {/* cut 'Firebase: ' part from error message */}
-                  {/:(.+)/.exec(errorMessage)[1]}
+                  {/:(.+)/.exec(error.message)[1]}
                 </SuiTypography>
               </SuiBox>
             )}
-            <SuiBox display="flex" alignItems="center">
+            {/* <SuiBox display="flex" alignItems="center">
               <Checkbox checked={agreement} onChange={handleSetAgremment} disabled />
               <SuiTypography
                 variant="button"
@@ -124,9 +201,15 @@ function SignUp() {
               <SuiTypography component="a" href="#" variant="button" fontWeight="bold" textGradient>
                 Terms and Conditions
               </SuiTypography>
-            </SuiBox>
+            </SuiBox> */}
             <SuiBox mt={4} mb={1}>
-              <SuiButton type="submit" variant="gradient" color="dark" fullWidth>
+              <SuiButton
+                disabled={perc !== null && perc < 100}
+                type="submit"
+                variant="gradient"
+                color="dark"
+                fullWidth
+              >
                 sign up
               </SuiButton>
             </SuiBox>
