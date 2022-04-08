@@ -24,24 +24,11 @@ import SuiBox from "components/SuiBox";
 import SuiTypography from "components/SuiTypography";
 
 // Soft UI Dashboard React examples
-import DefaultNavbar from "examples/Navbars/DefaultNavbar";
 import PageLayout from "examples/LayoutContainers/PageLayout";
-
-// Authentication layout components
-import Footer from "layouts/authentication/components/Footer";
 
 function BasicLayout({ title, description, image, children }) {
   return (
     <PageLayout>
-      <DefaultNavbar
-        action={{
-          type: "external",
-          route: "https://creative-tim.com/product/soft-ui-dashboard-react",
-          label: "free download",
-        }}
-        transparent
-        light
-      />
       <SuiBox
         width="calc(100% - 2rem)"
         minHeight="50vh"
@@ -84,7 +71,6 @@ function BasicLayout({ title, description, image, children }) {
           </Grid>
         </Grid>
       </SuiBox>
-      <Footer />
     </PageLayout>
   );
 }

@@ -89,7 +89,7 @@ function GradientDetailCard({ colorCodes1, colorCodes2 }) {
       <SuiBox p={2}>
         <Grid container spacing={3}>
           <Grid item xs={12} md={6} container spacing={3}>
-            <SuiTypography variant="body1" ml={4} mt={2}>
+            <SuiTypography variant="body1" ml={4} mt={2} sx={{ color: colorCodes1.hex }}>
               Color 1
             </SuiTypography>
             {codeSectionData1.map((item) => (
@@ -104,7 +104,7 @@ function GradientDetailCard({ colorCodes1, colorCodes2 }) {
             ))}
           </Grid>
           <Grid item xs={12} md={6} container spacing={3}>
-            <SuiTypography variant="body1" ml={4} mt={2}>
+            <SuiTypography variant="body1" ml={4} mt={2} sx={{ color: colorCodes2.hex }}>
               Color 2
             </SuiTypography>
             {codeSectionData2.map((item) => (

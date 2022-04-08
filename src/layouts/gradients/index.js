@@ -12,9 +12,10 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
-
+import { useEffect, useState } from "react";
 // @mui material components
 import Grid from "@mui/material/Grid";
+import CircularProgress from "@mui/material/CircularProgress";
 
 // Soft UI Dashboard React components
 import SuiBox from "components/SuiBox";
@@ -27,14 +28,38 @@ import Footer from "examples/Footer";
 // Dashboard layout components
 import GradientCard from "layouts/gradients/components/GradientCard";
 
+// firebase
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../../firebase";
+
 // data
-import gradients from "../../data/gradients";
+// import gradients from "../../data/gradients";
 
 // colortown context
 import { useColorTown } from "../../context/colortown";
 
 function Gradients() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [data, setData] = useState([]);
   const { ctGradients, setCtGradients } = useColorTown();
+
+  useEffect(() => {
+    setIsLoading(true);
+    const fetchData = async () => {
+      try {
+        const list = [];
+        const querySnapshot = await getDocs(collection(db, "gradients"));
+        querySnapshot.forEach((doc) => {
+          list.push({ id: doc.id, ...doc.data() });
+        });
+        setData(list);
+        setIsLoading(false);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  }, []);
 
   const handleLikeBtnClick = (gradientId, reqType) => {
     if (reqType === "add") setCtGradients([...ctGradients, gradientId]);
@@ -49,8 +74,13 @@ function Gradients() {
       <DashboardNavbar />
       <SuiBox py={3}>
         <SuiBox mb={3}>
+          {isLoading && (
+            <SuiBox sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+              <CircularProgress color="info" />
+            </SuiBox>
+          )}
           <Grid container spacing={2}>
-            {gradients.map((gradient) => (
+            {data.map((gradient) => (
               <Grid key={gradient.id} item xs={12} sm={6} md={3}>
                 <GradientCard
                   gradientId={gradient.id}

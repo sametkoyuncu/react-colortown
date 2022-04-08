@@ -13,14 +13,17 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // react-router-dom components
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
+// firebase
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 // @mui material components
 import Card from "@mui/material/Card";
-import Checkbox from "@mui/material/Checkbox";
+// import Checkbox from "@mui/material/Checkbox";
 
 // Soft UI Dashboard React components
 import SuiBox from "components/SuiBox";
@@ -30,46 +33,163 @@ import SuiButton from "components/SuiButton";
 
 // Authentication layout components
 import BasicLayout from "layouts/authentication/components/BasicLayout";
-import Socials from "layouts/authentication/components/Socials";
-import Separator from "layouts/authentication/components/Separator";
 
 // Images
 import curved6 from "assets/images/curved-images/curved14.jpg";
 
-function SignUp() {
-  const [agreement, setAgremment] = useState(true);
+// firebase.js
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { auth, db, storage } from "../../../firebase";
 
-  const handleSetAgremment = () => setAgremment(!agreement);
+function SignUp() {
+  // const [agreement, setAgremment] = useState(true);
+
+  const [file, setFile] = useState("");
+  const [error, setError] = useState({ status: false, message: "" });
+  const [data, setData] = useState({});
+  const [perc, setPerc] = useState(null);
+
+  const navigate = useNavigate();
+  // TODO: butona basmadan db'ye otomatik yükleniyor, bu bir sorun, useEffectten çıkartmak gerek
+  useEffect(() => {
+    const uploadFile = () => {
+      const name = new Date().getTime() + file.name;
+
+      const storageRef = ref(storage, name);
+
+      const uploadTask = uploadBytesResumable(storageRef, file);
+
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log(`Upload is " ${progress}% done`);
+          setPerc(progress);
+          switch (snapshot.state) {
+            case "paused":
+              console.log("Upload is paused");
+              break;
+            case "running":
+              console.log("Upload is running");
+              break;
+            default:
+              break;
+          }
+        },
+        (err) => {
+          console.log(err);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            setData((prev) => ({ ...prev, img: downloadURL }));
+          });
+        }
+      );
+    };
+    // eslint-disable-next-line no-unused-expressions
+    file && uploadFile();
+  }, [file]);
+
+  // const handleSetAgremment = () => setAgremment(!agreement);
+
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    setError({ status: false, message: "" });
+
+    try {
+      const res = await createUserWithEmailAndPassword(auth, data.email, data.password);
+      await setDoc(doc(db, "users", res.user.uid), {
+        username: data.username,
+        displayName: data.displayName,
+        email: data.email,
+        img: data.img,
+        timeStamp: serverTimestamp(),
+      });
+
+      navigate("/authentication/sign-in");
+    } catch (err) {
+      // eslint-disable-next-line no-unused-vars
+      const errorCode = err.code;
+      // eslint-disable-next-line no-unused-vars
+      const errorMsg = err.message;
+      setError({ status: true, message: err.message });
+    }
+  };
+
+  const handleInput = (e) => {
+    const { id, value } = e.target;
+
+    setData({ ...data, [id]: value });
+  };
+
+  const inputStyles = { border: "1px solid #e5e5e5", borderRadius: "8px" };
 
   return (
-    <BasicLayout
-      title="Welcome!"
-      description="Use these awesome forms to login or create new account in your project for free."
-      image={curved6}
-    >
+    <BasicLayout title="Welcome!" image={curved6}>
       <Card>
-        <SuiBox p={3} mb={1} textAlign="center">
-          <SuiTypography variant="h5" fontWeight="medium">
-            Register with
-          </SuiTypography>
-        </SuiBox>
-        <SuiBox mb={2}>
-          <Socials />
-        </SuiBox>
-        <Separator />
         <SuiBox pt={2} pb={3} px={3}>
-          <SuiBox component="form" role="form">
+          <SuiBox component="form" role="form" onSubmit={handleSignUp}>
             <SuiBox mb={2}>
-              <SuiInput placeholder="Name" />
+              <SuiInput
+                id="username"
+                onChange={handleInput}
+                placeholder="Username"
+                sx={inputStyles}
+              />
             </SuiBox>
             <SuiBox mb={2}>
-              <SuiInput type="email" placeholder="Email" />
+              <SuiInput
+                id="displayName"
+                onChange={handleInput}
+                placeholder="Name"
+                sx={inputStyles}
+              />
             </SuiBox>
             <SuiBox mb={2}>
-              <SuiInput type="password" placeholder="Password" />
+              <SuiInput
+                id="email"
+                type="email"
+                onChange={handleInput}
+                placeholder="Email"
+                sx={inputStyles}
+              />
             </SuiBox>
-            <SuiBox display="flex" alignItems="center">
-              <Checkbox checked={agreement} onChange={handleSetAgremment} />
+            <SuiBox mb={2}>
+              <SuiInput
+                id="password"
+                type="password"
+                minLength="6"
+                onChange={handleInput}
+                placeholder="Password"
+                sx={inputStyles}
+              />
+            </SuiBox>
+            <SuiBox mb={2}>
+              <SuiTypography variant="button" color="text" fontWeight="regular">
+                Profile Picture{" "}
+              </SuiTypography>
+              <SuiInput
+                id="file"
+                type="file"
+                onChange={(e) => setFile(e.target.files[0])}
+                sx={inputStyles}
+              />
+            </SuiBox>
+            {error.status && (
+              <SuiBox mb={3}>
+                <SuiTypography variant="button" color="error" fontWeight="regular">
+                  Upps! Something look likes wrong. Please, try again.{" "}
+                </SuiTypography>
+                <br />
+                <SuiTypography variant="button" color="error" fontWeight="regular">
+                  {/* cut 'Firebase: ' part from error message */}
+                  {/:(.+)/.exec(error.message)[1]}
+                </SuiTypography>
+              </SuiBox>
+            )}
+            {/* <SuiBox display="flex" alignItems="center">
+              <Checkbox checked={agreement} onChange={handleSetAgremment} disabled />
               <SuiTypography
                 variant="button"
                 fontWeight="regular"
@@ -81,9 +201,15 @@ function SignUp() {
               <SuiTypography component="a" href="#" variant="button" fontWeight="bold" textGradient>
                 Terms and Conditions
               </SuiTypography>
-            </SuiBox>
+            </SuiBox> */}
             <SuiBox mt={4} mb={1}>
-              <SuiButton variant="gradient" color="dark" fullWidth>
+              <SuiButton
+                disabled={perc !== null && perc < 100}
+                type="submit"
+                variant="gradient"
+                color="dark"
+                fullWidth
+              >
                 sign up
               </SuiButton>
             </SuiBox>

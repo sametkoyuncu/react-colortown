@@ -13,16 +13,12 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState } from "react";
+import { useState, useContext } from "react";
 
 // @mui material components
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 import Icon from "@mui/material/Icon";
-import Snackbar from "@mui/material/Snackbar";
-import Alert from "@mui/material/Alert";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
 
 // Soft UI Dashboard React components
 import SuiBox from "components/SuiBox";
@@ -34,6 +30,11 @@ import borders from "assets/theme/base/borders";
 // ct components
 import CtColorCodeSection from "components/CtColorCodeSection";
 import CtSaveModal from "components/CtSaveModal";
+import CtDisabledSaveButton from "components/CtDisabledSaveButton";
+import CtSnackBar from "components/CtSnackBar";
+
+// context
+import { AuthContext } from "context/colortown/AuthContext";
 
 // Images
 import hexLogo from "assets/images/logos/hex.png";
@@ -44,6 +45,8 @@ import hslLogo from "assets/images/logos/hsl.png";
 import PropTypes from "prop-types";
 
 function ColorDataCard({ colorCodes, getRandomRGBColor }) {
+  const { currentUser } = useContext(AuthContext);
+
   const [isSnackBarOpen, setIsSnackBarOpen] = useState(false);
 
   const { borderWidth, borderColor } = borders;
@@ -87,7 +90,13 @@ function ColorDataCard({ colorCodes, getRandomRGBColor }) {
           <Icon sx={{ fontWeight: "bold" }}>cached</Icon>
           &nbsp;generate random
         </SuiButton>
-        <CtSaveModal colorCodes={colorCodes} type="color" />
+        {/* kullanıcı oturum açmışsa kayıt modal'ını göster  */}
+        {/* oturum açmamışsa uyarı veren butonu göster */}
+        {currentUser !== null ? (
+          <CtSaveModal colorCodes={colorCodes} type="color" />
+        ) : (
+          <CtDisabledSaveButton />
+        )}
       </SuiBox>
       {/* buttons end */}
       <SuiBox p={2}>
@@ -104,21 +113,11 @@ function ColorDataCard({ colorCodes, getRandomRGBColor }) {
           ))}
         </Grid>
       </SuiBox>
-      <Snackbar
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        open={isSnackBarOpen}
-        onClose={handleClose}
-        autoHideDuration={2500}
-        action={
-          <IconButton aria-label="close" color="inherit" sx={{ p: 0.5 }} onClick={handleClose}>
-            <CloseIcon />
-          </IconButton>
-        }
-      >
-        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
-          Copied to Clipboard! 👍
-        </Alert>
-      </Snackbar>
+      <CtSnackBar
+        message="Copied to Clipboard! 👍"
+        isSnackBarOpen={isSnackBarOpen}
+        handleClose={handleClose}
+      />
     </Card>
   );
 }

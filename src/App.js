@@ -150,9 +150,17 @@ export default function App() {
       )}
       <Routes>
         {getRoutes(routes)}
-        <Route exact path="/profile" element={<Profile />} />
-        <Route exact path="/authentication/sign-in" element={<SignIn />} />
-        <Route exact path="/authentication/sign-up" element={<SignUp />} />
+
+        {/* simple protected routes */}
+        {currentUser !== null ? (
+          <Route exact path="/profile" element={<Profile />} />
+        ) : (
+          <>
+            <Route exact path="/authentication/sign-in" element={<SignIn />} />
+            <Route exact path="/authentication/sign-up" element={<SignUp />} />
+          </>
+        )}
+
         <Route exact path="/colors/:id" element={<ColorDetails />} />
         <Route exact path="/gradients/:id" element={<GradientDetails />} />
         <Route exact path="/palettes/:id" element={<PaletteDetails />} />
