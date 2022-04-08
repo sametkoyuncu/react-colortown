@@ -16,12 +16,6 @@ import { useState, useContext } from "react";
 // @mui material components
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
-import Snackbar from "@mui/material/Snackbar";
-import Alert from "@mui/material/Alert";
-import IconButton from "@mui/material/IconButton";
-
-// @mui material icons
-import CloseIcon from "@mui/icons-material/Close";
 
 // Soft UI Dashboard React components
 import SuiBox from "components/SuiBox";
@@ -34,6 +28,7 @@ import Footer from "examples/Footer";
 // ct components
 import CtSaveModal from "components/CtSaveModal";
 import CtDisabledSaveButton from "components/CtDisabledSaveButton";
+import CtSnackBar from "components/CtSnackBar";
 
 // context
 import { AuthContext } from "context/colortown/AuthContext";
@@ -133,21 +128,11 @@ function PaletteGenerate() {
               </Grid>
             </Grid>
           </SuiBox>
-          <Snackbar
-            anchorOrigin={{ vertical: "top", horizontal: "center" }}
-            open={isSnackBarOpen}
-            onClose={handleClose}
-            autoHideDuration={2500}
-            action={
-              <IconButton aria-label="close" color="inherit" sx={{ p: 0.5 }} onClick={handleClose}>
-                <CloseIcon />
-              </IconButton>
-            }
-          >
-            <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
-              Copied to Clipboard! 👍
-            </Alert>
-          </Snackbar>
+          <CtSnackBar
+            message="Copied to Clipboard! 👍"
+            isSnackBarOpen={isSnackBarOpen}
+            handleClose={handleClose}
+          />
         </Card>
       </SuiBox>
       <Footer />

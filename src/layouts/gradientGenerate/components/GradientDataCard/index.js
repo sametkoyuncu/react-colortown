@@ -19,10 +19,6 @@ import { useState, useContext } from "react";
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 import Icon from "@mui/material/Icon";
-import Snackbar from "@mui/material/Snackbar";
-import Alert from "@mui/material/Alert";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
 import Slider from "@mui/material/Slider";
 import Divider from "@mui/material/Divider";
 
@@ -38,6 +34,7 @@ import borders from "assets/theme/base/borders";
 import CtColorCodeSection from "components/CtColorCodeSection";
 import CtSaveModal from "components/CtSaveModal";
 import CtDisabledSaveButton from "components/CtDisabledSaveButton";
+import CtSnackBar from "components/CtSnackBar";
 
 // context
 import { AuthContext } from "context/colortown/AuthContext";
@@ -186,22 +183,11 @@ function GradientDataCard({
           </Grid>
         </Grid>
       </SuiBox>
-
-      <Snackbar
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        open={isSnackBarOpen}
-        onClose={handleClose}
-        autoHideDuration={2500}
-        action={
-          <IconButton aria-label="close" color="inherit" sx={{ p: 0.5 }} onClick={handleClose}>
-            <CloseIcon />
-          </IconButton>
-        }
-      >
-        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
-          Copied to Clipboard! 👍
-        </Alert>
-      </Snackbar>
+      <CtSnackBar
+        message="Copied to Clipboard! 👍"
+        isSnackBarOpen={isSnackBarOpen}
+        handleClose={handleClose}
+      />
     </Card>
   );
 }
