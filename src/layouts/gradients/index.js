@@ -30,7 +30,7 @@ import Footer from "examples/Footer";
 import GradientCard from "layouts/gradients/components/GradientCard";
 
 // firebase
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, doc, updateDoc, increment } from "firebase/firestore";
 import { db } from "../../firebase";
 
 // colortown context
@@ -47,8 +47,8 @@ function Gradients() {
       try {
         const list = [];
         const querySnapshot = await getDocs(collection(db, "gradients"));
-        querySnapshot.forEach((doc) => {
-          list.push({ id: doc.id, ...doc.data() });
+        querySnapshot.forEach((document) => {
+          list.push({ id: document.id, ...document.data() });
         });
         setData(list);
         setIsLoading(false);
@@ -60,9 +60,17 @@ function Gradients() {
     fetchData();
   }, []);
 
-  const handleLikeBtnClick = (gradientId, reqType) => {
-    if (reqType === "add") setCtGradients([...ctGradients, gradientId]);
-    else if (reqType === "remove") {
+  const handleLikeBtnClick = async (gradientId, reqType) => {
+    const dataRef = doc(db, "gradients", gradientId);
+    if (reqType === "add") {
+      await updateDoc(dataRef, {
+        likes: increment(1),
+      });
+      setCtGradients([...ctGradients, gradientId]);
+    } else if (reqType === "remove") {
+      await updateDoc(dataRef, {
+        likes: increment(-1),
+      });
       const newGradients = ctGradients.filter((id) => id !== gradientId);
       setCtGradients([...newGradients]);
     }

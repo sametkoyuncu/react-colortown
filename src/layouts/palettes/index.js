@@ -30,7 +30,7 @@ import Footer from "examples/Footer";
 import PaletteCard from "layouts/palettes/components/PaletteCard";
 
 // firebase
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, doc, updateDoc, increment } from "firebase/firestore";
 import { db } from "../../firebase";
 
 // colortown context
@@ -47,8 +47,8 @@ function Palettes() {
       try {
         const list = [];
         const querySnapshot = await getDocs(collection(db, "palettes"));
-        querySnapshot.forEach((doc) => {
-          list.push({ id: doc.id, ...doc.data() });
+        querySnapshot.forEach((document) => {
+          list.push({ id: document.id, ...document.data() });
         });
         setData(list);
         setIsLoading(false);
@@ -60,9 +60,17 @@ function Palettes() {
     fetchData();
   }, []);
 
-  const handleLikeBtnClick = (paletteId, reqType) => {
-    if (reqType === "add") setCtPalettes([...ctPalettes, paletteId]);
-    else if (reqType === "remove") {
+  const handleLikeBtnClick = async (paletteId, reqType) => {
+    const dataRef = doc(db, "palettes", paletteId);
+    if (reqType === "add") {
+      await updateDoc(dataRef, {
+        likes: increment(1),
+      });
+      setCtPalettes([...ctPalettes, paletteId]);
+    } else if (reqType === "remove") {
+      await updateDoc(dataRef, {
+        likes: increment(-1),
+      });
       const newPalettes = ctPalettes.filter((id) => id !== paletteId);
       setCtPalettes([...newPalettes]);
     }
