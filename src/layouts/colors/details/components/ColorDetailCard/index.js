@@ -18,10 +18,6 @@ import { useState } from "react";
 // @mui material components
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
-import Snackbar from "@mui/material/Snackbar";
-import Alert from "@mui/material/Alert";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
 
 // Soft UI Dashboard React components
 import SuiBox from "components/SuiBox";
@@ -29,7 +25,9 @@ import SuiBox from "components/SuiBox";
 // Soft UI Dashboard React base styles
 import borders from "assets/theme/base/borders";
 
+// Ct Components
 import CtColorCodeSection from "components/CtColorCodeSection";
+import CtSnackBar from "components/CtSnackBar";
 
 // Images
 import hexLogo from "assets/images/logos/hex.png";
@@ -84,21 +82,11 @@ function ColorDetailCard({ hexCode, rgbCode, hslCode }) {
           ))}
         </Grid>
       </SuiBox>
-      <Snackbar
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        open={isSnackBarOpen}
-        onClose={handleClose}
-        autoHideDuration={2500}
-        action={
-          <IconButton aria-label="close" color="inherit" sx={{ p: 0.5 }} onClick={handleClose}>
-            <CloseIcon />
-          </IconButton>
-        }
-      >
-        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
-          Copied to Clipboard! 👍
-        </Alert>
-      </Snackbar>
+      <CtSnackBar
+        message="Copied to Clipboard! 👍"
+        isSnackBarOpen={isSnackBarOpen}
+        handleClose={handleClose}
+      />
     </Card>
   );
 }

@@ -32,9 +32,6 @@ import GradientCard from "layouts/gradients/components/GradientCard";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase";
 
-// data
-// import gradients from "../../data/gradients";
-
 // colortown context
 import { useColorTown } from "../../context/colortown";
 
@@ -55,6 +52,7 @@ function Gradients() {
         setData(list);
         setIsLoading(false);
       } catch (err) {
+        // TODO: düzgün bir şey ayarla
         console.log(err);
       }
     };

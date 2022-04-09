@@ -1,15 +1,7 @@
 import { useState } from "react";
 // @mui material components
-// import IconButton from "@mui/material/IconButton";
-// import Stack from "@mui/material/Stack";
 import Icon from "@mui/material/Icon";
 import Tooltip from "@mui/material/Tooltip";
-
-// @mui icons
-// import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-// import DeleteIcon from "@mui/icons-material/Delete";
-// import AlarmIcon from "@mui/icons-material/Alarm";
-// import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 
 // Soft UI Dashboard React components
 import SuiBox from "components/SuiBox";

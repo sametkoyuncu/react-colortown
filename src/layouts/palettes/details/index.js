@@ -17,12 +17,6 @@ import { useParams } from "react-router-dom";
 // @mui material components
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
-import Snackbar from "@mui/material/Snackbar";
-import Alert from "@mui/material/Alert";
-import IconButton from "@mui/material/IconButton";
-
-// @mui material icons
-import CloseIcon from "@mui/icons-material/Close";
 
 // Soft UI Dashboard React components
 import SuiBox from "components/SuiBox";
@@ -37,6 +31,7 @@ import SingleColorCard from "layouts/palettes/details/components/SingleColorCard
 
 // colortown components
 import CtColorTagsCard from "components/CtColorTagsCard";
+import CtSnackBar from "components/CtSnackBar";
 
 // data
 import palettes from "../../../data/palettes";
@@ -68,7 +63,6 @@ function PaletteDetails() {
     likes: 0,
     tags: [],
   };
-  // TODO: tags card eklenecek
 
   // TODO: INITIAL_STATE yerine 404 olmalı
   const palette = palettes.find((item) => item.id === id) || INITIAL_STATE;
@@ -113,21 +107,11 @@ function PaletteDetails() {
               </Grid>
             </Grid>
           </SuiBox>
-          <Snackbar
-            anchorOrigin={{ vertical: "top", horizontal: "center" }}
-            open={isSnackBarOpen}
-            onClose={handleClose}
-            autoHideDuration={2500}
-            action={
-              <IconButton aria-label="close" color="inherit" sx={{ p: 0.5 }} onClick={handleClose}>
-                <CloseIcon />
-              </IconButton>
-            }
-          >
-            <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
-              Copied to Clipboard! 👍
-            </Alert>
-          </Snackbar>
+          <CtSnackBar
+            message="Copied to Clipboard! 👍"
+            isSnackBarOpen={isSnackBarOpen}
+            handleClose={handleClose}
+          />
         </Card>
       </SuiBox>
       {!!palette.tags.length && (
