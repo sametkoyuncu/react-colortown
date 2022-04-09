@@ -12,9 +12,11 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
+import { useEffect, useState } from "react";
 
 // @mui material components
 import Grid from "@mui/material/Grid";
+import CircularProgress from "@mui/material/CircularProgress";
 
 // Soft UI Dashboard React components
 import SuiBox from "components/SuiBox";
@@ -27,14 +29,36 @@ import Footer from "examples/Footer";
 // Dashboard layout components
 import PaletteCard from "layouts/palettes/components/PaletteCard";
 
-// data
-import palettes from "../../data/palettes";
+// firebase
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../../firebase";
 
 // colortown context
 import { useColorTown } from "../../context/colortown";
 
 function Palettes() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [data, setData] = useState([]);
   const { ctPalettes, setCtPalettes } = useColorTown();
+
+  useEffect(() => {
+    setIsLoading(true);
+    const fetchData = async () => {
+      try {
+        const list = [];
+        const querySnapshot = await getDocs(collection(db, "palettes"));
+        querySnapshot.forEach((doc) => {
+          list.push({ id: doc.id, ...doc.data() });
+        });
+        setData(list);
+        setIsLoading(false);
+      } catch (err) {
+        // TODO: düzgün bir şey ayarla
+        console.log(err);
+      }
+    };
+    fetchData();
+  }, []);
 
   const handleLikeBtnClick = (paletteId, reqType) => {
     if (reqType === "add") setCtPalettes([...ctPalettes, paletteId]);
@@ -48,8 +72,13 @@ function Palettes() {
       <DashboardNavbar />
       <SuiBox py={3}>
         <SuiBox mb={3}>
+          {isLoading && (
+            <SuiBox sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+              <CircularProgress color="info" />
+            </SuiBox>
+          )}
           <Grid container spacing={2}>
-            {palettes.map((palette) => (
+            {data.map((palette) => (
               <Grid key={palette.id} item xs={12} sm={6} md={3}>
                 <PaletteCard
                   paletteId={palette.id}
