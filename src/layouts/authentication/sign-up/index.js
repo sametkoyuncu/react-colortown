@@ -100,7 +100,6 @@ function SignUp() {
     try {
       const res = await createUserWithEmailAndPassword(auth, data.email, data.password);
       await setDoc(doc(db, "users", res.user.uid), {
-        username: data.username,
         displayName: data.displayName,
         email: data.email,
         img: data.img,
@@ -130,14 +129,6 @@ function SignUp() {
       <Card>
         <SuiBox pt={2} pb={3} px={3}>
           <SuiBox component="form" role="form" onSubmit={handleSignUp}>
-            <SuiBox mb={2}>
-              <SuiInput
-                id="username"
-                onChange={handleInput}
-                placeholder="Username"
-                sx={inputStyles}
-              />
-            </SuiBox>
             <SuiBox mb={2}>
               <SuiInput
                 id="displayName"
