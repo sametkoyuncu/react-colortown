@@ -12,18 +12,32 @@ import Logout from "@mui/icons-material/Logout";
 import LoginIcon from "@mui/icons-material/Login";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 
+// Ct Components
+import CtSnackBar from "components/CtSnackBar";
+
 // context
 import { AuthContext } from "context/colortown/AuthContext";
 
 export default function CtAccountNavbarMenu() {
   const { currentUser, dispatch } = useContext(AuthContext);
+  const [isSnackBarOpen, setIsSnackBarOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    dispatch({ type: "LOGOUT" });
+    setIsSnackBarOpen(true);
+  };
+
+  const handleSnackbarClose = () => {
+    setIsSnackBarOpen(false);
   };
 
   // bunu sevmesem de çözüm bulanan kadar böyle
@@ -71,7 +85,7 @@ export default function CtAccountNavbarMenu() {
         </MenuItem>
       </Link>
       <Divider />
-      <MenuItem onClick={() => dispatch({ type: "LOGOUT" })}>
+      <MenuItem onClick={handleLogout}>
         <ListItemIcon>
           <Logout fontSize="small" />
         </ListItemIcon>
@@ -159,6 +173,11 @@ export default function CtAccountNavbarMenu() {
         </Tooltip>
       </Box>
       {currentUser !== null ? isLoggedIn : isNotLoggedIn}
+      <CtSnackBar
+        message="Logout successfully! 👍"
+        isSnackBarOpen={isSnackBarOpen}
+        handleClose={handleSnackbarClose}
+      />
     </>
   );
 }
