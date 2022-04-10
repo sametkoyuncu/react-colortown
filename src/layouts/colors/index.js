@@ -20,6 +20,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 // Soft UI Dashboard React components
 import SuiBox from "components/SuiBox";
+import SuiButton from "components/SuiButton";
 
 // Soft UI Dashboard React examples
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
@@ -30,8 +31,11 @@ import Footer from "examples/Footer";
 import ColorCard from "layouts/colors/components/ColorCard";
 
 // firebase
-import { collection, getDocs, doc, updateDoc, increment } from "firebase/firestore";
+import { doc, updateDoc, increment } from "firebase/firestore";
 import { db } from "../../firebase";
+
+//
+import usePagination from "../../services/Pagination";
 
 // colortown context
 import { useColorTown } from "../../context/colortown";
@@ -39,25 +43,26 @@ import { useColorTown } from "../../context/colortown";
 function Colors() {
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
+  const [isLastDataLoaded, setIsLastDataLoaded] = useState(false);
   const { ctColors, setCtColors } = useColorTown();
 
-  useEffect(() => {
+  const fetchData = (collectionName, type) => {
     setIsLoading(true);
-    const fetchData = async () => {
-      try {
-        const list = [];
-        const querySnapshot = await getDocs(collection(db, "colors"));
-        querySnapshot.forEach((document) => {
-          list.push({ id: document.id, ...document.data() });
-        });
-        setData(list);
+
+    usePagination(collectionName, type)
+      .then((res) => {
+        setData((prev) => [...prev, ...res]);
         setIsLoading(false);
-      } catch (err) {
-        // TODO: düzgün bir şey ayarla
+        if (res.length < 8) setIsLastDataLoaded(true);
+      })
+      .catch((err) => {
         console.log(err);
-      }
-    };
-    fetchData();
+        setIsLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    fetchData("colors", "first");
   }, []);
 
   const handleLikeBtnClick = async (colorId, reqType) => {
@@ -81,8 +86,8 @@ function Colors() {
       <DashboardNavbar />
       <SuiBox py={3}>
         <SuiBox mb={3}>
-          {isLoading && (
-            <SuiBox sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+          {isLoading && data.length === 0 && (
+            <SuiBox mb={3} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
               <CircularProgress color="info" />
             </SuiBox>
           )}
@@ -99,6 +104,17 @@ function Colors() {
               </Grid>
             ))}
           </Grid>
+          <SuiBox mt={2} sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+            {/* TODO: loading button eklenebilir */}
+            <SuiButton
+              variant="gradient"
+              color="info"
+              disabled={isLastDataLoaded}
+              onClick={() => fetchData("colors", "next")}
+            >
+              {!isLastDataLoaded ? "More Colors" : "No More Colors"}
+            </SuiButton>
+          </SuiBox>
         </SuiBox>
       </SuiBox>
       <Footer />
