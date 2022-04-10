@@ -51,6 +51,8 @@ import { useSoftUIController, setMiniSidenav, setOpenConfigurator } from "contex
 
 // Images
 import brand from "assets/images/c-logo.png";
+
+// context
 import { AuthContext } from "context/colortown/AuthContext";
 
 export default function App() {

@@ -149,7 +149,11 @@ export default function CtAccountNavbarMenu() {
             aria-expanded={open ? "true" : undefined}
           >
             <Avatar sx={{ width: 32, height: 32 }}>
-              <Avatar />
+              {currentUser !== null ? (
+                <Avatar alt={currentUser.displayName} src={currentUser.photoURL} />
+              ) : (
+                <Avatar />
+              )}
             </Avatar>
           </IconButton>
         </Tooltip>
