@@ -17,10 +17,11 @@ import { useEffect, useState } from "react";
 // @mui material components
 import Grid from "@mui/material/Grid";
 import CircularProgress from "@mui/material/CircularProgress";
+import Icon from "@mui/material/Icon";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 // Soft UI Dashboard React components
 import SuiBox from "components/SuiBox";
-import SuiButton from "components/SuiButton";
 
 // Soft UI Dashboard React examples
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
@@ -113,13 +114,16 @@ function Gradients() {
                 mt={2}
                 sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}
               >
-                <SuiButton
-                  variant="gradient"
+                <LoadingButton
+                  variant="contained"
                   color="info"
                   onClick={() => fetchData("gradients", "next")}
+                  loadingPosition="start"
+                  startIcon={<Icon>more_horiz</Icon>}
+                  loading={isLoading}
                 >
-                  More Gradients
-                </SuiButton>
+                  &nbsp;More Gradients
+                </LoadingButton>
               </SuiBox>
             ))}
         </SuiBox>
