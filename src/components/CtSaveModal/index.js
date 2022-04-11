@@ -76,6 +76,7 @@ function CtSaveModal({ colorCodes, type }) {
         hsl: colorCodes.hsl,
         likes: 0,
         tags: [...selectedTags],
+
         timeStamp: serverTimestamp(),
         userId: currentUser.uid,
       });
@@ -95,6 +96,7 @@ function CtSaveModal({ colorCodes, type }) {
         direction: `${colorCodes[2]}deg`,
         likes: 0,
         tags: [...selectedTags],
+        type: "gradient",
         timeStamp: serverTimestamp(),
         userId: currentUser.uid,
       });
@@ -110,6 +112,7 @@ function CtSaveModal({ colorCodes, type }) {
         colors: [...colorCodes],
         likes: 0,
         tags: [...selectedTags],
+        type: "palette",
         timeStamp: serverTimestamp(),
         userId: currentUser.uid,
       });

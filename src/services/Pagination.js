@@ -8,10 +8,10 @@ let documentSnapshots;
 // type must be "first" or "next".
 //  first: first 12 document from collection.
 //  next: next 12 document from collection.
-const usePagination = async (collectionName, type, docsLimit = 12) => {
+const usePagination = async (collectionName, queryType, docsLimit = 12) => {
   const list = [];
   let q;
-  switch (type) {
+  switch (queryType) {
     case "first":
       // Query the first page of docs
       q = query(collection(db, collectionName), orderBy("timeStamp"), limit(docsLimit));

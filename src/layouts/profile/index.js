@@ -12,172 +12,181 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
-
+import { useState, useContext, useEffect } from "react";
 // @mui material components
 import Grid from "@mui/material/Grid";
-import Card from "@mui/material/Card";
-
-// @mui icons
-import FacebookIcon from "@mui/icons-material/Facebook";
-import TwitterIcon from "@mui/icons-material/Twitter";
-import InstagramIcon from "@mui/icons-material/Instagram";
+import CircularProgress from "@mui/material/CircularProgress";
 
 // Soft UI Dashboard React components
 import SuiBox from "components/SuiBox";
-import SuiTypography from "components/SuiTypography";
+
+// context
+import { AuthContext } from "context/colortown/AuthContext";
+import { useColorTown } from "context/colortown";
 
 // Soft UI Dashboard React examples
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import Footer from "examples/Footer";
-import ProfileInfoCard from "examples/Cards/InfoCards/ProfileInfoCard";
-import ProfilesList from "examples/Lists/ProfilesList";
-import DefaultProjectCard from "examples/Cards/ProjectCards/DefaultProjectCard";
-import PlaceholderCard from "examples/Cards/PlaceholderCard";
+
+// Dashboard layout components
+import ColorCard from "layouts/colors/components/ColorCard";
+import GradientCard from "layouts/gradients/components/GradientCard";
+import PaletteCard from "layouts/palettes/components/PaletteCard";
 
 // Overview page components
 import Header from "layouts/profile/components/Header";
-import PlatformSettings from "layouts/profile/components/PlatformSettings";
 
-// Data
-import profilesListData from "layouts/profile/data/profilesListData";
+// firebase
+import { doc, updateDoc, increment } from "firebase/firestore";
+import { db } from "../../firebase";
 
-// Images
-import homeDecor1 from "assets/images/home-decor-1.jpg";
-import homeDecor2 from "assets/images/home-decor-2.jpg";
-import homeDecor3 from "assets/images/home-decor-3.jpg";
-import team1 from "assets/images/team-1.jpg";
-import team2 from "assets/images/team-2.jpg";
-import team3 from "assets/images/team-3.jpg";
-import team4 from "assets/images/team-4.jpg";
+// functions
+// import usePagination from "../../services/Pagination";
+import getByUserId from "../../services/GetByUserId";
 
 function Overview() {
+  const { currentUser } = useContext(AuthContext);
+  const [isLoading, setIsLoading] = useState(true);
+  const [data, setData] = useState([]);
+  const [selectedTab, setSelectedTab] = useState(true);
+  const { ctColors, setCtColors, ctGradients, setCtGradients, ctPalettes, setCtPalettes } =
+    useColorTown();
+
+  const fetchData = async (collectionName) => {
+    // type must be "first" or "next"
+    await getByUserId(db, collectionName, currentUser.uid)
+      .then((res) => {
+        setData((prev) => [...prev, ...res]);
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsLoading(false);
+      });
+  };
+
+  const fetchAllData = async () => {
+    setIsLoading(true);
+
+    await fetchData("colors");
+    await fetchData("gradients");
+    await fetchData("palettes");
+
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    fetchAllData();
+  }, []);
+
+  // tab changer
+  const handleTabChange = (value) => {
+    setIsLoading(true);
+    setSelectedTab(value);
+    setIsLoading(false);
+  };
+
+  // burasına güzel bir ayar çekilecek (favorilere ekle)
+  const handleLikeBtnClickColor = async (colorId, reqType) => {
+    const dataRef = doc(db, "colors", colorId);
+    if (reqType === "add") {
+      await updateDoc(dataRef, {
+        likes: increment(1),
+      });
+      setCtColors([...ctColors, colorId]);
+    } else if (reqType === "remove") {
+      await updateDoc(dataRef, {
+        likes: increment(-1),
+      });
+      const newColors = ctColors.filter((id) => id !== colorId);
+      setCtColors([...newColors]);
+    }
+  };
+
+  const handleLikeBtnClickGradient = async (gradientId, reqType) => {
+    const dataRef = doc(db, "gradients", gradientId);
+    if (reqType === "add") {
+      await updateDoc(dataRef, {
+        likes: increment(1),
+      });
+      setCtGradients([...ctGradients, gradientId]);
+    } else if (reqType === "remove") {
+      await updateDoc(dataRef, {
+        likes: increment(-1),
+      });
+      const newColors = ctGradients.filter((id) => id !== gradientId);
+      setCtGradients([...newColors]);
+    }
+  };
+
+  const handleLikeBtnClickPalette = async (paletteId, reqType) => {
+    const dataRef = doc(db, "palettes", paletteId);
+    if (reqType === "add") {
+      await updateDoc(dataRef, {
+        likes: increment(1),
+      });
+      setCtPalettes([...ctPalettes, paletteId]);
+    } else if (reqType === "remove") {
+      await updateDoc(dataRef, {
+        likes: increment(-1),
+      });
+      const newColors = ctPalettes.filter((id) => id !== paletteId);
+      setCtPalettes([...newColors]);
+    }
+  };
+
   return (
     <DashboardLayout>
-      <Header />
-      <SuiBox mt={5} mb={3}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6} xl={4}>
-            <PlatformSettings />
-          </Grid>
-          <Grid item xs={12} md={6} xl={4}>
-            <ProfileInfoCard
-              title="profile information"
-              description="Hi, I’m Alec Thompson, Decisions: If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality)."
-              info={{
-                fullName: "Alec M. Thompson",
-                mobile: "(44) 123 1234 123",
-                email: "alecthompson@mail.com",
-                location: "USA",
-              }}
-              social={[
-                {
-                  link: "https://www.facebook.com/CreativeTim/",
-                  icon: <FacebookIcon />,
-                  color: "facebook",
-                },
-                {
-                  link: "https://twitter.com/creativetim",
-                  icon: <TwitterIcon />,
-                  color: "twitter",
-                },
-                {
-                  link: "https://www.instagram.com/creativetimofficial/",
-                  icon: <InstagramIcon />,
-                  color: "instagram",
-                },
-              ]}
-              action={{ route: "", tooltip: "Edit Profile" }}
-            />
-          </Grid>
-          <Grid item xs={12} xl={4}>
-            <ProfilesList title="conversations" profiles={profilesListData} />
-          </Grid>
-        </Grid>
-      </SuiBox>
-      <SuiBox mb={3}>
-        <Card>
-          <SuiBox pt={2} px={2}>
-            <SuiBox mb={0.5}>
-              <SuiTypography variant="h6" fontWeight="medium">
-                Projects
-              </SuiTypography>
+      <Header
+        profileImage={currentUser.photoURL}
+        displayName={currentUser.displayName}
+        email={currentUser.email}
+        setSelectedTab={handleTabChange}
+      />
+      <SuiBox py={3}>
+        <SuiBox mb={3}>
+          {isLoading && data.length === 0 && (
+            <SuiBox mb={3} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+              <CircularProgress color="info" />
             </SuiBox>
-            <SuiBox mb={1}>
-              <SuiTypography variant="button" fontWeight="regular" color="text">
-                Architects design houses
-              </SuiTypography>
-            </SuiBox>
-          </SuiBox>
-          <SuiBox p={2}>
-            <Grid container spacing={3}>
-              <Grid item xs={12} md={6} xl={3}>
-                <DefaultProjectCard
-                  image={homeDecor1}
-                  label="project #2"
-                  title="modern"
-                  description="As Uber works through a huge amount of internal management turmoil."
-                  action={{
-                    type: "internal",
-                    route: "/pages/profile/profile-overview",
-                    color: "info",
-                    label: "view project",
-                  }}
-                  authors={[
-                    { image: team1, name: "Elena Morison" },
-                    { image: team2, name: "Ryan Milly" },
-                    { image: team3, name: "Nick Daniel" },
-                    { image: team4, name: "Peterson" },
-                  ]}
-                />
-              </Grid>
-              <Grid item xs={12} md={6} xl={3}>
-                <DefaultProjectCard
-                  image={homeDecor2}
-                  label="project #1"
-                  title="scandinavian"
-                  description="Music is something that every person has his or her own specific opinion about."
-                  action={{
-                    type: "internal",
-                    route: "/pages/profile/profile-overview",
-                    color: "info",
-                    label: "view project",
-                  }}
-                  authors={[
-                    { image: team3, name: "Nick Daniel" },
-                    { image: team4, name: "Peterson" },
-                    { image: team1, name: "Elena Morison" },
-                    { image: team2, name: "Ryan Milly" },
-                  ]}
-                />
-              </Grid>
-              <Grid item xs={12} md={6} xl={3}>
-                <DefaultProjectCard
-                  image={homeDecor3}
-                  label="project #3"
-                  title="minimalist"
-                  description="Different people have different taste, and various types of music."
-                  action={{
-                    type: "internal",
-                    route: "/pages/profile/profile-overview",
-                    color: "info",
-                    label: "view project",
-                  }}
-                  authors={[
-                    { image: team4, name: "Peterson" },
-                    { image: team3, name: "Nick Daniel" },
-                    { image: team2, name: "Ryan Milly" },
-                    { image: team1, name: "Elena Morison" },
-                  ]}
-                />
-              </Grid>
-              <Grid item xs={12} md={6} xl={3}>
-                <PlaceholderCard title={{ variant: "h5", text: "New project" }} outlined />
-              </Grid>
+          )}
+          {selectedTab && (
+            <Grid container spacing={2}>
+              {data.map((item) => (
+                <Grid key={item.id} item xs={12} sm={6} md={4} lg={3}>
+                  {item.type === "color" && (
+                    <ColorCard
+                      colorId={item.id}
+                      bgColor={item.rgb}
+                      likesCount={item.likes}
+                      isLiked={ctColors.indexOf(item.id) >= 0}
+                      handleLikeBtnClick={handleLikeBtnClickColor}
+                    />
+                  )}
+                  {item.type === "gradient" && (
+                    <GradientCard
+                      gradientId={item.id}
+                      bgColor={`linear-gradient(${item.direction}, ${item.colors[0].hex}, ${item.colors[1].hex})`}
+                      likesCount={item.likes}
+                      isLiked={ctGradients.indexOf(item.id) >= 0}
+                      handleLikeBtnClick={handleLikeBtnClickGradient}
+                    />
+                  )}
+                  {item.type === "palette" && (
+                    <PaletteCard
+                      paletteId={item.id}
+                      bgColors={[...item.colors]}
+                      likesCount={item.likes}
+                      isLiked={ctPalettes.indexOf(item.id) >= 0}
+                      handleLikeBtnClick={handleLikeBtnClickPalette}
+                    />
+                  )}
+                </Grid>
+              ))}
             </Grid>
-          </SuiBox>
-        </Card>
+          )}
+          {!selectedTab && "favorites"}
+        </SuiBox>
       </SuiBox>
-
       <Footer />
     </DashboardLayout>
   );
