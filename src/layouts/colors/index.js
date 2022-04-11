@@ -34,7 +34,7 @@ import ColorCard from "layouts/colors/components/ColorCard";
 import { doc, updateDoc, increment } from "firebase/firestore";
 import { db } from "../../firebase";
 
-//
+// functions
 import usePagination from "../../services/Pagination";
 
 // colortown context
@@ -43,10 +43,12 @@ import { useColorTown } from "../../context/colortown";
 function Colors() {
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
+  // if the last data has been loaded, the 'load more' button must be disabled
   const [isLastDataLoaded, setIsLastDataLoaded] = useState(false);
   const { ctColors, setCtColors } = useColorTown();
 
   const fetchData = (collectionName, type) => {
+    // type must be "first" or "next"
     setIsLoading(true);
 
     usePagination(collectionName, type)
@@ -62,6 +64,7 @@ function Colors() {
   };
 
   useEffect(() => {
+    // get first 8 docs from colors collection
     fetchData("colors", "first");
   }, []);
 
@@ -104,17 +107,21 @@ function Colors() {
               </Grid>
             ))}
           </Grid>
-          <SuiBox mt={2} sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-            {/* TODO: loading button eklenebilir */}
-            <SuiButton
-              variant="gradient"
-              color="info"
-              disabled={isLastDataLoaded}
-              onClick={() => fetchData("colors", "next")}
-            >
-              {!isLastDataLoaded ? "More Colors" : "No More Colors"}
-            </SuiButton>
-          </SuiBox>
+          {data.length === 0 ||
+            (!isLastDataLoaded && (
+              <SuiBox
+                mt={2}
+                sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}
+              >
+                <SuiButton
+                  variant="gradient"
+                  color="info"
+                  onClick={() => fetchData("colors", "next")}
+                >
+                  More Colors
+                </SuiButton>
+              </SuiBox>
+            ))}
         </SuiBox>
       </SuiBox>
       <Footer />

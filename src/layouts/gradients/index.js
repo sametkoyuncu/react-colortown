@@ -20,6 +20,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 // Soft UI Dashboard React components
 import SuiBox from "components/SuiBox";
+import SuiButton from "components/SuiButton";
 
 // Soft UI Dashboard React examples
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
@@ -30,8 +31,11 @@ import Footer from "examples/Footer";
 import GradientCard from "layouts/gradients/components/GradientCard";
 
 // firebase
-import { collection, getDocs, doc, updateDoc, increment } from "firebase/firestore";
+import { doc, updateDoc, increment } from "firebase/firestore";
 import { db } from "../../firebase";
+
+// functions
+import usePagination from "../../services/Pagination";
 
 // colortown context
 import { useColorTown } from "../../context/colortown";
@@ -39,25 +43,29 @@ import { useColorTown } from "../../context/colortown";
 function Gradients() {
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
+  // if the last data has been loaded, the 'load more' button must be disabled
+  const [isLastDataLoaded, setIsLastDataLoaded] = useState(false);
   const { ctGradients, setCtGradients } = useColorTown();
 
-  useEffect(() => {
+  const fetchData = (collectionName, type) => {
+    // type must be "first" or "next"
     setIsLoading(true);
-    const fetchData = async () => {
-      try {
-        const list = [];
-        const querySnapshot = await getDocs(collection(db, "gradients"));
-        querySnapshot.forEach((document) => {
-          list.push({ id: document.id, ...document.data() });
-        });
-        setData(list);
+
+    usePagination(collectionName, type)
+      .then((res) => {
+        setData((prev) => [...prev, ...res]);
         setIsLoading(false);
-      } catch (err) {
-        // TODO: düzgün bir şey ayarla
+        if (res.length < 8) setIsLastDataLoaded(true);
+      })
+      .catch((err) => {
         console.log(err);
-      }
-    };
-    fetchData();
+        setIsLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    // get first 8 docs from colors collection
+    fetchData("gradients", "first");
   }, []);
 
   const handleLikeBtnClick = async (gradientId, reqType) => {
@@ -81,8 +89,8 @@ function Gradients() {
       <DashboardNavbar />
       <SuiBox py={3}>
         <SuiBox mb={3}>
-          {isLoading && (
-            <SuiBox sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+          {isLoading && data.length === 0 && (
+            <SuiBox mb={3} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
               <CircularProgress color="info" />
             </SuiBox>
           )}
@@ -99,6 +107,21 @@ function Gradients() {
               </Grid>
             ))}
           </Grid>
+          {data.length === 0 ||
+            (!isLastDataLoaded && (
+              <SuiBox
+                mt={2}
+                sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}
+              >
+                <SuiButton
+                  variant="gradient"
+                  color="info"
+                  onClick={() => fetchData("gradients", "next")}
+                >
+                  More Gradients
+                </SuiButton>
+              </SuiBox>
+            ))}
         </SuiBox>
       </SuiBox>
       <Footer />
