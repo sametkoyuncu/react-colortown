@@ -56,7 +56,8 @@ function Palettes() {
       .then((res) => {
         setData((prev) => [...prev, ...res]);
         setIsLoading(false);
-        if (res.length < 8) setIsLastDataLoaded(true);
+        // If we have only 12 docs in database, litte issue here. Because we don't have next docs but load button still visible.
+        if (res.length < 12) setIsLastDataLoaded(true);
       })
       .catch((err) => {
         console.log(err);
@@ -95,7 +96,7 @@ function Palettes() {
           )}
           <Grid container spacing={2}>
             {data.map((palette) => (
-              <Grid key={palette.id} item xs={12} sm={6} md={3}>
+              <Grid key={palette.id} item xs={12} sm={6} md={4} lg={3}>
                 <PaletteCard
                   paletteId={palette.id}
                   bgColors={[...palette.colors]}

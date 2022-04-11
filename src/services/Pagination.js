@@ -6,15 +6,15 @@ let lastVisible;
 let documentSnapshots;
 
 // type must be "first" or "next".
-//  first: first 8 document from collection.
-//  next: next 8 document from collection.
-const usePagination = async (collectionName, type) => {
+//  first: first 12 document from collection.
+//  next: next 12 document from collection.
+const usePagination = async (collectionName, type, docsLimit = 12) => {
   const list = [];
   let q;
   switch (type) {
     case "first":
       // Query the first page of docs
-      q = query(collection(db, collectionName), orderBy("timeStamp"), limit(8));
+      q = query(collection(db, collectionName), orderBy("timeStamp"), limit(docsLimit));
       break;
     case "next":
       // Query the next page of docs
@@ -22,7 +22,7 @@ const usePagination = async (collectionName, type) => {
         collection(db, collectionName),
         orderBy("timeStamp"),
         startAfter(lastVisible),
-        limit(8)
+        limit(docsLimit)
       );
       break;
     default:

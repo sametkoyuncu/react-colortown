@@ -56,7 +56,7 @@ function Colors() {
       .then((res) => {
         setData((prev) => [...prev, ...res]);
         setIsLoading(false);
-        if (res.length < 8) setIsLastDataLoaded(true);
+        if (res.length < 12) setIsLastDataLoaded(true);
       })
       .catch((err) => {
         console.log(err);
@@ -97,7 +97,7 @@ function Colors() {
           )}
           <Grid container spacing={2}>
             {data.map((color) => (
-              <Grid key={color.id} item xs={12} sm={6} md={3}>
+              <Grid key={color.id} item xs={12} sm={6} md={4} lg={3}>
                 <ColorCard
                   colorId={color.id}
                   bgColor={color.rgb}

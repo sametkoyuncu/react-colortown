@@ -56,7 +56,7 @@ function Gradients() {
       .then((res) => {
         setData((prev) => [...prev, ...res]);
         setIsLoading(false);
-        if (res.length < 8) setIsLastDataLoaded(true);
+        if (res.length < 12) setIsLastDataLoaded(true);
       })
       .catch((err) => {
         console.log(err);
@@ -97,7 +97,7 @@ function Gradients() {
           )}
           <Grid container spacing={2}>
             {data.map((gradient) => (
-              <Grid key={gradient.id} item xs={12} sm={6} md={3}>
+              <Grid key={gradient.id} item xs={12} sm={6} md={4} lg={3}>
                 <GradientCard
                   gradientId={gradient.id}
                   bgColor={`linear-gradient(${gradient.direction}, ${gradient.colors[0].hex}, ${gradient.colors[1].hex})`}
