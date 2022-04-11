@@ -12,17 +12,12 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 // @mui material components
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
-import Snackbar from "@mui/material/Snackbar";
-import Alert from "@mui/material/Alert";
-import IconButton from "@mui/material/IconButton";
-
-// @mui material icons
-import CloseIcon from "@mui/icons-material/Close";
+import CircularProgress from "@mui/material/CircularProgress";
 
 // Soft UI Dashboard React components
 import SuiBox from "components/SuiBox";
@@ -37,41 +32,34 @@ import SingleColorCard from "layouts/palettes/details/components/SingleColorCard
 
 // colortown components
 import CtColorTagsCard from "components/CtColorTagsCard";
+import CtSnackBar from "components/CtSnackBar";
 
-// data
-import palettes from "../../../data/palettes";
+// firebase
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../../../firebase";
 
 function PaletteDetails() {
+  const [data, setData] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+
   const { id } = useParams();
   const [isSnackBarOpen, setIsSnackBarOpen] = useState(false);
 
-  const INITIAL_STATE = {
-    id: "palette_0",
-    colors: [
-      {
-        color: "#ffffff",
-        name: "White",
-      },
-      {
-        color: "#fffffe",
-        name: "White",
-      },
-      {
-        color: "#fffffd",
-        name: "White",
-      },
-      {
-        color: "#fffffc",
-        name: "White",
-      },
-    ],
-    likes: 0,
-    tags: [],
-  };
-  // TODO: tags card eklenecek
+  useEffect(() => {
+    const fetchData = async () => {
+      const docRef = doc(db, "palettes", id);
+      const docSnap = await getDoc(docRef);
 
-  // TODO: INITIAL_STATE yerine 404 olmalı
-  const palette = palettes.find((item) => item.id === id) || INITIAL_STATE;
+      if (docSnap.exists()) {
+        setData({ id: docSnap.id, ...docSnap.data() });
+        setIsLoading(false);
+      } else {
+        // TODO: do something
+        console.log("No such document!");
+      }
+    };
+    fetchData();
+  }, [id]);
 
   const handleCopy = (copyText) => {
     setIsSnackBarOpen(true);
@@ -88,51 +76,48 @@ function PaletteDetails() {
       <SuiBox mb={2}>
         <Card>
           <SuiBox p={2}>
-            <Grid container spacing={0}>
-              <Grid item xs={12}>
-                <SuiBox
-                  display="flex"
-                  sx={{
-                    flexDirection: { xs: "column", sm: "row" },
-                    flexWrap: "nowrap",
-                    alignItems: "stretch",
-                  }}
-                >
-                  {palette.colors.map(
-                    (item, index) =>
-                      index < 4 && (
-                        <SingleColorCard
-                          key={item.color}
-                          bgColor={item.color}
-                          bgName={item.name}
-                          handleCopy={handleCopy}
-                        />
-                      )
-                  )}
-                </SuiBox>
+            {isLoading && (
+              <SuiBox sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                <CircularProgress color="info" />
+              </SuiBox>
+            )}
+            {!isLoading && (
+              <Grid container spacing={0}>
+                <Grid item xs={12}>
+                  <SuiBox
+                    display="flex"
+                    sx={{
+                      flexDirection: { xs: "column", sm: "row" },
+                      flexWrap: "nowrap",
+                      alignItems: "stretch",
+                    }}
+                  >
+                    {data.colors.map(
+                      (item, index) =>
+                        index < 4 && (
+                          <SingleColorCard
+                            key={item.color}
+                            bgColor={item.color}
+                            bgName={item.name}
+                            handleCopy={handleCopy}
+                          />
+                        )
+                    )}
+                  </SuiBox>
+                </Grid>
               </Grid>
-            </Grid>
+            )}
           </SuiBox>
-          <Snackbar
-            anchorOrigin={{ vertical: "top", horizontal: "center" }}
-            open={isSnackBarOpen}
-            onClose={handleClose}
-            autoHideDuration={2500}
-            action={
-              <IconButton aria-label="close" color="inherit" sx={{ p: 0.5 }} onClick={handleClose}>
-                <CloseIcon />
-              </IconButton>
-            }
-          >
-            <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
-              Copied to Clipboard! 👍
-            </Alert>
-          </Snackbar>
+          <CtSnackBar
+            message="Copied to Clipboard! 👍"
+            isSnackBarOpen={isSnackBarOpen}
+            handleClose={handleClose}
+          />
         </Card>
       </SuiBox>
-      {!!palette.tags.length && (
+      {!isLoading && !!data.tags.length && (
         <Grid item xs={12} mb={2}>
-          <CtColorTagsCard tags={palette.tags} />
+          <CtColorTagsCard tags={data.tags} />
         </Grid>
       )}
       <Footer />

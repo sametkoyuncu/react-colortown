@@ -18,9 +18,6 @@ import { useEffect, useState } from "react";
 // react-router-dom components
 import { Link, useNavigate } from "react-router-dom";
 
-// firebase
-import { createUserWithEmailAndPassword } from "firebase/auth";
-
 // @mui material components
 import Card from "@mui/material/Card";
 // import Checkbox from "@mui/material/Checkbox";
@@ -40,6 +37,7 @@ import curved6 from "assets/images/curved-images/curved14.jpg";
 // firebase.js
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth, db, storage } from "../../../firebase";
 
 function SignUp() {
@@ -99,8 +97,17 @@ function SignUp() {
 
     try {
       const res = await createUserWithEmailAndPassword(auth, data.email, data.password);
+
+      await updateProfile(res.user.auth.currentUser, {
+        displayName: data.displayName,
+        photoURL: data.img,
+      }).catch((err) => {
+        // An error occurred
+        // ...
+        console.log(err);
+      });
+      // we are not need this now, because updateProfile() enough.
       await setDoc(doc(db, "users", res.user.uid), {
-        username: data.username,
         displayName: data.displayName,
         email: data.email,
         img: data.img,
@@ -130,14 +137,6 @@ function SignUp() {
       <Card>
         <SuiBox pt={2} pb={3} px={3}>
           <SuiBox component="form" role="form" onSubmit={handleSignUp}>
-            <SuiBox mb={2}>
-              <SuiInput
-                id="username"
-                onChange={handleInput}
-                placeholder="Username"
-                sx={inputStyles}
-              />
-            </SuiBox>
             <SuiBox mb={2}>
               <SuiInput
                 id="displayName"

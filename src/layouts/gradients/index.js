@@ -13,9 +13,12 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 import { useEffect, useState } from "react";
+
 // @mui material components
 import Grid from "@mui/material/Grid";
 import CircularProgress from "@mui/material/CircularProgress";
+import Icon from "@mui/material/Icon";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 // Soft UI Dashboard React components
 import SuiBox from "components/SuiBox";
@@ -29,11 +32,11 @@ import Footer from "examples/Footer";
 import GradientCard from "layouts/gradients/components/GradientCard";
 
 // firebase
-import { collection, getDocs } from "firebase/firestore";
+import { doc, updateDoc, increment } from "firebase/firestore";
 import { db } from "../../firebase";
 
-// data
-// import gradients from "../../data/gradients";
+// functions
+import usePagination from "../../services/Pagination";
 
 // colortown context
 import { useColorTown } from "../../context/colortown";
@@ -41,29 +44,42 @@ import { useColorTown } from "../../context/colortown";
 function Gradients() {
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
+  // if the last data has been loaded, the 'load more' button must be disabled
+  const [isLastDataLoaded, setIsLastDataLoaded] = useState(false);
   const { ctGradients, setCtGradients } = useColorTown();
 
-  useEffect(() => {
+  const fetchData = (collectionName, type) => {
+    // type must be "first" or "next"
     setIsLoading(true);
-    const fetchData = async () => {
-      try {
-        const list = [];
-        const querySnapshot = await getDocs(collection(db, "gradients"));
-        querySnapshot.forEach((doc) => {
-          list.push({ id: doc.id, ...doc.data() });
-        });
-        setData(list);
+
+    usePagination(collectionName, type)
+      .then((res) => {
+        setData((prev) => [...prev, ...res]);
         setIsLoading(false);
-      } catch (err) {
+        if (res.length < 8) setIsLastDataLoaded(true);
+      })
+      .catch((err) => {
         console.log(err);
-      }
-    };
-    fetchData();
+        setIsLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    // get first 8 docs from colors collection
+    fetchData("gradients", "first");
   }, []);
 
-  const handleLikeBtnClick = (gradientId, reqType) => {
-    if (reqType === "add") setCtGradients([...ctGradients, gradientId]);
-    else if (reqType === "remove") {
+  const handleLikeBtnClick = async (gradientId, reqType) => {
+    const dataRef = doc(db, "gradients", gradientId);
+    if (reqType === "add") {
+      await updateDoc(dataRef, {
+        likes: increment(1),
+      });
+      setCtGradients([...ctGradients, gradientId]);
+    } else if (reqType === "remove") {
+      await updateDoc(dataRef, {
+        likes: increment(-1),
+      });
       const newGradients = ctGradients.filter((id) => id !== gradientId);
       setCtGradients([...newGradients]);
     }
@@ -74,8 +90,8 @@ function Gradients() {
       <DashboardNavbar />
       <SuiBox py={3}>
         <SuiBox mb={3}>
-          {isLoading && (
-            <SuiBox sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+          {isLoading && data.length === 0 && (
+            <SuiBox mb={3} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
               <CircularProgress color="info" />
             </SuiBox>
           )}
@@ -92,6 +108,24 @@ function Gradients() {
               </Grid>
             ))}
           </Grid>
+          {data.length === 0 ||
+            (!isLastDataLoaded && (
+              <SuiBox
+                mt={2}
+                sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}
+              >
+                <LoadingButton
+                  variant="contained"
+                  color="info"
+                  onClick={() => fetchData("gradients", "next")}
+                  loadingPosition="start"
+                  startIcon={<Icon>more_horiz</Icon>}
+                  loading={isLoading}
+                >
+                  &nbsp;More Gradients
+                </LoadingButton>
+              </SuiBox>
+            ))}
         </SuiBox>
       </SuiBox>
       <Footer />

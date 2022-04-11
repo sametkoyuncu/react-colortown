@@ -1,15 +1,8 @@
 import { useState } from "react";
+
 // @mui material components
-// import IconButton from "@mui/material/IconButton";
-// import Stack from "@mui/material/Stack";
 import Icon from "@mui/material/Icon";
 import Tooltip from "@mui/material/Tooltip";
-
-// @mui icons
-// import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-// import DeleteIcon from "@mui/icons-material/Delete";
-// import AlarmIcon from "@mui/icons-material/Alarm";
-// import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 
 // Soft UI Dashboard React components
 import SuiBox from "components/SuiBox";
@@ -17,9 +10,6 @@ import SuiTypography from "components/SuiTypography";
 
 // prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
-
-// borderRadius = "xs";
-// variant = "gradient"
 
 function SingleColorCard({ bgColor, bgName, handleCopy }) {
   const [show, setShow] = useState(false);
@@ -85,6 +75,7 @@ function SingleColorCard({ bgColor, bgName, handleCopy }) {
                 </Icon>
               </Tooltip>
             </SuiBox>
+            {/* TODO: pick color button */}
             {/* <SuiBox display="flex">
               <Tooltip title="Generete Random (soon)" placement="bottom">
                 <Icon sx={{ cursor: "pointer" }} fontSize="small">

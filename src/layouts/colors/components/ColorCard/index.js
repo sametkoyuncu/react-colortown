@@ -6,9 +6,6 @@ import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 import Icon from "@mui/material/Icon";
 
-// @mui icons
-// import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-
 // Soft UI Dashboard React components
 import SuiBox from "components/SuiBox";
 import SuiButton from "components/SuiButton";
@@ -16,9 +13,6 @@ import SuiTypography from "components/SuiTypography";
 
 // prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
-
-// borderRadius = "xs";
-// variant = "gradient"
 
 function ColorCard({ colorId, bgColor, likesCount, isLiked, handleLikeBtnClick }) {
   const [count, setCount] = useState(likesCount);
