@@ -43,16 +43,18 @@ import { db } from "../../firebase";
 // functions
 // import usePagination from "../../services/Pagination";
 import getByUserId from "../../services/GetByUserId";
+import GetFavoritesByUserId from "../../services/GetFavoritesByUserId";
 
 function Overview() {
   const { currentUser } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
+  const [favorites, setFavorites] = useState([]);
   const [selectedTab, setSelectedTab] = useState(true);
   const { ctColors, setCtColors, ctGradients, setCtGradients, ctPalettes, setCtPalettes } =
     useColorTown();
 
-  const fetchData = async (collectionName) => {
+  const fetchColection = async (collectionName) => {
     // type must be "first" or "next"
     await getByUserId(db, collectionName, currentUser.uid)
       .then((res) => {
@@ -64,12 +66,26 @@ function Overview() {
       });
   };
 
+  const fetchFavorites = async (userId) => {
+    // type must be "first" or "next"
+    await GetFavoritesByUserId(userId)
+      .then((res) => {
+        setFavorites((prev) => [...prev, ...res]);
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsLoading(false);
+      });
+  };
+
   const fetchAllData = async () => {
     setIsLoading(true);
 
-    await fetchData("colors");
-    await fetchData("gradients");
-    await fetchData("palettes");
+    await fetchColection("colors");
+    await fetchColection("gradients");
+    await fetchColection("palettes");
+
+    await fetchFavorites(currentUser.uid);
 
     setIsLoading(false);
   };
@@ -184,7 +200,41 @@ function Overview() {
               ))}
             </Grid>
           )}
-          {!selectedTab && "favorites"}
+          {!selectedTab && (
+            <Grid container spacing={2}>
+              {favorites.map((item) => (
+                <Grid key={item.id} item xs={12} sm={6} md={4} lg={3}>
+                  {item.type === "color" && (
+                    <ColorCard
+                      colorId={item.id}
+                      bgColor={item.rgb}
+                      likesCount={item.likes}
+                      isLiked={ctColors.indexOf(item.id) >= 0}
+                      handleLikeBtnClick={handleLikeBtnClickColor}
+                    />
+                  )}
+                  {item.type === "gradient" && (
+                    <GradientCard
+                      gradientId={item.id}
+                      bgColor={`linear-gradient(${item.direction}, ${item.colors[0].hex}, ${item.colors[1].hex})`}
+                      likesCount={item.likes}
+                      isLiked={ctGradients.indexOf(item.id) >= 0}
+                      handleLikeBtnClick={handleLikeBtnClickGradient}
+                    />
+                  )}
+                  {item.type === "palette" && (
+                    <PaletteCard
+                      paletteId={item.id}
+                      bgColors={[...item.colors]}
+                      likesCount={item.likes}
+                      isLiked={ctPalettes.indexOf(item.id) >= 0}
+                      handleLikeBtnClick={handleLikeBtnClickPalette}
+                    />
+                  )}
+                </Grid>
+              ))}
+            </Grid>
+          )}
         </SuiBox>
       </SuiBox>
       <Footer />
