@@ -12,7 +12,7 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 
 // @mui material components
 import Grid from "@mui/material/Grid";
@@ -32,16 +32,23 @@ import Footer from "examples/Footer";
 import ColorCard from "layouts/colors/components/ColorCard";
 
 // firebase
-import { doc, updateDoc, increment } from "firebase/firestore";
 import { db } from "../../firebase";
 
 // functions
-import { usePagination } from "../../services";
+import {
+  usePagination,
+  addToFavorites,
+  removeFromFavorites,
+  incrementLikes,
+  decrementLikes,
+} from "../../services";
 
 // colortown context
 import { useColorTown } from "../../context/colortown";
+import { AuthContext } from "../../context/colortown/AuthContext";
 
 function Colors() {
+  const { currentUser } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
   // if the last data has been loaded, the 'load more' button must be disabled
@@ -55,11 +62,12 @@ function Colors() {
     usePagination(collectionName, type)
       .then((res) => {
         setData((prev) => [...prev, ...res]);
-        setIsLoading(false);
         if (res.length < 12) setIsLastDataLoaded(true);
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
         setIsLoading(false);
       });
   };
@@ -70,16 +78,15 @@ function Colors() {
   }, []);
 
   const handleLikeBtnClick = async (colorId, reqType) => {
-    const dataRef = doc(db, "colors", colorId);
     if (reqType === "add") {
-      await updateDoc(dataRef, {
-        likes: increment(1),
-      });
+      if (currentUser) await addToFavorites(db, currentUser.uid, "color", colorId);
+      await incrementLikes(db, "color", colorId);
+      // basic solution, I think
       setCtColors([...ctColors, colorId]);
     } else if (reqType === "remove") {
-      await updateDoc(dataRef, {
-        likes: increment(-1),
-      });
+      if (currentUser) await removeFromFavorites(db, currentUser.uid, "color", colorId);
+      await decrementLikes(db, "color", colorId);
+      // basic solution, I think
       const newColors = ctColors.filter((id) => id !== colorId);
       setCtColors([...newColors]);
     }

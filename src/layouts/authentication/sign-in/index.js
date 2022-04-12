@@ -33,11 +33,14 @@ import CoverLayout from "layouts/authentication/components/CoverLayout";
 // Images
 import curved9 from "assets/images/curved-images/curved-6.jpg";
 
+import { getFavoriteIds } from "services";
+
 // context
+import { useColorTown } from "context/colortown";
 import { AuthContext } from "context/colortown/AuthContext";
 
 // firebase.js
-import { auth } from "../../../firebase";
+import { auth, db } from "../../../firebase";
 
 const inputStyles = { border: "1px solid #e5e5e5", borderRadius: "8px" };
 
@@ -46,6 +49,8 @@ function SignIn() {
   const [error, setError] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const { setCtColors, setCtGradients, setCtPalettes } = useColorTown();
 
   const navigate = useNavigate();
 
@@ -60,6 +65,16 @@ function SignIn() {
         // eslint-disable-next-line prefer-destructuring, no-unused-vars
         const user = userCredential.user;
         dispatch({ type: "LOGIN", payload: user });
+        return user;
+      })
+      .then((user) => {
+        getFavoriteIds(db, user.uid).then((favorites) => {
+          setCtColors([...favorites.colors]);
+          setCtGradients([...favorites.gradients]);
+          setCtPalettes([...favorites.palettes]);
+        });
+      })
+      .then(() => {
         navigate("/");
       })
       .catch((err) => {

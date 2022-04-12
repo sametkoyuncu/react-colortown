@@ -1,13 +1,21 @@
 import usePagination from "./Pagination";
 import getCollectionByUserId from "./GetCollectionByUserId";
-import getFavoritesByUserId from "./GetFavoritesByUserId";
-import addToFavorites from "./AddToFavorites";
-import removeFromFavorites from "./RemoveFromFavorites";
+import {
+  addToFavorites,
+  removeFromFavorites,
+  incrementLikes,
+  decrementLikes,
+  getFavoriteIds,
+  getFavoritesByUserId,
+} from "./FavoritesService";
 
 export {
   usePagination,
   getCollectionByUserId,
-  getFavoritesByUserId,
   addToFavorites,
   removeFromFavorites,
+  getFavoriteIds,
+  getFavoritesByUserId,
+  incrementLikes,
+  decrementLikes,
 };

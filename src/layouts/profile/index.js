@@ -37,11 +37,17 @@ import PaletteCard from "layouts/palettes/components/PaletteCard";
 import Header from "layouts/profile/components/Header";
 
 // firebase
-import { doc, updateDoc, increment } from "firebase/firestore";
 import { db } from "../../firebase";
 
 // functions
-import { getCollectionByUserId, getFavoritesByUserId } from "../../services";
+import {
+  getCollectionByUserId,
+  getFavoritesByUserId,
+  addToFavorites,
+  removeFromFavorites,
+  incrementLikes,
+  decrementLikes,
+} from "../../services";
 
 function Overview() {
   const { currentUser } = useContext(AuthContext);
@@ -87,7 +93,7 @@ function Overview() {
 
     setIsLoading(false);
   };
-
+  // TODO: favori ve koleksiyon her tab değiştiğinde güncellenebilir veya favoriler için favorilerden çıkarınca da olsa iyi olur
   useEffect(() => {
     fetchAllData();
   }, []);
@@ -99,52 +105,43 @@ function Overview() {
     setIsLoading(false);
   };
 
-  // burasına güzel bir ayar çekilecek (favorilere ekle)
+  // FIXME: burasına güzel bir ayar çekilecek (favorilere ekle)
   const handleLikeBtnClickColor = async (colorId, reqType) => {
-    const dataRef = doc(db, "colors", colorId);
     if (reqType === "add") {
-      await updateDoc(dataRef, {
-        likes: increment(1),
-      });
+      if (currentUser) await addToFavorites(db, currentUser.uid, "color", colorId);
+      await incrementLikes(db, "color", colorId);
       setCtColors([...ctColors, colorId]);
     } else if (reqType === "remove") {
-      await updateDoc(dataRef, {
-        likes: increment(-1),
-      });
+      if (currentUser) await removeFromFavorites(db, currentUser.uid, "color", colorId);
+      await decrementLikes(db, "color", colorId);
       const newColors = ctColors.filter((id) => id !== colorId);
       setCtColors([...newColors]);
     }
   };
 
   const handleLikeBtnClickGradient = async (gradientId, reqType) => {
-    const dataRef = doc(db, "gradients", gradientId);
     if (reqType === "add") {
-      await updateDoc(dataRef, {
-        likes: increment(1),
-      });
+      if (currentUser) await addToFavorites(db, currentUser.uid, "gradient", gradientId);
+      await incrementLikes(db, "gradient", gradientId);
       setCtGradients([...ctGradients, gradientId]);
     } else if (reqType === "remove") {
-      await updateDoc(dataRef, {
-        likes: increment(-1),
-      });
-      const newColors = ctGradients.filter((id) => id !== gradientId);
-      setCtGradients([...newColors]);
+      if (currentUser) await removeFromFavorites(db, currentUser.uid, "gradient", gradientId);
+      await decrementLikes(db, "gradient", gradientId);
+      const newGradients = ctGradients.filter((id) => id !== gradientId);
+      setCtGradients([...newGradients]);
     }
   };
 
   const handleLikeBtnClickPalette = async (paletteId, reqType) => {
-    const dataRef = doc(db, "palettes", paletteId);
     if (reqType === "add") {
-      await updateDoc(dataRef, {
-        likes: increment(1),
-      });
+      if (currentUser) await addToFavorites(db, currentUser.uid, "palette", paletteId);
+      await incrementLikes(db, "palette", paletteId);
       setCtPalettes([...ctPalettes, paletteId]);
     } else if (reqType === "remove") {
-      await updateDoc(dataRef, {
-        likes: increment(-1),
-      });
-      const newColors = ctPalettes.filter((id) => id !== paletteId);
-      setCtPalettes([...newColors]);
+      if (currentUser) await removeFromFavorites(db, currentUser.uid, "palette", paletteId);
+      await decrementLikes(db, "palette", paletteId);
+      const newPalettes = ctPalettes.filter((id) => id !== paletteId);
+      setCtPalettes([...newPalettes]);
     }
   };
 
