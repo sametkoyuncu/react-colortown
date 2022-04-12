@@ -1,6 +1,6 @@
 import { collection, query, where, getDocs } from "firebase/firestore";
 
-const getByUserId = async (db, collectionName, userId) => {
+const getCollectionByUserId = async (db, collectionName, userId) => {
   const list = [];
   const q = query(collection(db, collectionName), where("userId", "==", userId));
 
@@ -12,4 +12,4 @@ const getByUserId = async (db, collectionName, userId) => {
   return list;
 };
 
-export default getByUserId;
+export default getCollectionByUserId;

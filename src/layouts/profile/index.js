@@ -41,9 +41,7 @@ import { doc, updateDoc, increment } from "firebase/firestore";
 import { db } from "../../firebase";
 
 // functions
-// import usePagination from "../../services/Pagination";
-import getByUserId from "../../services/GetByUserId";
-import GetFavoritesByUserId from "../../services/GetFavoritesByUserId";
+import { getCollectionByUserId, getFavoritesByUserId } from "../../services";
 
 function Overview() {
   const { currentUser } = useContext(AuthContext);
@@ -56,7 +54,7 @@ function Overview() {
 
   const fetchColection = async (collectionName) => {
     // type must be "first" or "next"
-    await getByUserId(db, collectionName, currentUser.uid)
+    await getCollectionByUserId(db, collectionName, currentUser.uid)
       .then((res) => {
         setData((prev) => [...prev, ...res]);
       })
@@ -66,9 +64,9 @@ function Overview() {
       });
   };
 
-  const fetchFavorites = async (userId) => {
+  const fetchFavorites = async (firebaseDb, userId) => {
     // type must be "first" or "next"
-    await GetFavoritesByUserId(userId)
+    await getFavoritesByUserId(firebaseDb, userId)
       .then((res) => {
         setFavorites((prev) => [...prev, ...res]);
       })
@@ -85,7 +83,7 @@ function Overview() {
     await fetchColection("gradients");
     await fetchColection("palettes");
 
-    await fetchFavorites(currentUser.uid);
+    await fetchFavorites(db, currentUser.uid);
 
     setIsLoading(false);
   };

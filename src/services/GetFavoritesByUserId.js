@@ -1,7 +1,6 @@
 import { getDoc, doc } from "firebase/firestore";
-import { db } from "../firebase";
 
-const GetFavoritesByUserId = async (userId) => {
+const GetFavoritesByUserId = async (db, userId) => {
   const list = [];
 
   const userDocRef = doc(db, "users", userId);
@@ -12,19 +11,7 @@ const GetFavoritesByUserId = async (userId) => {
   const promises = [];
 
   userFavorites.forEach((item) => {
-    switch (item.type) {
-      case "color":
-        promises.push(getDoc(doc(db, "colors", item.id)));
-        break;
-      case "gradient":
-        promises.push(getDoc(doc(db, "gradients", item.id)));
-        break;
-      case "palette":
-        promises.push(getDoc(doc(db, "palettes", item.id)));
-        break;
-      default:
-        break;
-    }
+    promises.push(getDoc(doc(db, `${item.type}s`, item.id)));
   });
 
   const favoriteDocs = await Promise.all(promises); // Array of Document Snapshots

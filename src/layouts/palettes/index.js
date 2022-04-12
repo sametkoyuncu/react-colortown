@@ -36,7 +36,7 @@ import { doc, updateDoc, increment } from "firebase/firestore";
 import { db } from "../../firebase";
 
 // functions
-import usePagination from "../../services/Pagination";
+import { usePagination } from "../../services";
 
 // colortown context
 import { useColorTown } from "../../context/colortown";
