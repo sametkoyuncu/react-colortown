@@ -31,18 +31,20 @@ import SuiAvatar from "components/SuiAvatar";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
 // Soft UI Dashboard React icons
-import Cube from "examples/Icons/Cube";
 import Document from "examples/Icons/Document";
-import Settings from "examples/Icons/Settings";
+import Cube from "examples/Icons/Cube";
 
 // Soft UI Dashboard React base styles
 import breakpoints from "assets/theme/base/breakpoints";
 
 // Images
-import burceMars from "assets/images/bruce-mars.jpg";
+// import burceMars from "assets/images/bruce-mars.jpg";
 import curved0 from "assets/images/curved-images/curved0.jpg";
 
-function Header() {
+// prop-types is a library for typechecking of props
+import PropTypes from "prop-types";
+
+function Header({ profileImage, displayName, email, setSelectedTab }) {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
   const [tabValue, setTabValue] = useState(0);
 
@@ -103,7 +105,7 @@ function Header() {
         <Grid container spacing={3} alignItems="center">
           <Grid item>
             <SuiAvatar
-              src={burceMars}
+              src={profileImage}
               alt="profile-image"
               variant="rounded"
               size="xl"
@@ -113,10 +115,10 @@ function Header() {
           <Grid item>
             <SuiBox height="100%" mt={0.5} lineHeight={1}>
               <SuiTypography variant="h5" fontWeight="medium">
-                Alex Thompson
+                {displayName}
               </SuiTypography>
               <SuiTypography variant="button" color="text" fontWeight="medium">
-                CEO / Co-Founder
+                {email}
               </SuiTypography>
             </SuiBox>
           </Grid>
@@ -128,9 +130,8 @@ function Header() {
                 onChange={handleSetTabValue}
                 sx={{ background: "transparent" }}
               >
-                <Tab label="App" icon={<Cube />} />
-                <Tab label="Message" icon={<Document />} />
-                <Tab label="Settings" icon={<Settings />} />
+                <Tab label="Collections" icon={<Document />} onClick={() => setSelectedTab(true)} />
+                <Tab label="Favorites" icon={<Cube />} onClick={() => setSelectedTab(false)} />
               </Tabs>
             </AppBar>
           </Grid>
@@ -139,5 +140,13 @@ function Header() {
     </SuiBox>
   );
 }
+
+// Typechecking props
+Header.propTypes = {
+  profileImage: PropTypes.string.isRequired,
+  displayName: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
+  setSelectedTab: PropTypes.func.isRequired,
+};
 
 export default Header;

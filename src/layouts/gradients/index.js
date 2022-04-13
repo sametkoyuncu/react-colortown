@@ -12,7 +12,7 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 
 // @mui material components
 import Grid from "@mui/material/Grid";
@@ -32,16 +32,23 @@ import Footer from "examples/Footer";
 import GradientCard from "layouts/gradients/components/GradientCard";
 
 // firebase
-import { doc, updateDoc, increment } from "firebase/firestore";
 import { db } from "../../firebase";
 
 // functions
-import usePagination from "../../services/Pagination";
+import {
+  usePagination,
+  addToFavorites,
+  removeFromFavorites,
+  incrementLikes,
+  decrementLikes,
+} from "../../services";
 
 // colortown context
 import { useColorTown } from "../../context/colortown";
+import { AuthContext } from "../../context/colortown/AuthContext";
 
 function Gradients() {
+  const { currentUser } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
   // if the last data has been loaded, the 'load more' button must be disabled
@@ -56,10 +63,13 @@ function Gradients() {
       .then((res) => {
         setData((prev) => [...prev, ...res]);
         setIsLoading(false);
-        if (res.length < 8) setIsLastDataLoaded(true);
+        if (res.length < 12) setIsLastDataLoaded(true);
       })
       .catch((err) => {
         console.log(err);
+        setIsLoading(false);
+      })
+      .finally(() => {
         setIsLoading(false);
       });
   };
@@ -70,16 +80,15 @@ function Gradients() {
   }, []);
 
   const handleLikeBtnClick = async (gradientId, reqType) => {
-    const dataRef = doc(db, "gradients", gradientId);
     if (reqType === "add") {
-      await updateDoc(dataRef, {
-        likes: increment(1),
-      });
+      if (currentUser) await addToFavorites(db, currentUser.uid, "gradient", gradientId);
+      await incrementLikes(db, "gradient", gradientId);
+      // basic solution, I think
       setCtGradients([...ctGradients, gradientId]);
     } else if (reqType === "remove") {
-      await updateDoc(dataRef, {
-        likes: increment(-1),
-      });
+      if (currentUser) await removeFromFavorites(db, currentUser.uid, "gradient", gradientId);
+      await decrementLikes(db, "gradient", gradientId);
+      // basic solution, I think
       const newGradients = ctGradients.filter((id) => id !== gradientId);
       setCtGradients([...newGradients]);
     }
@@ -97,7 +106,7 @@ function Gradients() {
           )}
           <Grid container spacing={2}>
             {data.map((gradient) => (
-              <Grid key={gradient.id} item xs={12} sm={6} md={3}>
+              <Grid key={gradient.id} item xs={12} sm={6} md={4} lg={3}>
                 <GradientCard
                   gradientId={gradient.id}
                   bgColor={`linear-gradient(${gradient.direction}, ${gradient.colors[0].hex}, ${gradient.colors[1].hex})`}

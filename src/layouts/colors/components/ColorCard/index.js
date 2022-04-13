@@ -4,7 +4,9 @@ import { Link } from "react-router-dom";
 // @mui material components
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
-import Icon from "@mui/material/Icon";
+import IconButton from "@mui/material/IconButton";
+import Favorite from "@mui/icons-material/Favorite";
+import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 
 // Soft UI Dashboard React components
 import SuiBox from "components/SuiBox";
@@ -58,19 +60,12 @@ function ColorCard({ colorId, bgColor, likesCount, isLiked, handleLikeBtnClick }
                 justifyContent="flex-start"
                 alignItems="center"
               >
-                <SuiButton size="medium" circular onClick={handleClick} sx={{ boxShadow: "none" }}>
-                  <Icon
-                    sx={{
-                      fontSize: "24px !important",
-                      color: `${isLiked ? "#FC354C" : "#808080"}`,
-                    }}
-                  >
-                    {isLiked ? "favorite" : "favorite_border"}
-                  </Icon>
-                  <SuiTypography ml={1} variant="button" fontWeight="light" color="secondary">
-                    {count}
-                  </SuiTypography>
-                </SuiButton>
+                <IconButton aria-label="delete" onClick={handleClick} sx={{ marginLeft: "5px" }}>
+                  {isLiked ? <Favorite sx={{ color: "#FC354C" }} /> : <FavoriteBorder />}
+                </IconButton>
+                <SuiTypography variant="button" fontWeight="light" color="secondary">
+                  {count}
+                </SuiTypography>
               </Grid>
               <Grid
                 item

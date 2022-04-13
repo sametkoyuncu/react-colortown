@@ -61,8 +61,6 @@ export default function App() {
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const { pathname } = useLocation();
 
-  // TODO: giriş yapmış kullanıcı yoksa profile sayfasına gitme ve gösterme
-  // TODO: giriş yapmış kullanıcı varsa login ve sign in e gitme ve gösterme
   // eslint-disable-next-line no-unused-vars
   const { currentUser } = useContext(AuthContext);
 
