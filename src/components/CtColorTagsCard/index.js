@@ -7,6 +7,9 @@ import SuiBox from "components/SuiBox";
 // prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
 
+// tags label and colors
+import { tags as tagsLabelAndColors } from "../../data/tags";
+
 //
 import Tag from "./tag";
 
@@ -15,7 +18,7 @@ function ColorTagsCard({ tags }) {
     <Card sx={{ height: "100%", padding: "0.75rem", paddingBottom: "0" }}>
       <SuiBox display="flex" alignItems="center" justifyContent="center" flexWrap="wrap">
         {tags.map((tag) => (
-          <Tag bgColor={tag.color} label={tag.label} key={tag.color} />
+          <Tag bgColor={tagsLabelAndColors[tag]} label={tag} key={tagsLabelAndColors[tag]} />
         ))}
       </SuiBox>
     </Card>

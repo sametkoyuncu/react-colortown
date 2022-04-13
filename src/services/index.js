@@ -1,5 +1,6 @@
 import usePagination from "./Pagination";
 import getCollectionByUserId from "./GetCollectionByUserId";
+import getDocsByTagName from "./GetDocsByTagName";
 import {
   addToFavorites,
   removeFromFavorites,
@@ -18,4 +19,5 @@ export {
   getFavoritesByUserId,
   incrementLikes,
   decrementLikes,
+  getDocsByTagName,
 };

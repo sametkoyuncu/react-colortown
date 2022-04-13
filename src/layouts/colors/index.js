@@ -56,9 +56,9 @@ function Colors() {
   const { ctColors, setCtColors } = useColorTown();
 
   const fetchData = (collectionName, type) => {
-    // type must be "first" or "next"
     setIsLoading(true);
 
+    // type must be "first" or "next"
     usePagination(collectionName, type)
       .then((res) => {
         setData((prev) => [...prev, ...res]);

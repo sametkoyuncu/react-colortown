@@ -30,7 +30,7 @@ import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../../firebase";
 
 // data
-import tags from "../../data/tags";
+import { tags, tagKeys } from "../../data/tags";
 
 function CtSaveModal({ colorCodes, type }) {
   const { currentUser } = useContext(AuthContext);
@@ -40,6 +40,7 @@ function CtSaveModal({ colorCodes, type }) {
 
   const [name, setName] = useState("");
   const [selectedTags, setSelectedTags] = useState([]);
+
   // modal functions
   const handleClickOpen = () => {
     setOpen(true);
@@ -60,9 +61,9 @@ function CtSaveModal({ colorCodes, type }) {
   const handleChangeChecbox = (tagIndex) => {
     let newTags;
     // listede varsa çıkar, yoksa ekle
-    if (selectedTags.includes(tags[tagIndex]))
-      newTags = selectedTags.filter((item) => item.label !== tags[tagIndex].label);
-    else newTags = [...selectedTags, tags[tagIndex]];
+    if (selectedTags.includes(tagKeys[tagIndex]))
+      newTags = selectedTags.filter((item) => item !== tagKeys[tagIndex]);
+    else newTags = [...selectedTags, tagKeys[tagIndex]];
     setSelectedTags([...newTags]);
   };
   // TODO: işlem sonucuna göre snackbar göster
@@ -184,25 +185,25 @@ function CtSaveModal({ colorCodes, type }) {
               padding: "10px",
             }}
           >
-            {tags.map((tag, index) => (
+            {tagKeys.map((tag, index) => (
               <FormControlLabel
-                key={tag.label}
+                key={tags[tag]}
                 control={
                   <Checkbox
                     onChange={() => handleChangeChecbox(index)}
                     sx={{
                       backgroundImage: "none !important",
-                      color: `${tag.color} !important`,
+                      color: `${tags[tag]} !important`,
                       "&.Mui-checked": {
-                        backgroundColor: tag.color,
-                        color: tag.color,
-                        borderColor: tag.color,
+                        backgroundColor: tags[tag],
+                        color: tags[tag],
+                        borderColor: tags[tag],
                         boxShadow: 3,
                       },
                     }}
                   />
                 }
-                label={tag.label}
+                label={tag}
                 sx={{
                   display: "inline-flex",
                   padding: "5px",
