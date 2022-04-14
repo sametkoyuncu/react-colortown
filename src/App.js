@@ -153,11 +153,13 @@ export default function App() {
 
         {/* simple protected routes */}
         {currentUser !== null ? (
-          <Route exact path="/profile" element={<Profile />} />
+          <Route exact path="/profile/:id" element={<Profile />} />
         ) : (
           <>
             <Route exact path="/authentication/sign-in" element={<SignIn />} />
             <Route exact path="/authentication/sign-up" element={<SignUp />} />
+            {/* redirect */}
+            <Route path="/profile/*" element={<Navigate to="/authentication/sign-in" />} />
           </>
         )}
 
