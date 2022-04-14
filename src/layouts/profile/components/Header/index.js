@@ -44,7 +44,7 @@ import curved0 from "assets/images/curved-images/curved0.jpg";
 // prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
 
-function Header({ profileImage, displayName, email, setSelectedTab }) {
+function Header({ profileImage, displayName, email, setSelectedTab, isFavoritesShow }) {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
   const [tabValue, setTabValue] = useState(0);
 
@@ -131,7 +131,9 @@ function Header({ profileImage, displayName, email, setSelectedTab }) {
                 sx={{ background: "transparent" }}
               >
                 <Tab label="Collections" icon={<Document />} onClick={() => setSelectedTab(true)} />
-                <Tab label="Favorites" icon={<Cube />} onClick={() => setSelectedTab(false)} />
+                {isFavoritesShow && (
+                  <Tab label="Favorites" icon={<Cube />} onClick={() => setSelectedTab(false)} />
+                )}
               </Tabs>
             </AppBar>
           </Grid>
@@ -147,6 +149,7 @@ Header.propTypes = {
   displayName: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   setSelectedTab: PropTypes.func.isRequired,
+  isFavoritesShow: PropTypes.bool.isRequired,
 };
 
 export default Header;
