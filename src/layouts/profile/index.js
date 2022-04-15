@@ -63,14 +63,14 @@ function Overview() {
   const { ctColors, setCtColors, ctGradients, setCtGradients, ctPalettes, setCtPalettes } =
     useColorTown();
 
-  const resetData = async () => {
-    await setData([]);
-    await setFavorites([]);
+  const resetData = () => {
+    setData([]);
+    setFavorites([]);
   };
 
-  const fetchColection = async (collectionName) => {
+  const fetchColection = (collectionName) => {
     // type must be "first" or "next"
-    await getCollectionByUserId(db, collectionName, id)
+    getCollectionByUserId(db, collectionName, id)
       .then((res) => {
         setData((prev) => [...prev, ...res]);
       })
@@ -80,11 +80,11 @@ function Overview() {
       });
   };
 
-  const fetchFavorites = async (firebaseDb, userId) => {
+  const fetchFavorites = (firebaseDb, userId) => {
     // type must be "first" or "next"
-    await getFavoritesByUserId(firebaseDb, userId)
+    getFavoritesByUserId(firebaseDb, userId)
       .then((res) => {
-        setFavorites((prev) => [...prev, ...res]);
+        setFavorites([...res]);
       })
       .catch((err) => {
         console.log(err);
@@ -92,14 +92,14 @@ function Overview() {
       });
   };
   // collections and favorites together
-  const fetchAllData = async () => {
+  const fetchAllData = () => {
     setIsLoading(true);
 
-    await fetchColection("colors");
-    await fetchColection("gradients");
-    await fetchColection("palettes");
+    fetchColection("colors");
+    fetchColection("gradients");
+    fetchColection("palettes");
 
-    await fetchFavorites(db, id);
+    fetchFavorites(db, id);
 
     setIsLoading(false);
   };
@@ -116,11 +116,16 @@ function Overview() {
         // TODO: do something
         console.log("No such document!");
       }
+      console.log(user);
     };
-    resetData().then(() => {
+
+    // çok da iyi değil
+    try {
+      resetData();
+    } finally {
       fetchUser();
       fetchAllData();
-    });
+    }
   }, [id]);
 
   // tab changer

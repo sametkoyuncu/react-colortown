@@ -77,7 +77,7 @@ function CtSaveModal({ colorCodes, type }) {
         hsl: colorCodes.hsl,
         likes: 0,
         tags: [...selectedTags],
-
+        type: "color",
         timeStamp: serverTimestamp(),
         userId: currentUser.uid,
       });
