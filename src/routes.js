@@ -52,13 +52,16 @@ import PaletteGenerate from "layouts/paletteGenerate";
 // import SignUp from "layouts/authentication/sign-up";
 
 // Soft UI Dashboard React icons
-import Shop from "examples/Icons/Shop";
-import Office from "examples/Icons/Office";
+// import Shop from "examples/Icons/Shop";
+// import Office from "examples/Icons/Office";
 // import Settings from "examples/Icons/Settings";
-import Document from "examples/Icons/Document";
-import SpaceShip from "examples/Icons/SpaceShip";
-import CustomerSupport from "examples/Icons/CustomerSupport";
-import CreditCard from "examples/Icons/CreditCard";
+import ColorLensIcon from "@mui/icons-material/ColorLens";
+import GradientIcon from "@mui/icons-material/Gradient";
+import StyleIcon from "@mui/icons-material/Style";
+// import Document from "examples/Icons/Document";
+// import SpaceShip from "examples/Icons/SpaceShip";
+// import CustomerSupport from "examples/Icons/CustomerSupport";
+// import CreditCard from "examples/Icons/CreditCard";
 // import Cube from "examples/Icons/Cube";
 
 const routes = [
@@ -68,7 +71,7 @@ const routes = [
     name: "Colors",
     key: "colors",
     route: "/colors",
-    icon: <CustomerSupport size="12px" />,
+    icon: <StyleIcon />,
     component: <Colors />,
     noCollapse: true,
   },
@@ -77,7 +80,7 @@ const routes = [
     name: "Gradients",
     key: "gradients",
     route: "/gradients",
-    icon: <Document size="12px" />,
+    icon: <GradientIcon />,
     component: <Gradients />,
     noCollapse: true,
   },
@@ -86,7 +89,7 @@ const routes = [
     name: "Palettes",
     key: "palettes",
     route: "/palettes",
-    icon: <SpaceShip size="12px" />,
+    icon: <ColorLensIcon />,
     component: <Palettes />,
     noCollapse: true,
   },
@@ -96,7 +99,7 @@ const routes = [
     name: "Color",
     key: "color-generator",
     route: "/color-generator",
-    icon: <Shop size="12px" />,
+    icon: <StyleIcon />,
     component: <ColorGenerate />,
     noCollapse: true,
   },
@@ -105,7 +108,7 @@ const routes = [
     name: "Gradient",
     key: "gradient-generator",
     route: "/gradient-generator",
-    icon: <Office size="12px" />,
+    icon: <GradientIcon />,
     component: <GradientGenerate />,
     noCollapse: true,
   },
@@ -114,7 +117,7 @@ const routes = [
     name: "Palette",
     key: "palette-generator",
     route: "/palette-generator",
-    icon: <CreditCard size="12px" />,
+    icon: <ColorLensIcon />,
     component: <PaletteGenerate />,
     noCollapse: true,
   },
