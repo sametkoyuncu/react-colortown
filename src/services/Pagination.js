@@ -1,5 +1,5 @@
-// I named 'usePagination' but I don't know if this is a hook or something else.
-import { collection, query, orderBy, startAfter, limit, getDocs } from "firebase/firestore";
+// I named 'usePagination' but I don't know this is a hook or something else.
+import { collection, query, orderBy, startAfter, limit, getDocs, where } from "firebase/firestore";
 import { db } from "../firebase";
 
 let lastVisible;
@@ -28,7 +28,6 @@ const usePagination = async (collectionName, queryType, docsLimit = 12) => {
     default:
       break;
   }
-
   documentSnapshots = await getDocs(q);
 
   // Get the last visible document
@@ -40,4 +39,46 @@ const usePagination = async (collectionName, queryType, docsLimit = 12) => {
   return list;
 };
 
-export default usePagination;
+const usePaginationWithFilterTags = async (
+  collectionName,
+  queryType,
+  filterTags,
+  docsLimit = 12
+) => {
+  const list = [];
+  let q;
+  switch (queryType) {
+    case "first":
+      // Query the first page of docs
+      q = query(
+        collection(db, collectionName),
+        where("tags", "array-contains-any", [...filterTags]),
+        orderBy("timeStamp"),
+        limit(docsLimit)
+      );
+      break;
+    case "next":
+      // Query the next page of docs
+      q = query(
+        collection(db, collectionName),
+        where("tags", "array-contains-any", [...filterTags]),
+        orderBy("timeStamp"),
+        startAfter(lastVisible),
+        limit(docsLimit)
+      );
+      break;
+    default:
+      break;
+  }
+  documentSnapshots = await getDocs(q);
+
+  // Get the last visible document
+  lastVisible = documentSnapshots.docs[documentSnapshots.docs.length - 1];
+  documentSnapshots.forEach((document) => {
+    list.push({ id: document.id, ...document.data() });
+  });
+  console.log(list);
+  return list;
+};
+
+export { usePagination, usePaginationWithFilterTags };

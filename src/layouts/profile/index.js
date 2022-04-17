@@ -13,6 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 import { useState, useContext, useEffect } from "react";
+import { useParams } from "react-router-dom";
 // @mui material components
 import Grid from "@mui/material/Grid";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -37,6 +38,7 @@ import PaletteCard from "layouts/palettes/components/PaletteCard";
 import Header from "layouts/profile/components/Header";
 
 // firebase
+import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 
 // functions
@@ -50,17 +52,25 @@ import {
 } from "../../services";
 
 function Overview() {
+  const { id } = useParams();
   const { currentUser } = useContext(AuthContext);
+
   const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState({});
   const [data, setData] = useState([]);
   const [favorites, setFavorites] = useState([]);
   const [selectedTab, setSelectedTab] = useState(true);
   const { ctColors, setCtColors, ctGradients, setCtGradients, ctPalettes, setCtPalettes } =
     useColorTown();
 
-  const fetchColection = async (collectionName) => {
+  const resetData = () => {
+    setData([]);
+    setFavorites([]);
+  };
+
+  const fetchColection = (collectionName) => {
     // type must be "first" or "next"
-    await getCollectionByUserId(db, collectionName, currentUser.uid)
+    getCollectionByUserId(db, collectionName, id)
       .then((res) => {
         setData((prev) => [...prev, ...res]);
       })
@@ -70,33 +80,52 @@ function Overview() {
       });
   };
 
-  const fetchFavorites = async (firebaseDb, userId) => {
+  const fetchFavorites = (firebaseDb, userId) => {
     // type must be "first" or "next"
-    await getFavoritesByUserId(firebaseDb, userId)
+    getFavoritesByUserId(firebaseDb, userId)
       .then((res) => {
-        setFavorites((prev) => [...prev, ...res]);
+        setFavorites([...res]);
       })
       .catch((err) => {
         console.log(err);
         setIsLoading(false);
       });
   };
-
-  const fetchAllData = async () => {
+  // collections and favorites together
+  const fetchAllData = () => {
     setIsLoading(true);
 
-    await fetchColection("colors");
-    await fetchColection("gradients");
-    await fetchColection("palettes");
+    fetchColection("colors");
+    fetchColection("gradients");
+    fetchColection("palettes");
 
-    await fetchFavorites(db, currentUser.uid);
+    fetchFavorites(db, id);
 
     setIsLoading(false);
   };
   // TODO: favori ve koleksiyon her tab değiştiğinde güncellenebilir veya favoriler için favorilerden çıkarınca da olsa iyi olur
   useEffect(() => {
-    fetchAllData();
-  }, []);
+    const fetchUser = async () => {
+      const docRef = doc(db, "users", id);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        setUser({ id: docSnap.id, ...docSnap.data() });
+        setIsLoading(false);
+      } else {
+        // TODO: do something
+        console.log("No such document!");
+      }
+    };
+
+    // çok da iyi değil
+    try {
+      resetData();
+    } finally {
+      fetchUser();
+      fetchAllData();
+    }
+  }, [id]);
 
   // tab changer
   const handleTabChange = (value) => {
@@ -108,39 +137,39 @@ function Overview() {
   // FIXME: burasına güzel bir ayar çekilecek (favorilere ekle)
   const handleLikeBtnClickColor = async (colorId, reqType) => {
     if (reqType === "add") {
-      if (currentUser) await addToFavorites(db, currentUser.uid, "color", colorId);
+      if (user) await addToFavorites(db, id, "color", colorId);
       await incrementLikes(db, "color", colorId);
       setCtColors([...ctColors, colorId]);
     } else if (reqType === "remove") {
-      if (currentUser) await removeFromFavorites(db, currentUser.uid, "color", colorId);
+      if (user) await removeFromFavorites(db, id, "color", colorId);
       await decrementLikes(db, "color", colorId);
-      const newColors = ctColors.filter((id) => id !== colorId);
+      const newColors = ctColors.filter((_id) => _id !== colorId);
       setCtColors([...newColors]);
     }
   };
 
   const handleLikeBtnClickGradient = async (gradientId, reqType) => {
     if (reqType === "add") {
-      if (currentUser) await addToFavorites(db, currentUser.uid, "gradient", gradientId);
+      if (user) await addToFavorites(db, id, "gradient", gradientId);
       await incrementLikes(db, "gradient", gradientId);
       setCtGradients([...ctGradients, gradientId]);
     } else if (reqType === "remove") {
-      if (currentUser) await removeFromFavorites(db, currentUser.uid, "gradient", gradientId);
+      if (user) await removeFromFavorites(db, id, "gradient", gradientId);
       await decrementLikes(db, "gradient", gradientId);
-      const newGradients = ctGradients.filter((id) => id !== gradientId);
+      const newGradients = ctGradients.filter((_id) => _id !== gradientId);
       setCtGradients([...newGradients]);
     }
   };
 
   const handleLikeBtnClickPalette = async (paletteId, reqType) => {
     if (reqType === "add") {
-      if (currentUser) await addToFavorites(db, currentUser.uid, "palette", paletteId);
+      if (user) await addToFavorites(db, id, "palette", paletteId);
       await incrementLikes(db, "palette", paletteId);
       setCtPalettes([...ctPalettes, paletteId]);
     } else if (reqType === "remove") {
-      if (currentUser) await removeFromFavorites(db, currentUser.uid, "palette", paletteId);
+      if (user) await removeFromFavorites(db, id, "palette", paletteId);
       await decrementLikes(db, "palette", paletteId);
-      const newPalettes = ctPalettes.filter((id) => id !== paletteId);
+      const newPalettes = ctPalettes.filter((_id) => _id !== paletteId);
       setCtPalettes([...newPalettes]);
     }
   };
@@ -148,10 +177,11 @@ function Overview() {
   return (
     <DashboardLayout>
       <Header
-        profileImage={currentUser.photoURL}
-        displayName={currentUser.displayName}
-        email={currentUser.email}
+        profileImage={user.photoURL}
+        displayName={user.displayName}
+        email={user.email}
         setSelectedTab={handleTabChange}
+        isFavoritesShow={id === currentUser.uid}
       />
       <SuiBox py={3}>
         <SuiBox mb={3}>

@@ -49,11 +49,7 @@ export default styled(InputBase)(({ theme, ownerState }) => {
 
   let focusedPaddingLeftValue;
 
-  if (direction === "rtl" && iconDirection === "left") {
-    focusedPaddingLeftValue = pxToRem(12);
-  } else if (direction === "rtl" && iconDirection === "right") {
-    focusedPaddingLeftValue = pxToRem(12);
-  } else if (direction === "ltr" && iconDirection === "right") {
+  if (direction === "ltr" && iconDirection === "right") {
     focusedPaddingLeftValue = pxToRem(12);
   } else if (direction === "ltr" && iconDirection === "left") {
     focusedPaddingLeftValue = pxToRem(12);
@@ -61,11 +57,7 @@ export default styled(InputBase)(({ theme, ownerState }) => {
 
   let focusedPaddingRightValue;
 
-  if (direction === "rtl" && iconDirection === "left") {
-    focusedPaddingRightValue = pxToRem(12);
-  } else if (direction === "rtl" && iconDirection === "right") {
-    focusedPaddingRightValue = pxToRem(12);
-  } else if (direction === "ltr" && iconDirection === "right") {
+  if (direction === "ltr" && iconDirection === "right") {
     focusedPaddingRightValue = pxToRem(12);
   } else if (direction === "ltr" && iconDirection === "left") {
     focusedPaddingRightValue = pxToRem(12);
@@ -103,20 +95,12 @@ export default styled(InputBase)(({ theme, ownerState }) => {
   const withIconStyles = () => {
     let withIconBorderRadiusValue = `0 ${borderRadius.md} ${borderRadius.md} 0`;
 
-    if (direction === "rtl" && iconDirection === "left") {
-      withIconBorderRadiusValue = `0 ${borderRadius.md} ${borderRadius.md} 0`;
-    } else if (direction === "rtl" && iconDirection === "right") {
-      withIconBorderRadiusValue = `${borderRadius.md} 0 0 ${borderRadius.md}`;
-    } else if (direction === "ltr" && iconDirection === "right") {
+    if (direction === "ltr" && iconDirection === "right") {
       withIconBorderRadiusValue = `${borderRadius.md} 0 0 ${borderRadius.md}`;
     }
 
     let withIconPaddingLeftValue;
-    if (direction === "rtl" && iconDirection === "left") {
-      withIconPaddingLeftValue = 0;
-    } else if (direction === "rtl" && iconDirection === "right") {
-      withIconPaddingLeftValue = pxToRem(12);
-    } else if (direction === "ltr" && iconDirection === "right") {
+    if (direction === "ltr" && iconDirection === "right") {
       withIconPaddingLeftValue = pxToRem(12);
     } else if (direction === "ltr" && iconDirection === "left") {
       withIconPaddingLeftValue = 0;
@@ -124,11 +108,7 @@ export default styled(InputBase)(({ theme, ownerState }) => {
 
     let withIconPaddingRightValue;
 
-    if (direction === "rtl" && iconDirection === "left") {
-      withIconPaddingRightValue = pxToRem(12);
-    } else if (direction === "rtl" && iconDirection === "right") {
-      withIconPaddingRightValue = 0;
-    } else if (direction === "ltr" && iconDirection === "right") {
+    if (direction === "ltr" && iconDirection === "right") {
       withIconPaddingRightValue = 0;
     } else if (direction === "ltr" && iconDirection === "left") {
       withIconPaddingRightValue = pxToRem(12);

@@ -80,7 +80,7 @@ function SignUp() {
         },
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            setData((prev) => ({ ...prev, img: downloadURL }));
+            setData((prev) => ({ ...prev, photoURL: downloadURL }));
           });
         }
       );
@@ -100,7 +100,7 @@ function SignUp() {
 
       await updateProfile(res.user.auth.currentUser, {
         displayName: data.displayName,
-        photoURL: data.img,
+        photoURL: data.photoURL,
       }).catch((err) => {
         // An error occurred
         // ...
@@ -110,7 +110,7 @@ function SignUp() {
       await setDoc(doc(db, "users", res.user.uid), {
         displayName: data.displayName,
         email: data.email,
-        img: data.img,
+        photoURL: data.photoURL,
         timeStamp: serverTimestamp(),
       });
 
