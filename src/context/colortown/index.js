@@ -15,6 +15,8 @@ export const ColorTownProvider = ({ children }) => {
     JSON.parse(localStorage.getItem("ctPalettes")) || []
   );
 
+  const [filterTags, setFilterTags] = useState([]);
+
   useEffect(() => {
     localStorage.setItem("ctColors", JSON.stringify(ctColors));
   }, [ctColors]);
@@ -34,6 +36,8 @@ export const ColorTownProvider = ({ children }) => {
     setCtGradients,
     ctPalettes,
     setCtPalettes,
+    filterTags,
+    setFilterTags,
   };
 
   return <ColorTownContext.Provider value={values}>{children}</ColorTownContext.Provider>;

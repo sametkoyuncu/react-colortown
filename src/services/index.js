@@ -1,4 +1,4 @@
-import usePagination from "./Pagination";
+import { usePagination, usePaginationWithFilterTags } from "./Pagination";
 import getCollectionByUserId from "./GetCollectionByUserId";
 import getDocsByTagName from "./GetDocsByTagName";
 import {
@@ -12,6 +12,7 @@ import {
 
 export {
   usePagination,
+  usePaginationWithFilterTags,
   getCollectionByUserId,
   addToFavorites,
   removeFromFavorites,

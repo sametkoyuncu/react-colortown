@@ -28,6 +28,9 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 
+// ct components
+import CtDropdownFilterMenu from "components/CtDropdownFilterMenu";
+
 // Dashboard layout components
 import PaletteCard from "layouts/palettes/components/PaletteCard";
 
@@ -37,6 +40,7 @@ import { db } from "../../firebase";
 // functions
 import {
   usePagination,
+  usePaginationWithFilterTags,
   addToFavorites,
   removeFromFavorites,
   incrementLikes,
@@ -53,29 +57,45 @@ function Palettes() {
   const [data, setData] = useState([]);
   // if the last data has been loaded, the 'load more' button must be disabled
   const [isLastDataLoaded, setIsLastDataLoaded] = useState(false);
-  const { ctPalettes, setCtPalettes } = useColorTown();
+  const { ctPalettes, setCtPalettes, filterTags } = useColorTown();
 
   const fetchData = (collectionName, type) => {
-    // type must be "first" or "next"
+    if (type === "first") setData([]);
+    setIsLastDataLoaded(false);
     setIsLoading(true);
-
-    usePagination(collectionName, type)
-      .then((res) => {
-        setData((prev) => [...prev, ...res]);
-        // If we have only 12 docs in database, litte issue here. Because we don't have next docs but load button still visible.
-        if (res.length < 12) setIsLastDataLoaded(true);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    if (!filterTags.length) {
+      // type must be "first" or "next"
+      usePagination(collectionName, type)
+        .then((res) => {
+          setData((prev) => [...prev, ...res]);
+          if (res.length < 12) setIsLastDataLoaded(true);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    } else {
+      // type must be "first" or "next"
+      usePaginationWithFilterTags(collectionName, type, filterTags)
+        .then((res) => {
+          setData((prev) => [...prev, ...res]);
+          if (res.length < 12) setIsLastDataLoaded(true);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
   };
+
   useEffect(() => {
     // get first 8 docs from colors collection
     fetchData("palettes", "first");
-  }, []);
+  }, [filterTags]);
 
   const handleLikeBtnClick = async (paletteId, reqType) => {
     if (reqType === "add") {
@@ -94,6 +114,9 @@ function Palettes() {
       <DashboardNavbar />
       <SuiBox py={3}>
         <SuiBox mb={3}>
+          <SuiBox mb={3} sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
+            <CtDropdownFilterMenu />
+          </SuiBox>
           {isLoading && data.length === 0 && (
             <SuiBox mb={3} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
               <CircularProgress color="info" />

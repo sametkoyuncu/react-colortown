@@ -116,7 +116,6 @@ function Overview() {
         // TODO: do something
         console.log("No such document!");
       }
-      console.log(user);
     };
 
     // çok da iyi değil

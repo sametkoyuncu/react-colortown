@@ -29,8 +29,8 @@ import Icon from "@mui/material/Icon";
 
 // Soft UI Dashboard React components
 import SuiBox from "components/SuiBox";
-import CtAccountNavbarMenu from "components/CtAccountNavbarMenu";
 import SuiInput from "components/SuiInput";
+import CtAccountNavbarMenu from "components/CtAccountNavbarMenu";
 
 // Soft UI Dashboard React examples
 import Breadcrumbs from "examples/Breadcrumbs";
