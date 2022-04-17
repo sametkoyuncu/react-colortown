@@ -55,9 +55,10 @@ function Palettes() {
   const { currentUser } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
+  const [filterTags, setFilterTags] = useState([]);
   // if the last data has been loaded, the 'load more' button must be disabled
   const [isLastDataLoaded, setIsLastDataLoaded] = useState(false);
-  const { ctPalettes, setCtPalettes, filterTags } = useColorTown();
+  const { ctPalettes, setCtPalettes } = useColorTown();
 
   const fetchData = (collectionName, type) => {
     if (type === "first") setData([]);
@@ -115,7 +116,7 @@ function Palettes() {
       <SuiBox py={3}>
         <SuiBox mb={3}>
           <SuiBox mb={3} sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
-            <CtDropdownFilterMenu />
+            <CtDropdownFilterMenu filterTags={filterTags} setFilterTags={setFilterTags} />
           </SuiBox>
           {isLoading && data.length === 0 && (
             <SuiBox mb={3} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>

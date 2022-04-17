@@ -30,6 +30,7 @@ import Footer from "examples/Footer";
 
 // ct components
 import CtDropdownFilterMenu from "components/CtDropdownFilterMenu";
+import CtDropdownSortMenu from "components/CtDropdownSortMenu";
 
 // Dashboard layout components
 import ColorCard from "layouts/colors/components/ColorCard";
@@ -55,9 +56,12 @@ function Colors() {
   const { currentUser } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
+  // eslint-disable-next-line no-unused-vars
+  const [order, setOrder] = useState({ field: "timeStamp", type: "asc" });
+  const [filterTags, setFilterTags] = useState([]);
   // if the last data has been loaded, the 'load more' button must be disabled
   const [isLastDataLoaded, setIsLastDataLoaded] = useState(false);
-  const { ctColors, setCtColors, filterTags } = useColorTown();
+  const { ctColors, setCtColors } = useColorTown();
 
   const fetchData = (collectionName, type) => {
     if (type === "first") setData([]);
@@ -65,7 +69,7 @@ function Colors() {
     setIsLoading(true);
     if (!filterTags.length) {
       // type must be "first" or "next"
-      usePagination(collectionName, type)
+      usePagination(collectionName, type, order.field, order.type)
         .then((res) => {
           setData((prev) => [...prev, ...res]);
           if (res.length < 12) setIsLastDataLoaded(true);
@@ -78,7 +82,7 @@ function Colors() {
         });
     } else {
       // type must be "first" or "next"
-      usePaginationWithFilterTags(collectionName, type, filterTags)
+      usePaginationWithFilterTags(collectionName, type, filterTags, order.field, order.type)
         .then((res) => {
           setData((prev) => [...prev, ...res]);
           if (res.length < 12) setIsLastDataLoaded(true);
@@ -111,14 +115,14 @@ function Colors() {
       setCtColors([...newColors]);
     }
   };
-
   return (
     <DashboardLayout>
       <DashboardNavbar />
       <SuiBox py={3}>
         <SuiBox mb={3}>
           <SuiBox mb={3} sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
-            <CtDropdownFilterMenu />
+            <CtDropdownSortMenu />
+            <CtDropdownFilterMenu filterTags={filterTags} setFilterTags={setFilterTags} />
           </SuiBox>
           {isLoading && data.length === 0 && (
             <SuiBox mb={3} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>

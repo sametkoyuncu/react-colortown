@@ -8,19 +8,25 @@ let documentSnapshots;
 // type must be "first" or "next".
 //  first: first 12 document from collection.
 //  next: next 12 document from collection.
-const usePagination = async (collectionName, queryType, docsLimit = 12) => {
+const usePagination = async (
+  collectionName,
+  queryType,
+  orderField = "timeStamp",
+  orderType = "asc",
+  docsLimit = 12
+) => {
   const list = [];
   let q;
   switch (queryType) {
     case "first":
       // Query the first page of docs
-      q = query(collection(db, collectionName), orderBy("timeStamp"), limit(docsLimit));
+      q = query(collection(db, collectionName), orderBy(orderField, orderType), limit(docsLimit));
       break;
     case "next":
       // Query the next page of docs
       q = query(
         collection(db, collectionName),
-        orderBy("timeStamp"),
+        orderBy(orderField, orderType),
         startAfter(lastVisible),
         limit(docsLimit)
       );
@@ -43,6 +49,8 @@ const usePaginationWithFilterTags = async (
   collectionName,
   queryType,
   filterTags,
+  orderField = "timeStamp",
+  orderType = "asc",
   docsLimit = 12
 ) => {
   const list = [];
@@ -53,7 +61,7 @@ const usePaginationWithFilterTags = async (
       q = query(
         collection(db, collectionName),
         where("tags", "array-contains-any", [...filterTags]),
-        orderBy("timeStamp"),
+        orderBy(orderField, orderType),
         limit(docsLimit)
       );
       break;
@@ -62,7 +70,7 @@ const usePaginationWithFilterTags = async (
       q = query(
         collection(db, collectionName),
         where("tags", "array-contains-any", [...filterTags]),
-        orderBy("timeStamp"),
+        orderBy(orderField, orderType),
         startAfter(lastVisible),
         limit(docsLimit)
       );
