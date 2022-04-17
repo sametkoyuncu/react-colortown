@@ -88,8 +88,7 @@ function CtDropdownFilterMenu({ filterTags, setFilterTags }) {
     </div>
   );
 }
-// filterTags, setFilterTags;
-// Typechecking props for the SuiBox
+// Typechecking props for the CtDropdownFilterMenu
 CtDropdownFilterMenu.propTypes = {
   filterTags: PropTypes.arrayOf(PropTypes.string).isRequired,
   setFilterTags: PropTypes.func.isRequired,

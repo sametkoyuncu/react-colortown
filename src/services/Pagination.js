@@ -11,73 +11,44 @@ let documentSnapshots;
 const usePagination = async (
   collectionName,
   queryType,
-  orderField = "timeStamp",
-  orderType = "asc",
-  docsLimit = 12
-) => {
-  const list = [];
-  let q;
-  switch (queryType) {
-    case "first":
-      // Query the first page of docs
-      q = query(collection(db, collectionName), orderBy(orderField, orderType), limit(docsLimit));
-      break;
-    case "next":
-      // Query the next page of docs
-      q = query(
-        collection(db, collectionName),
-        orderBy(orderField, orderType),
-        startAfter(lastVisible),
-        limit(docsLimit)
-      );
-      break;
-    default:
-      break;
-  }
-  documentSnapshots = await getDocs(q);
-
-  // Get the last visible document
-  lastVisible = documentSnapshots.docs[documentSnapshots.docs.length - 1];
-  documentSnapshots.forEach((document) => {
-    list.push({ id: document.id, ...document.data() });
-  });
-
-  return list;
-};
-
-const usePaginationWithFilterTags = async (
-  collectionName,
-  queryType,
   filterTags,
-  orderField = "timeStamp",
-  orderType = "asc",
+  sortField = "timeStamp",
+  sortType = "asc",
   docsLimit = 12
 ) => {
   const list = [];
   let q;
-  switch (queryType) {
-    case "first":
-      // Query the first page of docs
+
+  if (queryType === "first") {
+    if (!filterTags.length) {
+      q = query(collection(db, collectionName), orderBy(sortField, sortType), limit(docsLimit));
+    } else {
       q = query(
         collection(db, collectionName),
         where("tags", "array-contains-any", [...filterTags]),
-        orderBy(orderField, orderType),
+        orderBy(sortField, sortType),
         limit(docsLimit)
       );
-      break;
-    case "next":
-      // Query the next page of docs
+    }
+  } else if (queryType === "next") {
+    if (!filterTags.length) {
       q = query(
         collection(db, collectionName),
-        where("tags", "array-contains-any", [...filterTags]),
-        orderBy(orderField, orderType),
+        orderBy(sortField, sortType),
         startAfter(lastVisible),
         limit(docsLimit)
       );
-      break;
-    default:
-      break;
+    } else {
+      q = query(
+        collection(db, collectionName),
+        where("tags", "array-contains-any", [...filterTags]),
+        orderBy(sortField, sortType),
+        startAfter(lastVisible),
+        limit(docsLimit)
+      );
+    }
   }
+
   documentSnapshots = await getDocs(q);
 
   // Get the last visible document
@@ -85,8 +56,7 @@ const usePaginationWithFilterTags = async (
   documentSnapshots.forEach((document) => {
     list.push({ id: document.id, ...document.data() });
   });
-  console.log(list);
+
   return list;
 };
-
-export { usePagination, usePaginationWithFilterTags };
+export default usePagination;

@@ -30,6 +30,7 @@ import Footer from "examples/Footer";
 
 // ct components
 import CtDropdownFilterMenu from "components/CtDropdownFilterMenu";
+import CtDropdownSortMenu from "components/CtDropdownSortMenu";
 
 // Dashboard layout components
 import PaletteCard from "layouts/palettes/components/PaletteCard";
@@ -40,7 +41,6 @@ import { db } from "../../firebase";
 // functions
 import {
   usePagination,
-  usePaginationWithFilterTags,
   addToFavorites,
   removeFromFavorites,
   incrementLikes,
@@ -53,50 +53,40 @@ import { AuthContext } from "../../context/colortown/AuthContext";
 
 function Palettes() {
   const { currentUser } = useContext(AuthContext);
-  const [isLoading, setIsLoading] = useState(true);
+
   const [data, setData] = useState([]);
+  // eslint-disable-next-line no-unused-vars
+  const [sort, setSort] = useState({ field: "timeStamp", type: "asc" });
   const [filterTags, setFilterTags] = useState([]);
+
   // if the last data has been loaded, the 'load more' button must be disabled
   const [isLastDataLoaded, setIsLastDataLoaded] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
   const { ctPalettes, setCtPalettes } = useColorTown();
 
   const fetchData = (collectionName, type) => {
     if (type === "first") setData([]);
     setIsLastDataLoaded(false);
     setIsLoading(true);
-    if (!filterTags.length) {
-      // type must be "first" or "next"
-      usePagination(collectionName, type)
-        .then((res) => {
-          setData((prev) => [...prev, ...res]);
-          if (res.length < 12) setIsLastDataLoaded(true);
-        })
-        .catch((err) => {
-          console.log(err);
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
-    } else {
-      // type must be "first" or "next"
-      usePaginationWithFilterTags(collectionName, type, filterTags)
-        .then((res) => {
-          setData((prev) => [...prev, ...res]);
-          if (res.length < 12) setIsLastDataLoaded(true);
-        })
-        .catch((err) => {
-          console.log(err);
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
-    }
+    // type must be "first" or "next"
+    usePagination(collectionName, type, filterTags, sort.field, sort.type)
+      .then((res) => {
+        setData((prev) => [...prev, ...res]);
+        if (res.length < 12) setIsLastDataLoaded(true);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   useEffect(() => {
     // get first 8 docs from colors collection
     fetchData("palettes", "first");
-  }, [filterTags]);
+  }, [filterTags, sort]);
 
   const handleLikeBtnClick = async (paletteId, reqType) => {
     if (reqType === "add") {
@@ -116,6 +106,7 @@ function Palettes() {
       <SuiBox py={3}>
         <SuiBox mb={3}>
           <SuiBox mb={3} sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
+            <CtDropdownSortMenu sort={sort} setSort={setSort} />
             <CtDropdownFilterMenu filterTags={filterTags} setFilterTags={setFilterTags} />
           </SuiBox>
           {isLoading && data.length === 0 && (

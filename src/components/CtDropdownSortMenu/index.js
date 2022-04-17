@@ -10,23 +10,42 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 // Soft UI Dashboard React components
 import SuiButton from "components/SuiButton";
 
-// colortown context
-// import { useColorTown } from "../../context/colortown";
+// prop-types is a library for typechecking of props
+import PropTypes from "prop-types";
 
-export default function CtDropdownSortMenu() {
-  // const { filterTags, setFilterTags } = useColorTown();
+function CtDropdownSortMenu({ sort, setSort }) {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [alignment, setAlignment] = useState("left");
+  const [alignmentSortField, setAlignmentSortField] = useState("left");
+  const [alignmentSortType, setAlignmentSortType] = useState("left");
 
-  const handleChange = (event, newAlignment) => {
-    setAlignment(newAlignment);
+  const handleChangeSortField = (event, newAlignment) => {
+    setAlignmentSortField(newAlignment);
+    // eslint-disable-next-line no-unused-expressions
+    newAlignment === "left"
+      ? setSort({ field: "timeStamp", type: sort.type })
+      : setSort({ field: "likes", type: sort.type });
   };
 
-  const control = {
-    value: alignment,
-    onChange: handleChange,
+  const handleChangeSortType = (event, newAlignment) => {
+    setAlignmentSortType(newAlignment);
+    // eslint-disable-next-line no-unused-expressions
+    newAlignment === "left"
+      ? setSort({ field: sort.field, type: "asc" })
+      : setSort({ field: sort.field, type: "desc" });
+  };
+
+  const controlSortField = {
+    value: alignmentSortField,
+    onChange: handleChangeSortField,
     exclusive: true,
   };
+
+  const controlSortType = {
+    value: alignmentSortType,
+    onChange: handleChangeSortType,
+    exclusive: true,
+  };
+  // dropdown
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -78,7 +97,7 @@ export default function CtDropdownSortMenu() {
         >
           <ToggleButtonGroup
             size="small"
-            {...control}
+            {...controlSortField}
             sx={{ marginTop: "4px", marginRight: "5px" }}
           >
             <ToggleButton value="left" key="left">
@@ -99,7 +118,7 @@ export default function CtDropdownSortMenu() {
         >
           <ToggleButtonGroup
             size="small"
-            {...control}
+            {...controlSortType}
             sx={{ marginTop: "4px", marginRight: "5px" }}
           >
             <ToggleButton value="left" key="left">
@@ -116,3 +135,12 @@ export default function CtDropdownSortMenu() {
     </div>
   );
 }
+
+// Typechecking props for the CtDropdownFilterMenu
+CtDropdownSortMenu.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  sort: PropTypes.object.isRequired,
+  setSort: PropTypes.func.isRequired,
+};
+
+export default CtDropdownSortMenu;
