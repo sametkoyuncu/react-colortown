@@ -31,6 +31,7 @@ import Footer from "examples/Footer";
 // ct components
 import CtDropdownFilterMenu from "components/CtDropdownFilterMenu";
 import CtDropdownSortMenu from "components/CtDropdownSortMenu";
+import CtDropdownPageLimitMenu from "components/CtDropdownPageLimitMenu";
 
 // Dashboard layout components
 import PaletteCard from "layouts/palettes/components/PaletteCard";
@@ -62,6 +63,7 @@ function Palettes() {
   // if the last data has been loaded, the 'load more' button must be disabled
   const [isLastDataLoaded, setIsLastDataLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [limit, setLimit] = useState(12);
 
   const { ctPalettes, setCtPalettes } = useColorTown();
 
@@ -143,6 +145,7 @@ function Palettes() {
                 >
                   &nbsp;More Palettes
                 </LoadingButton>
+                <CtDropdownPageLimitMenu currentLimit={limit} setLimit={setLimit} />
               </SuiBox>
             ))}
         </SuiBox>

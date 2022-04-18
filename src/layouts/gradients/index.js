@@ -31,6 +31,7 @@ import Footer from "examples/Footer";
 // ct components
 import CtDropdownFilterMenu from "components/CtDropdownFilterMenu";
 import CtDropdownSortMenu from "components/CtDropdownSortMenu";
+import CtDropdownPageLimitMenu from "components/CtDropdownPageLimitMenu";
 
 // Dashboard layout components
 import GradientCard from "layouts/gradients/components/GradientCard";
@@ -58,6 +59,7 @@ function Gradients() {
   // eslint-disable-next-line no-unused-vars
   const [sort, setSort] = useState({ field: "timeStamp", type: "asc" });
   const [filterTags, setFilterTags] = useState([]);
+  const [limit, setLimit] = useState(12);
 
   // if the last data has been loaded, the 'load more' button must be disabled
   const [isLastDataLoaded, setIsLastDataLoaded] = useState(false);
@@ -146,6 +148,7 @@ function Gradients() {
                 >
                   &nbsp;More Gradients
                 </LoadingButton>
+                <CtDropdownPageLimitMenu currentLimit={limit} setLimit={setLimit} />
               </SuiBox>
             ))}
         </SuiBox>

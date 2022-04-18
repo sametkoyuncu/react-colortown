@@ -31,6 +31,7 @@ import Footer from "examples/Footer";
 // ct components
 import CtDropdownFilterMenu from "components/CtDropdownFilterMenu";
 import CtDropdownSortMenu from "components/CtDropdownSortMenu";
+import CtDropdownPageLimitMenu from "components/CtDropdownPageLimitMenu";
 
 // Dashboard layout components
 import ColorCard from "layouts/colors/components/ColorCard";
@@ -58,6 +59,7 @@ function Colors() {
   // eslint-disable-next-line no-unused-vars
   const [sort, setSort] = useState({ field: "timeStamp", type: "asc" });
   const [filterTags, setFilterTags] = useState([]);
+  const [limit, setLimit] = useState(12);
 
   const [isLoading, setIsLoading] = useState(true);
   // if the last data has been loaded, the 'load more' button must be disabled
@@ -70,7 +72,7 @@ function Colors() {
     setIsLastDataLoaded(false);
     setIsLoading(true);
     // type must be "first" or "next"
-    usePagination(collectionName, type, filterTags, sort.field, sort.type)
+    usePagination(collectionName, type, filterTags, sort.field, sort.type, limit)
       .then((res) => {
         setData((prev) => [...prev, ...res]);
         if (res.length < 12) setIsLastDataLoaded(true);
@@ -145,6 +147,7 @@ function Colors() {
                 >
                   &nbsp;More Colors
                 </LoadingButton>
+                <CtDropdownPageLimitMenu currentLimit={limit} setLimit={setLimit} />
               </SuiBox>
             ))}
         </SuiBox>
