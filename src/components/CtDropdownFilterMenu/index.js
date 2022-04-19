@@ -9,14 +9,13 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 // Soft UI Dashboard React components
 import SuiButton from "components/SuiButton";
 
-// colortown context
-import { useColorTown } from "../../context/colortown";
+// prop-types is a library for typechecking of props
+import PropTypes from "prop-types";
 
 // tags
 import { tags, tagKeys } from "../../data/tags";
 
-export default function CtDropdownFilterMenu() {
-  const { filterTags, setFilterTags } = useColorTown();
+function CtDropdownFilterMenu({ filterTags, setFilterTags }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -89,3 +88,10 @@ export default function CtDropdownFilterMenu() {
     </div>
   );
 }
+// Typechecking props for the CtDropdownFilterMenu
+CtDropdownFilterMenu.propTypes = {
+  filterTags: PropTypes.arrayOf(PropTypes.string).isRequired,
+  setFilterTags: PropTypes.func.isRequired,
+};
+
+export default CtDropdownFilterMenu;
