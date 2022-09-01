@@ -26,6 +26,25 @@ ColorTown is the best way to create and explore beauties. Create color, gradient
 
 ![thanks](https://github.com/sametkoyuncu/react-colortown/blob/master/public/assets/presentation/12.png)
 
+
+# Instalation and Usage
+
+> This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+Install dependencies:
+### `npm install`
+
+Run the app:
+### `npm start`
+
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
+
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+
 > Thank you for this template to Creative Tim! ❤️
 
 # [Soft UI Dashboard React](http://demos.creative-tim.com/soft-ui-dashboard-react/#/dashboard?ref=readme-sudr) [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/tweet?url=https://www.creative-tim.com/product/soft-ui-dashboard-react&text=Check%20Soft%20UI%20Dashboard%20react%20made%20by%20@CreativeTim%20#webdesign%20#dashboard%20#softdesign%20#react%20https://www.creative-tim.com/product/soft-ui-dashboard-react)
