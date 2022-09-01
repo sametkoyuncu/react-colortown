@@ -34,6 +34,10 @@ ColorTown is the best way to create and explore beauties. Create color, gradient
 Install dependencies:
 ### `npm install`
 
+Update .env file:
+- rename `.env.example` to `.env`
+- update environment values
+
 Run the app:
 ### `npm start`
 
